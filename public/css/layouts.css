@@ -1,0 +1,454 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 0.65vw;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+}
+
+
+body {
+    height: 1000vh;
+}
+
+
+
+/*----------------------------------------- HEADER ------------------------------------------ */
+header {
+    height: 7rem;
+    width: 100%;
+    box-shadow: 0.1rem 0.1rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    position: fixed;
+    background-color: #fff;
+    z-index: 100;
+}
+
+
+/*------ Seach Container-------*/
+.search-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+
+/*------- GoiY Container ------*/
+.GoiY {
+    height: 35%;
+    position: relative;
+}
+
+/* logo */
+.logo img#logo {
+    position: absolute;
+    height: 6rem;
+    cursor: pointer;
+    transition: 0.2s;
+    animation-name: logo;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    transform: rotate(-3deg);
+}
+
+.logo img#house{
+    position: absolute;
+    height: 4rem;
+    top: -60%;
+    cursor: pointer;
+    transition: 0.2s;
+    animation-name: house;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;  
+    transform: rotate(3deg);
+    animation-delay: 1s;
+}
+
+@keyframes house {
+    from{
+        top: -60%;
+        left: 13.5%;
+    }
+
+    to{
+        top: 80%;
+        left: 13.5%;
+    }
+}
+
+@keyframes logo {
+    from {
+        top: 10%;
+        left: -15%;
+    }
+
+    to {
+        top: 10%;
+        left: 10%;
+    }
+}
+
+.logo img#logo:hover, .logo img#house:hover {
+    transform: rotate(0deg) scale(1.1) ;
+}
+
+
+
+/*-------------------- Sidebar ---------------*/
+.sidebar .menusidebar {
+    position: absolute;
+    /* width: 50px; */
+    width: 5rem;
+    top: 7rem;
+    height: 100vh;
+    box-shadow: 0.1rem 0.1rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
+    transition: 0.4s;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+
+.sidebar ul {
+    list-style: none;
+    padding-top: 3rem;
+    padding-left: 0.5rem;
+    /* width: 50px; */
+}
+
+.sidebar ul a {
+    color: #333;
+    text-decoration: none;
+}
+
+.sidebar ul li {
+    font-size: 1.6rem;
+    font-weight: 350;
+    line-height: 3;
+    text-align: left;
+    cursor: pointer;
+    padding-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    width: 18rem;
+    font-weight: 400;
+}
+
+.sidebar ul li:hover span {
+    transform: scale(1.1);
+}
+
+
+.sidebar ul li i {
+    font-size: 2rem;
+    padding: 0.8rem;
+    margin-right: 2rem;
+    margin-left: 0;
+    cursor: pointer;
+    align-items: center;
+    /* color: var(--extra1-color); */
+}
+
+/* .sidebar ul .end{
+    margin-top: 22rem;
+} */
+
+.menusidebar.active_menu {
+    width: 16rem;
+}
+
+/*-------------------- Sidebar End ---------------*/
+
+
+.search-container i:hover {
+    transform: scale(1.2);
+}
+
+
+
+/*----- Search Input -----*/
+.search-container .inputSearch {
+    position: absolute;
+    height: 100%;
+    left: 30%;
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+}
+
+.search-container #frmSearch {
+    height: 60%;
+    display: flex;
+}
+
+.search-container .inputSearch input {
+    height: 100%;
+    width: 60rem;
+    padding: 0 2rem;
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 2rem;
+    border: 0.1rem solid #c2c2c2;
+    outline: #c2c2c2;
+    /* background-color: #cccccc52; */
+}
+
+.search-container .inputSearch button {
+    height: 100%;
+    width: 5rem;
+    border-top-right-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+    background-color: #fff;
+    margin-right: 1.2rem;
+    border: 0.1rem solid #c2c2c2;
+    background-color: #cccccc52;
+}
+
+
+.inputSearch i {
+    font-size: 2.4rem;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.convenient i {
+    padding: 0 0.4rem;
+    color: var(--extra1-color);
+}
+
+.convenient i:hover {
+    transform: scale(1.2);
+    color: var(--extra1-color);
+}
+
+/*----- Search Input End -----*/
+
+
+/* Search User */
+.search-container .user {
+    position: absolute;
+    right: 2%;
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+.search-container .user div {
+    cursor: pointer;
+    margin-right: 1rem;
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+    border: 0.1rem solid #c2c2c2;
+    background-color: #fff;
+    transition: 0.2s;
+    /* background-color: #cccccc52; */
+}
+
+.search-container .user i {
+    font-size: 2rem;
+    padding-right: 0.6rem;
+    padding-left: 0;
+    cursor: pointer;
+    position: relative;
+    color: var(--extra1-color);
+}
+
+
+.search-container .user a {
+    text-decoration: none;
+    color: #333;
+}
+
+
+
+
+.search-container .user div:hover,
+.search-container .user div:hover i {
+    transform: scale(1.1);
+    border-color: var(--extra1-color);
+    color: var(--extra1-color);
+}
+
+
+.search-container .user div:hover a {
+    transform: scale(1.1);
+    border-color: var(--extra1-color);
+    color: var(--extra1-color);
+}
+
+/*------ Seach End-------*/
+/*----------------------------------------- HEADER END ------------------------------------------ */
+
+
+/*----------------------------------------- FOOTER ------------------------------------------ */
+.footer-container {
+    background-color: #e9e9e9;
+    margin-left: 20rem;
+    margin-right: 20rem;
+    height: 50rem;
+}
+
+.footer-container a {
+    text-decoration: none;
+    color: #333;
+}
+
+
+/*------------- Footer head -------------- */
+.footer-head {
+    display: flex;
+    position: relative;
+    border-radius: 1rem;
+
+}
+
+.footer-head .card-title {
+    display: flex;
+    align-items: end;
+    padding: 1.2rem;
+}
+
+.footer-head .card-title h3 {
+    margin-left: 1rem;
+    font-weight: 400;
+    font-size: 2rem;
+}
+
+
+.footer-head .footer-logo {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    right: 1.5rem;
+    top: 1rem;
+}
+
+.footer-head .footer-logo i {
+    font-size: 2rem;
+    padding: 0 0.8rem;
+    cursor: pointer;
+}
+
+.footer-head .footer-logo i:hover {
+    transform: scale(1.2);
+    color: var(--extra1-color);
+}
+
+
+
+/*------------- Footer main -------------- */
+.footer-main {
+    display: flex;
+    justify-content: space-around;
+}
+
+.footer-main .card-title {
+    margin: 1.2rem 0;
+}
+
+.footer-main .card-title img {
+    height: 12rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.footer-main .card-title img:hover {
+    transform: scale(1.1);
+}
+
+
+.footer-main .card-title h3,
+.footer-main .card-title h2 {
+    text-align: center;
+    font-weight: 350;
+    margin: 0.8rem 0;
+}
+
+.footer-main .thongtinll {
+    margin: 1.2rem 0;
+}
+
+.footer-main .thongtinll h2 {
+    font-weight: 350;
+    margin: 0.8rem 0;
+}
+
+.footer-main .thongtinll p,
+.footer-main .thongtinll i {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.footer-main .thongtinll p:hover {
+    color: var(--extra1-color);
+}
+
+
+.footer-main .chungnhan {
+    margin: 1.2rem 0;
+    justify-self: left;
+}
+
+.footer-main .chungnhan h2 {
+    font-weight: 350;
+    margin: 0.8rem 0;
+    margin-bottom: 1rem;
+}
+
+.footer-main .chungnhan p {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+}
+
+
+/*------------------- FOOTER END -------------------- */
+.footer-end {
+    display: flex;
+    justify-content: center;    
+    margin: 1.2rem 0;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-end h4 {
+    font-weight: 400;
+    font-size: 1.6rem;
+
+}
+.footer-end img{
+    height: 5rem;
+}
+
+/*------------------- FOOTER TOTOP -------------------- */
+footer .ToTop{
+    font-size: 3rem;
+    color:var(--extra1-color);
+    position: fixed;
+    z-index: 50;
+    right: 5%;
+    top: 100%;
+    border-radius: 1rem;
+    width: 4rem;
+    text-align: center;
+    background-color: var(--extra1-color)16;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+footer .ToTop:hover{
+    transform: scale(1.1);
+    border: 0.1rem solid var(--extra1-color);
+    color: var(--extra1-color);
+}
+
+footer .activeTotop{
+    top: 90%;
+}
+
+/* ------------------------------------------- END FOOTER ----------------------------------------------------------------- */

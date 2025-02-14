@@ -32,6 +32,7 @@ Route::get('/forgot', function () {
 
 // ----------------------- Route Home -----------------------
 Route::get('/home', function () {
-    return ('auth.components.home');
+    return view('home.layouts.home');
 })->name("home");
+
 //---------------------------------------------------------------------
