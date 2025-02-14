@@ -17,22 +17,25 @@
     <link rel="stylesheet" href="css/config.css?ver=3">
 
     {{-- Link My CSS  --}}
-    <link rel="stylesheet" href="css/auth.css?ver=2">
+    <link rel="stylesheet" href="css/layouts.css?ver=2">
     {{-- Title --}}
     @yield('title')
     <!-- LINK ICON -->
     <link rel="shortcut icon" href="assets/images/logo/7.png">
+    {{-- Title --}}
+    @yield('title')
 </head>
 
 <body>
-    <main>
-        @yield('content')
-    </main>
+    @include("home.partials.header")
+    <div class="container">
+        @yield("content")
+        <div class="h-100 bg-primary w-100"></div>
+    </div>
+    @include("home.partials.footer")
 </body>
-{{-- Link My JS  --}}
-<script src="js/auth.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="js/layouts.js"></script>
 </html>
