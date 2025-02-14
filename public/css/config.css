@@ -1,0 +1,107 @@
+:root {
+    --main1-color: #ffddba;
+    --main2-color: #1dbfaf;
+    --extra1-color: rgb(180 140 114);
+    --extra2-color: #0499a8;
+    --header-heigh: 3.5rem;
+}
+
+[data-bs-theme=light]:root {
+    --main-bg: rgb(240, 242, 245);
+    --main-extra-bg: rgb(255, 255, 255);
+    --extra-bg: rgb(228, 230, 235);
+    --font-color: rgb(5, 5, 5);
+    --font-extra-color: rgb(101, 103, 107);
+    --brightness: brightness(0.8);
+}
+
+[data-bs-theme=dark]:root {
+    --main-bg: rgb(24, 25, 26);
+    --main-extra-bg: rgb(36, 37, 38);
+    --extra-bg: rgb(58, 59, 60);
+    --font-color: rgb(228, 230, 235);
+    --font-extra-color: rgb(176, 179, 184);
+    --brightness: brightness(1.2);
+}
+
+html {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+body {
+    background-color: var(--main-bg);
+}
+
+header,
+footer,
+main {
+    width: 100%;
+}
+
+.modal-open header {
+    padding-right: 15px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--font-color);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+button,
+select,
+input,
+textarea {
+    border: 0;
+    outline: 0;
+    resize: none;
+}
+
+button,
+select {
+    cursor: pointer;
+}
+
+input:focus {
+    outline: none;
+}
+
+input::-webkit-search-cancel-button {
+    margin-right: 0.5rem;
+}
+
+svg {
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+
+.rounded {
+    height: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 0.75rem;
+}
+
+.rounded-circle {
+    height: 100%;
+    aspect-ratio: 1/1;
+}
+
+.icon-box {
+    display: flex;
+    height: 100%;
+    aspect-ratio: 1/1;
+    justify-content: center;
+    align-items: center;
+}
+
+.hide {
+    display: none;
+}

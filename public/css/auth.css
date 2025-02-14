@@ -1,0 +1,173 @@
+/* Style CSS */
+/* Theme Dark */
+[data-bs-theme=dark]:root {
+    --main-bg: rgb(58, 59, 60);
+    --main-extra-bg: rgb(36, 37, 38);
+    --extra-bg: rgb(24, 25, 26);
+    --font-color: #fff;
+    --font-input-color: #8a8a8a;
+    --border-color: #555555;
+}
+
+/* Theme Light */
+[data-bs-theme=light]:root {
+    --main-bg: rgb(240, 242, 245);
+    --main-extra-bg: #fff;
+    --extra-bg: rgb(240, 242, 245);
+    --font-color: #000;
+    --border-color: #ced4da;
+}
+
+html {
+    background: var(--main-bg);
+}
+
+img.logo{
+    transition: 0.2s;
+}
+
+img.logo:hover{
+    transform: scale(1.05);
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    background: var(--main-bg);
+    color: var(--font-color);
+    /* position: relative; */
+    padding-inline: 1rem;
+}
+
+.row {
+    margin: auto 1rem;
+    width: 35rem;
+}
+
+.form-wrapper {
+    margin-top: 3rem;
+    padding: 3.5rem;
+    background-color: var(--main-extra-bg);
+    border-radius: 1rem;
+    box-shadow: 0 0.2rem 0.5rem 0 rgba(51, 62, 73, 0.1);
+    position: relative;
+    min-width: 100%;
+}
+
+.form-control {
+    background-color: var(--main-extra-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0.6rem !important;
+    color: var(--font-color) !important;
+}
+
+
+.form-control:focus {
+    box-shadow: 0 0 0 .05rem var(--extra1-color) !important;
+    background-color: var(--main-extra-bg) !important;
+    color: var(--font-color) !important;
+}
+
+.is-invalid {
+    border: 1px solid #dc3545 !important;
+    display: block !important;
+}
+
+.is-invalid:focus {
+    border-color: #dc3545 !important;
+    box-shadow: none !important;
+}
+
+.label-input {
+    color: var(--font-input-color) !important;
+
+}
+
+.form-control .pwd-mg {
+    position: relative;
+}
+
+.pwd-eye {
+    position: absolute;
+    right: 1rem;
+    top: 1.5rem;
+    color: var(--font-input-color);
+}
+
+.pwd-eye:hover {
+    cursor: pointer;
+}
+
+#reload-capcha {
+    font-size: 1.4rem;
+}
+
+#reload-capcha:hover {
+    cursor: pointer;
+}
+
+.mg-btn {
+    display: block;
+    width: 100%;
+    background-color: var(--main1-color) !important;
+    border-color: var(--main1-color) !important;
+    box-shadow: 0 0 0 .05rem var(--main1color) !important;
+    border-radius: 0.6rem !important;
+    margin: 1.2rem 0;
+    color: #000;
+    font-weight: 650;
+    transition: 0.2s;
+}
+
+.mg-btn:focus {
+    box-shadow: 0 0 0 .25rem rgba(213, 214, 215, 0) !important;
+    color: #000;
+}
+
+.mg-btn:active {
+    color: #000 !important;
+}
+
+.mg-btn:hover
+{
+    transform: scale(1.02);
+    color: #000;
+    font-weight: 650;
+}
+
+.form-check-input {
+    background-color: var(--font-input-color) !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--extra1-color) !important;
+    border-color: var(--extra1-color) !important;
+}
+
+.footer-form {
+    position: absolute;
+    bottom: -5rem;
+    left: 50%;
+    transform: translate(-50%);
+    font-size: 1rem;
+}
+
+.footer-form a {
+    text-decoration: none;
+    color: var(--font-color);
+}
+
+a:hover {
+    color: var(--extra1-color) !important;
+}
+
+i.back {
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    font-size: 1.2rem;
+}
+
+i.back:hover {
+    cursor: pointer;
+}
