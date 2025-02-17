@@ -32,7 +32,12 @@ Route::get('/forgot', function () {
 
 // ----------------------- Route Home -----------------------
 Route::get('/home', function () {
-    return view('home.layouts.home');
+    return view('home.components.home');
 })->name("home");
+
+Route::get('/', function () {
+    return view('home.layouts.layout');
+});
+
 
 //---------------------------------------------------------------------

@@ -1,4 +1,4 @@
-@extends("auth.layouts.auth")
+@extends("auth.layouts.layout")
 
 @section("title")
 <title>Quên mậ khẩu</title>

@@ -1,4 +1,4 @@
-@extends("auth.layouts.auth")
+@extends("auth.layouts.layout")
 
 @section("title")
 <title>Kích hoạt gmail</title>
