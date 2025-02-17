@@ -9,9 +9,8 @@
 
         <!------- Logo ------->
         <div class="logo">
-            <a href=""><img src="/assets/images/logo/11-format.png" alt="" id="logo">
-                <img id="house" src="/assets/images/logo/15.png" alt=""></a>
-                <img id="house" src="/assets/images/logo/15.png" alt="">
+            <a href="{{ route('home') }}"><img src="/assets/images/logo/11-format.png" alt="" id="logo">
+                <img id="house" src="/asse/logo/15.png" alt=""></a>
         </div>
 
         <!------- Search ------->
@@ -31,11 +30,11 @@
         <!------- User ------->
         <div class="user ">
             <div class="user_Lover_container">
-                <a href="/_yeuthich/yeuthich.html"><i class='bx bxs-cart-alt' id="user_Love"></i>Giỏ hàng</a>
+                <a href="{{ route('cart') }}"><i class='bx bxs-cart-alt' id="user_Love"></i>Giỏ hàng</a>
             </div>
 
             <div>
-                <a href="/_dangnhap/dangnhap.html"> <i class='bx bxs-user'></i>Tài khoản</a>
+                <a href="{{ route('login') }}"> <i class='bx bxs-user'></i>Tài khoản</a>
             </div>
         </div>
     </div>

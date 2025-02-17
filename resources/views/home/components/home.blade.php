@@ -20,7 +20,7 @@
                         <div class="DieuHuong">
                             <div class="content">
                                 <i class='bx bxs-food-menu'></i>
-                                <a href="">
+                                <a href="{{ route("product") }}">
                                     <p>Sản phẩm</p>
                                 </a>
                             </div>
@@ -31,11 +31,11 @@
 
                     </a>
 
-                    <a href="/_chothue/chothue1.html">
+                    <a href="{{route("cart")}}">
                         <div class="DieuHuong">
                             <div class="content">
                                 <i class='bx bxs-cart-alt'></i>
-                                <a href="">
+                                <a href="{{route("cart")}}">
                                     <p>Giỏ hàng</p>
                                 </a>
                             </div>

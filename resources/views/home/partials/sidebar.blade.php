@@ -5,23 +5,23 @@
             <img src="" alt=""> <!-- Không thêm hình ở đây -->
         </div>
         <ul class="nav-menu">
-            <a href="">
-                <li>
+            <a href="{{ route('home') }}">
+                <li class="">
                     <i class='bx bxs-home'></i>
                     <span>Trang chủ</span>
                 </li>
             </a>
 
-            <a href="">
+            <a href="{{ route('product') }}">
                 <li>
                     <i class='bx bxs-food-menu'></i>
                     <span>Sản phẩm</span>
                 </li>
             </a>
 
-            <a href="">
+            <a href="{{ route('cart') }}">
                 <li>
-                    <i class='bx bxs-cart-alt' ></i>
+                    <i class='bx bxs-cart-alt'></i>
                     <span>Giỏ hàng</span>
                 </li>
             </a>
@@ -29,7 +29,7 @@
 
             <a href="">
                 <li>
-                    <i class='bx bxs-cog' ></i>
+                    <i class='bx bxs-cog'></i>
                     <span>Cài đặt</span>
                 </li>
             </a>
