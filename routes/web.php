@@ -38,6 +38,16 @@ Route::get('/home', function () {
 Route::get('/', function () {
     return view('home.layouts.layout');
 });
+//---------------------------------------------------------------------
 
+// ----------------------- Route Product -----------------------
+Route::get('/product', function () {
+    return view('home.components.product');
+})->name("product");
+//---------------------------------------------------------------------
 
+// ----------------------- Route Product -----------------------
+Route::get('/cart', function () {
+    return view('home.components.cart');
+})->name("cart");
 //---------------------------------------------------------------------
