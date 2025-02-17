@@ -10,13 +10,6 @@ html {
     color: #333;
 }
 
-
-body {
-    height: 1000vh;
-}
-
-
-
 /*----------------------------------------- HEADER ------------------------------------------ */
 header {
     height: 7rem;
@@ -285,6 +278,11 @@ header {
 
 
 /*----------------------------------------- FOOTER ------------------------------------------ */
+footer
+{
+    background-color: #e9e9e9;
+}
+
 .footer-container {
     background-color: #e9e9e9;
     margin-left: 20rem;

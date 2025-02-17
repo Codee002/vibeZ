@@ -3,14 +3,15 @@
     <div class="search-container">
 
         <!----------------------- Sidebar ----------------------------->
-       @include("home.partials.sidebar")
+        @include('home.partials.sidebar')
         <!----------------------- Sidebar End ----------------------------->
 
 
         <!------- Logo ------->
         <div class="logo">
             <a href=""><img src="/assets/images/logo/11-format.png" alt="" id="logo">
-                <img id="house" src="/header_img/logo/house.png" alt=""></a>
+                <img id="house" src="/assets/images/logo/15.png" alt=""></a>
+                <img id="house" src="/assets/images/logo/15.png" alt="">
         </div>
 
         <!------- Search ------->
@@ -20,17 +21,17 @@
                 <button title="Tìm kiếm" id="TimKiembtn" type="submit"><i class='bx bx-search-alt'></i></button>
             </form>
 
-            <div class="convenient">
+            {{-- <div class="convenient">
                 <i class='bx bxs-bell'></i>
                 <i class='bx bxs-chat'></i>
-            </div>
+            </div> --}}
 
         </div>
 
         <!------- User ------->
         <div class="user ">
             <div class="user_Lover_container">
-                <a href="/_yeuthich/yeuthich.html"><i class='bx bxs-heart' id="user_Love"></i>Yêu thích</a>
+                <a href="/_yeuthich/yeuthich.html"><i class='bx bxs-cart-alt' id="user_Love"></i>Giỏ hàng</a>
             </div>
 
             <div>

@@ -5,43 +5,43 @@
             <img src="" alt=""> <!-- Không thêm hình ở đây -->
         </div>
         <ul class="nav-menu">
-            <a href="/_trangchu/trangchu.html">
+            <a href="">
                 <li>
                     <i class='bx bxs-home'></i>
                     <span>Trang chủ</span>
                 </li>
             </a>
 
-            <a href="/_muaban/muaban1.html">
+            <a href="">
                 <li>
-                    <i class='bx bxs-dollar-circle'></i>
-                    <span>Mua bán</span>
+                    <i class='bx bxs-food-menu'></i>
+                    <span>Sản phẩm</span>
                 </li>
             </a>
 
-            <a href="/_chothue/chothue1.html">
+            <a href="">
                 <li>
-                    <i class='bx bxs-key'></i>
-                    <span>Cho thuê</span>
+                    <i class='bx bxs-cart-alt' ></i>
+                    <span>Giỏ hàng</span>
                 </li>
             </a>
 
 
-            <a href="https://phongtro123.com/">
+            <a href="">
                 <li>
-                    <i class='bx bxs-news'></i>
-                    <span>Tin tức</span>
+                    <i class='bx bxs-cog' ></i>
+                    <span>Cài đặt</span>
                 </li>
             </a>
 
-            <a href="/_lienhe/lienhe.html">
+            <a href="">
                 <li>
                     <i class='bx bx-support'></i>
                     <span>Hỗ trợ</span>
                 </li>
             </a>
 
-            <a href="/_dangnhap/dangnhap.html">
+            <a href="">
                 <li class="end">
                     <i class='bx bxs-log-out'></i>
                     <span>Đăng xuất</span>

@@ -1,0 +1,226 @@
+/*------------------- MAIN -------------------- */
+.sidebar{
+    display: none;
+}
+
+header{
+    height: 7rem;
+    border: 0.5rem;
+    box-shadow: 0.1rem 0.1rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
+
+}
+
+body{
+    grid-template-rows: 7rem;
+}
+
+.logo img{
+    height: 9rem;
+}
+
+main{
+    margin: 0px;
+}
+
+main a{
+    text-decoration: none;
+    color: #333;
+}
+
+.banner{
+    width: 100%;
+    margin-top: 7rem;
+    background-image: url('/_trangchu/img/banner/banner_Trangchu2.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-bottom: 0;
+}
+
+main .Content-container{
+    margin-left: 14%;
+    margin-right: 14%;
+}
+
+/* KhamPha */
+.KhamPha-container{
+    margin: 4rem 0;
+}
+
+.KhamPha-container .KhamPha_title{
+    margin-top: 1rem;
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 0.4rem;
+}
+
+.KhamPha{
+    display: flex;
+    width: 100%;
+}
+
+.KhamPha .DieuHuong{
+    width: 25%;
+    height: 12rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.1rem solid #e6ecf0;
+    border-radius: 1.5rem;
+    margin: 0.4rem;
+}
+
+.KhamPha .DieuHuong .content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+
+}
+
+.KhamPha .DieuHuong:hover{
+    color:var( --extra1-color);
+    border: 0.1rem solid var(  --hover-border-color);
+    background-color: var(  --hover-background-color);
+    cursor: pointer;
+}
+
+.KhamPha .DieuHuong:hover a{
+    color:var( --extra1-color);
+}
+
+.KhamPha .DieuHuong .content i{
+    font-size: 3rem;
+    margin-right: 2rem;
+    color: var( --extra1-color);
+}
+
+.KhamPha .DieuHuong .content p{
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+
+
+/* Đăng bán */
+.Content-container .DangBan .XemTruoc{
+    display: flex;
+}
+.Content-container .DangBan .XemTruoc a{
+    display: block;
+    width: 20%;
+}
+
+.DangBan{
+    margin: 5rem 0;
+}
+
+.DangBan .XemTruoc_title{
+    margin-top: 1rem;
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 0.4rem;
+}
+
+.DangBan .XemTruoc .sanpham{
+    width: 100%;
+    border: 0.1rem solid var(  --hover-background-color)16;
+    border-radius: 1rem;
+    margin: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    cursor: pointer;
+}
+
+.DangBan .XemTruoc .sanpham:hover{
+    box-shadow: 0.1rem 0.1rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
+}
+
+.XemTruoc .sanpham img{
+    width: 95%;
+    border-radius: 1rem;
+    height: 20rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.XemTruoc .sanpham p{
+    font-size: 1.4rem;
+    align-self: flex-start;
+    padding: 0 1rem;
+}
+
+.XemTruoc .sanpham .mota{
+    height: 4rem;
+    font-weight: 450;
+    /* margin-bottom: 2rem; */
+}
+
+.XemTruoc .sanpham .size{
+    font-weight: 500;
+}
+
+.XemTruoc .sanpham .giatien{
+    font-size: 2rem;
+    font-weight: 700;
+    color: var( --extra1-color);
+}
+
+
+.DangBan .LienKet{
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var( --extra1-color);
+}
+
+.DangBan .LienKet p{
+    transition: 0.2s;
+}
+
+.DangBan .LienKet p:hover{
+    transform: scale(1.1);
+    color: var(  --hover-extra1-color);
+}
+
+
+/* Tiện ích */
+.tienich-container{
+    width: 50% ;
+}
+
+.DangBan .tienich{
+    box-shadow: 0.1rem 0.1rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
+}
+
+.DangBan .tienich:hover{
+    border-color: var( --extra1-color);
+}
+
+.DangBan .tienich .mota{
+    height: 5rem;
+}
+
+.DangBan .tienich i{
+    font-size: 3rem;
+}
+
+.DangBan .tienich i.bxs-hard-hat{
+    color:orange ;
+}
+
+.DangBan .tienich i.bxs-graduation{
+    color: rgb(0, 149, 255);
+}
+
+.DangBan .tienich .size{
+    font-size: 1.6rem;
+    font-weight: 450;
+}
+
+
+/*------------------- MAIN END -------------------- */
+
+

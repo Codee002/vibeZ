@@ -18,8 +18,7 @@
 
     {{-- Link My CSS  --}}
     <link rel="stylesheet" href="css/layouts.css?ver=2">
-    {{-- Title --}}
-    @yield('title')
+    @yield('css')
     <!-- LINK ICON -->
     <link rel="shortcut icon" href="assets/images/logo/7.png">
     {{-- Title --}}
@@ -28,10 +27,7 @@
 
 <body>
     @include("home.partials.header")
-    <div class="container">
-        @yield("content")
-        <div class="h-100 bg-primary w-100"></div>
-    </div>
+    @yield("content")
     @include("home.partials.footer")
 </body>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
