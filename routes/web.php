@@ -32,22 +32,26 @@ Route::get('/forgot', function () {
 
 // ----------------------- Route Home -----------------------
 Route::get('/home', function () {
-    return view('home.components.home');
+    return view('pages.components.home');
 })->name("home");
 
 Route::get('/', function () {
-    return view('home.layouts.layout');
+    return view('pages.layouts.layout');
 });
 //---------------------------------------------------------------------
 
 // ----------------------- Route Product -----------------------
 Route::get('/product', function () {
-    return view('home.components.product');
+    return view('pages.components.product');
 })->name("product");
+
+Route::get('/detail', function () {
+    return view('pages.components.detail');
+})->name("detail");
 //---------------------------------------------------------------------
 
 // ----------------------- Route Product -----------------------
 Route::get('/cart', function () {
-    return view('home.components.cart');
+    return view('pages.components.cart');
 })->name("cart");
 //---------------------------------------------------------------------
