@@ -3,7 +3,7 @@
     <div class="search-container">
 
         <!----------------------- Sidebar ----------------------------->
-        @include('home.partials.sidebar')
+        @include('pages.partials.sidebar')
         <!----------------------- Sidebar End ----------------------------->
 
 
