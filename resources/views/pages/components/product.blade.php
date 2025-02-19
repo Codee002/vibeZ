@@ -10,6 +10,13 @@
 
 @section('content')
     <main>
+        <hr>
+        <div class="search">
+            <div>
+                <p class="tieude">Từ Khóa Tìm Kiếm: <b>Tìm kiếm</p>
+            </div>
+        </div>
+        <hr>
         <p class="title">Sản Phẩm Cập Nhật Mới Nhất T2/2025</p>
 
         <div class="tonhat tay">
