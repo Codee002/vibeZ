@@ -50,8 +50,22 @@ Route::get('/detail', function () {
 })->name("detail");
 //---------------------------------------------------------------------
 
-// ----------------------- Route Product -----------------------
+// ----------------------- Route Cart -----------------------
 Route::get('/cart', function () {
     return view('pages.components.cart');
 })->name("cart");
 //---------------------------------------------------------------------
+
+
+// ----------------------- Route Contact -----------------------
+Route::get('/contact', function () {
+    return view('pages.components.contact');
+})->name("contact");
+//-------------------------------------------------------------------
+
+// ----------------------- Route Order -----------------------
+Route::get('/order_detail', function () {
+    return view('pages.components.order_detail');
+})->name("order_detail");
+//-------------------------------------------------------------------
+

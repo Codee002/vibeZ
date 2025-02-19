@@ -1,0 +1,80 @@
+main {
+    padding: 10rem 24rem;
+    margin: auto;
+    background-color: #fff;
+}
+
+main p {
+    padding: 0rem;
+    margin: 0rem;
+    font-size: 1.6rem;
+}
+
+.order__info {
+    border-radius: 1.4rem;
+    padding: 1.4rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.order__info:hover {
+    box-shadow: 0rem 0rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.order__info i
+{
+    font-size: 2.4rem;
+    position: absolute;
+    top: 1.6rem;
+    right: 4rem;
+}
+
+.order__info__user {
+    padding: 1rem 3rem;
+}
+
+.order__info__product {
+    padding: 1rem 0rem;
+}
+
+.order__info__product img {
+    width: 100%;
+}
+
+.order__info__sum__type p
+{
+    font-weight: 350;
+    margin-bottom: .8rem;
+}
+
+.order__info__sum__price p
+{
+    font-weight: 600;
+    margin-bottom: .8rem;
+}
+
+.order__info__option{
+    width: 100%;
+    padding: .4rem;
+    display: flex;
+}
+.order__info__option button{
+    width: 50%;
+    cursor: pointer;
+    margin-right: 1rem;
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+    border: 0.1rem solid #c2c2c2;
+    background-color: #fff;
+    transition: 0.2s;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.order__info__option button:hover
+{
+    transform: scale(1.1);
+    border-color: var(--extra1-color);
+    color: var(--extra1-color);
+}
