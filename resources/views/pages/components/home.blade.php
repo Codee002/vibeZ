@@ -42,22 +42,22 @@
                         </div>
                     </a>
 
-                    <a href="/_yeuthich/yeuthich.html">
+                    <a href="{{ route("order_history") }}">
                         <div class="DieuHuong">
                             <div class="content">
-                                <i class='bx bxs-shopping-bag-alt'></i>
-                                <a href="">
+                                <i class='bx bxs-package'></i>
+                                <a href="{{ route("order_history") }}">
                                     <p>Đơn hàng</p>
                                 </a>
                             </div>
                         </div>
                     </a>
-                    <a href="/_lienhe/lienhe.html">
+                    <a href="{{ route("contact") }}">
                         <div class="DieuHuong">
                             <div class="content">
                                 <i class='bx bx-support'></i>
-                                <a href="">
-                                    <p>Hỗ Trợ</p>
+                                <a href="{{ route("contact") }}">
+                                    <p>Liên hệ</p>
                                 </a>
                             </div>
                         </div>
