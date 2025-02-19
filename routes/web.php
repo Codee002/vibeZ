@@ -28,6 +28,11 @@ Route::get('/forgot', function () {
     return view('auth.components.forgot');
 })->name("forgot");
 
+Route::get('/active_email', function () {
+    return view('auth.components.activeEmail');
+})->name("active_email");
+
+
 // ----------------------- Route Home -----------------------
 Route::get('/home', function () {
     return view('pages.components.home');
