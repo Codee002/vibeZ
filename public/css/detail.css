@@ -1,7 +1,9 @@
 /*--Product*/
 main {
-    padding: 10rem;
+    padding: 12rem;
+    padding-right: 3rem;
     font-size: 1.6rem;
+    background-color: #fff;
 }
 
 p {
@@ -95,6 +97,40 @@ p {
     border-color: var(--extra1-color);
     color: var(--extra1-color);
 }
+
+
+.order__info__product__size{
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    font-size: 1.4rem;
+}
+
+.order__info__product__size select
+{
+    width: 40%;
+    font-size: 1.4rem;
+    padding: 1rem;
+}
+
+.order__info__product__quantity
+{
+    display: flex;
+    width: 40%;
+    align-items: start;
+}
+.order__info__product__quantity input{
+    font-size: 1.4rem;
+    text-align: center;
+    padding: 1rem;
+}
+
+.order__info__product__quantity button
+{
+    padding: 1rem;
+    font-size: 1.4rem;
+}
+
 
 /* ================================================================================ */
 /* main img {
@@ -537,17 +573,6 @@ p {
     height: 5rem;
 }
 
-
-main input {
-    height: 6rem !important;
-}
-
-
-main input,
-main textarea {
-    font-size: 1.6rem !important;
-}
-
 main .supports p .address:hover {
     color: var(--extra1-color);
 }
@@ -555,11 +580,6 @@ main .supports p .address:hover {
 main .supports p {
     margin-bottom: 3rem;
 }
-
-.form-control {
-    padding: 0 1rem;
-}
-
 
 #review-img {
     position: relative;

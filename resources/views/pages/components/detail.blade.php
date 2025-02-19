@@ -71,23 +71,31 @@
                                 <label class="d-block" for="size-select">
                                     <b>Size</b>
                                 </label>
-                                <form action="">
-                                    <select class="form-select" id="size-select" name="size[]">Chọn kích thước
+                                <div class="order__info__product__size">
+                                    <select class="form-select" id="size-select" name="size[]">
                                         <option>40</option>
                                         <option>41</option>
                                         <option>42</option>
                                         <option>43</option>
                                     </select>
+                                </div>
                             </div>
 
                             <div class="card__choice__detail__option">
                                 <label class="d-block card__choice__quantity" for="quantity-select">
                                     <b>Số lượng</b>
                                 </label>
-                                <form action="">
-                                    <input class="form-control" id="quantity-select" name="quantity"
-                                        placeholder="Nhập số lượng">
-                                    </input>
+                                <div class="d-flex justify-content-start">
+                                    <div class="order__info__product__quantity">
+                                        <div class="order__info__product__quantity__prepend">
+                                            <button class="btn btn-outline-secondary" type="button">-</button>
+                                        </div>
+                                        <input type="text" class="form-control" value="1" min="1">
+                                        <div class="order__info__product__quantity__apend">
+                                            <button class="btn btn-outline-secondary" type="button">+</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="d-flex justify-content-center">
@@ -103,8 +111,6 @@
                                     </button>
                                 </div>
                             </div>
-
-                            </form>
                         </div>
                     </div>
                     <div class="card-items mt-5">
@@ -134,25 +140,17 @@
                                     <p class="card__choice__detail">
                                         Shop bán giày giá rẻ tại Việt Nam
                                         <br>
-                                        • Real bao check, check fake thì trả hàng thẳng luôn nha 🥰🥰
+                                        • Real bao check, check fake thì trả hàng thẳng luôn nha
                                         <br>
                                         • Ship COD kiểm tra hàng toàn quốc luôn nha mọi người ơi !!
                                         <br>
-                                        - - - CAM KẾT HÌNH THẬT - GIÁ THẬT ❗️- - - <br>
+                                        - - - CAM KẾT HÌNH THẬT - GIÁ THẬT - - - <br>
                                         <br>
-                                        ❌ Liên hệ ngay cho mình ( Zalo ) Trần Phúc theo số điện thoại
-                                        0918242085 hoặc nhắn tin trực tiếp ❌<br>
+                                        Liên hệ ngay cho mình ( Zalo ) Trần Phúc theo số điện thoại
+                                        0918242085 hoặc nhắn tin trực tiếp<br>
                                         <br>
                                         #shopgiaygiare #shopgiayhaugiang #sneakergiare
                                     </p>
-                                </div>
-                                <h3 class="product-title">Địa chỉ</h3>
-                                <div class="map">
-                                    <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.351955757465!2d106.60525657491945!3d10.8608125576318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752bb78c67a15f%3A0x7a7406567094001!2zTmjDoCB0cuG7jQ!5e0!3m2!1svi!2s!4v1701518988798!5m2!1svi!2s"
-                                        width="700rem" height="450rem" style="border:0;" allowfullscreen="" loading="lazy"
-                                        referrerpolicy="no-referrer-when-downgrade">
-                                    </iframe>
                                 </div>
 
 
@@ -228,4 +226,8 @@
             </div>
         </div>
     </main>
+@endsection
+
+@section('js')
+    <script src="/js/product.js"></script>
 @endsection
