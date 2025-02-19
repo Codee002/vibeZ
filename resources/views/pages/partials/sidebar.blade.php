@@ -26,18 +26,31 @@
                 </li>
             </a>
 
-
-            <a href="">
+            <a href="{{ route("order_history") }}">
                 <li>
-                    <i class='bx bxs-cog'></i>
-                    <span>Cài đặt</span>
+                    <i class='bx bxs-package'></i>
+                    <span>Đơn đã mua</span>
                 </li>
             </a>
 
-            <a href="">
+            <a href="{{ route("contact") }}">
                 <li>
                     <i class='bx bx-support'></i>
-                    <span>Hỗ trợ</span>
+                    <span>Liên hệ</span>
+                </li>
+            </a>
+
+            <a href="{{ route("setting") }}">
+                <li>
+                    <i class='bx bxs-user'></i>
+                    <span>Tài khoản</span>
+                </li>
+            </a>
+
+            <a href="{{ route("security") }}">
+                <li>
+                    <i class='bx bxs-cog'></i>
+                    <span>Bảo mật</span>
                 </li>
             </a>
 
