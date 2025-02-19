@@ -78,3 +78,121 @@ main p {
     border-color: var(--extra1-color);
     color: var(--extra1-color);
 }
+
+/* Modal */
+.settingUserInfo__navWrapper__modalBackground
+{
+    background-color: var(--main-extra-bg) !important;
+    color: var(--font-color);
+    padding: .8rem;
+    font-size: 1.5rem;
+}
+
+.settingUserInfo__navWrapper__modalBackground button
+{
+    font-size: 1.6rem;
+}
+
+.modal-dialog .form-group
+{
+    position: relative;
+}
+
+.modal-dialog .modal-title
+{
+    font-size: 2rem;
+}
+
+.modal-dialog .form-control, .form-select{
+    background-color: var(--main-extra-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0.6rem !important;
+    color: var(--font-color) !important;
+    font-size: 1.4rem;
+}
+
+
+
+.pwd-eye
+{
+    position: absolute;
+    top: 0.7rem;
+    right: 1.5rem;
+    color: var(--font-input-color);
+}
+
+.pwd-eye:hover{
+    cursor: pointer !important;
+    
+}
+
+.modal-dialog .form-control:focus{
+    box-shadow: 0 0 0 .05rem var( --main-color) !important;
+    background-color: var(--main-extra-bg) !important;
+    color: var(--font-color) !important;
+}
+
+.modal .form-check-input{
+    background-color: var(--font-input-color) !important;
+}
+
+.modal .form-check-input:checked[type=radio] {
+    --bs-form-check-bg-image: none !important;
+}
+
+.modal .form-check-input:checked {
+    background-color:var( --extra1-color) !important;
+    border-color: var( --main-color) !important;
+}
+
+.modal .is-invalid
+{
+    border: 1px solid #dc3545 !important;
+    display: block !important;
+}
+
+.modal .is-invalid:focus
+{
+    border-color: #dc3545 !important;
+    box-shadow: none !important;
+}
+
+.settingUserInfo__navWrapper__next
+{
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+}
+
+.settingUserInfo__navWrapper__nav:hover{
+    background-color: var(--hover-color);
+    cursor: pointer;
+}
+
+.settingUserInfo__navWrapper__nav:first-child{
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.settingUserInfo__navWrapper__nav--last
+{
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+.settingUserInfo__navWrapper__nav__title
+{
+    font-size: 1.6rem;
+    font-weight: 550;
+    margin-bottom: .1rem;
+    margin-left: .4rem;
+}
+
+.settingUserInfo__navWrapper__nav__info
+{
+    margin-left: 1.4rem;
+    font-weight: 350;
+    font-size: 1.6rem;
+}

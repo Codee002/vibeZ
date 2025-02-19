@@ -11,7 +11,7 @@
 @section('content')
     <main>
         {{-- Thông tin khách hàng --}}
-        <div class="order__info">
+        <div class="order__info" data-bs-toggle="modal" data-bs-target="#Model1">
             <h3>Địa chỉ đặt hàng</h3>
             <div class="order__info__user">
                 <p>Trần Phúc</p>
@@ -23,6 +23,68 @@
             <i class='bx bx-right-arrow-alt'></i>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="Model1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog ">
+                <div class="modal-content settingUserInfo__navWrapper__modalBackground">
+                    <div class="modal-header">
+                        <strong>
+                            <h1 class="modal-title text-center ms-auto">
+                                Nhập thông tin giao hàng</h1>
+                        </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="getPassword" method="POST" action="/setting/changePassword" action="/setting/changePassword"
+                        onsubmit="return formConfirm(['oldpass', 'password', 'password_confirm'])">
+                        <div class="modal-body">
+                            <div class="row">
+                                <!-- Fix CSRF -->
+                                @csrf
+
+                                <label for="oldpass" class="form-label ">
+                                    Họ tên:</label>
+                                <div class="form-group">
+                                    <input type="password" name="oldpass" id="oldpass" placeholder="Nhập họ tên"
+                                        class="form-control mb-3
+                                                settingUserInfo__navWrapper__modalBackground 
+                                                ">
+                                    <span class="mb-3 invalid-feedback" style="display: block"></span>
+
+                                </div>
+
+
+                                <label for="password" class="form-label"> Số điện thoại:</label>
+                                <div class="form-group">
+                                    <input type="password" name="password" id="password" placeholder="Nhập số điện thoại"
+                                        class="form-control mb-3
+                                                settingUserInfo__navWrapper__modalBackground 
+                                               ">
+                                    <span class="mb-3 invalid-feedback" style="display: block"></span>
+                                </div>
+
+                                <label for="password_confirm" class="form-label"> Địa chỉ:</label>
+                                <div class="form-group">
+                                    <input type="password" name="password_confirm" id="password_confirm"
+                                        placeholder="Nhập địa chỉ"
+                                        class="form-control mb-3
+                                                settingUserInfo__navWrapper__modalBackground 
+                                               ">
+                                    <span class="mb-3 invalid-feedback" style="display: block"></span>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div
+                            class="modal-footer d-flex justify-content-between settingUserInfo__navWrapper__modalBackground">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> Hủy
+                                bỏ</button>
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         {{-- Danh mục --}}
         <div class="order__info">
@@ -52,7 +114,12 @@
                         <img src="https://trivela.vn/wp-content/uploads/2023/10/GIAY-PUREBOOST-23-IF2367.jpg.webp"
                             class="" alt="">
                     </div>
-                    <p class="col-8 d-flex justify-content-center">Giày PureBoost 23</p>
+                    <div class="col-8 d-flex flex-column align-items-center">
+                        <div>
+                            <p>Giày PureBoost 23</p>
+                            <p>Size: 42</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-2 d-flex justify-content-center">
                     <p>Giày Nike</p>
@@ -73,7 +140,12 @@
                         <img src="https://trivela.vn/wp-content/uploads/2023/10/GIAY-PUREBOOST-23-IF2367.jpg.webp"
                             class="" alt="">
                     </div>
-                    <p class="col-8 d-flex justify-content-center">Giày PureBoost 23</p>
+                    <div class="col-8 d-flex flex-column align-items-center">
+                        <div>
+                            <p>Giày PureBoost 23</p>
+                            <p>Size: 42</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-2 d-flex justify-content-center">
                     <p>Giày Nike</p>
@@ -94,7 +166,12 @@
                         <img src="https://trivela.vn/wp-content/uploads/2023/10/GIAY-PUREBOOST-23-IF2367.jpg.webp"
                             class="" alt="">
                     </div>
-                    <p class="col-8 d-flex justify-content-center">Giày PureBoost 23</p>
+                    <div class="col-8 d-flex flex-column align-items-center">
+                        <div>
+                            <p>Giày PureBoost 23</p>
+                            <p>Size: 42</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-2 d-flex justify-content-center">
                     <p>Giày Nike</p>
@@ -113,23 +190,104 @@
 
 
         {{-- Khuyến mãi --}}
-        <div class="order__info">
+        <div class="order__info" data-bs-toggle="modal" data-bs-target="#Model2">
             <h3>Khuyến mãi</h3>
             <div class="order__info__user">
                 <p>Chưa áp dụng mã khuyến mãi nào</p>
             </div>
             <i class='bx bx-right-arrow-alt'></i>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="Model2" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog ">
+                <div class="modal-content settingUserInfo__navWrapper__modalBackground">
+                    <div class="modal-header">
+                        <strong>
+                            <h1 class="modal-title text-center ms-auto">
+                                Chọn khuyến mãi</h1>
+                        </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="getPassword" method="POST" action="/setting/changePassword"
+                        action="/setting/changePassword"
+                        onsubmit="return formConfirm(['oldpass', 'password', 'password_confirm'])">
+                        <div class="modal-body">
+                            <div class="row">
+                                <!-- Fix CSRF -->
+                                @csrf
+                                <label for="oldpass" class="form-label ">
+                                    Khuyến mãi:</label>
+                                <div class="form-group">
+                                    <select class="form-select">
+                                        <option>Khuyến mãi 1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                    <span class="mb-3 invalid-feedback" style="display: block"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="modal-footer d-flex justify-content-between settingUserInfo__navWrapper__modalBackground">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> Hủy
+                                bỏ</button>
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         {{-- Phương thức thanh toán --}}
-        <div class="order__info">
+        <div class="order__info" data-bs-toggle="modal" data-bs-target="#Model3">
             <h3>Phương thức thanh toán</h3>
             <div class="order__info__user">
                 <p>Thanh toán khi nhận hàng</p>
             </div>
             <i class='bx bx-right-arrow-alt'></i>
         </div>
-
+        <!-- Modal -->
+        <div class="modal fade" id="Model3" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog ">
+                <div class="modal-content settingUserInfo__navWrapper__modalBackground">
+                    <div class="modal-header">
+                        <strong>
+                            <h1 class="modal-title text-center ms-auto">
+                                Chọn phương thức thanh toán</h1>
+                        </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="getPassword" method="POST" action="/setting/changePassword"
+                        action="/setting/changePassword"
+                        onsubmit="return formConfirm(['oldpass', 'password', 'password_confirm'])">
+                        <div class="modal-body">
+                            <div class="row">
+                                <!-- Fix CSRF -->
+                                @csrf
+                                <label for="oldpass" class="form-label ">
+                                    Phương thức thanh toán</label>
+                                <div class="form-group">
+                                    <select class="form-select">
+                                        <option>Phương thức 1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                    <span class="mb-3 invalid-feedback" style="display: block"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="modal-footer d-flex justify-content-between settingUserInfo__navWrapper__modalBackground">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> Hủy
+                                bỏ</button>
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         {{-- Tổng hóa đơn --}}
         <div class="order__info__sum row mb-5">
