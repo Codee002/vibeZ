@@ -58,6 +58,36 @@ main .title {
     height: 2rem;
 }
 
+.order__info__product__size{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    font-size: 1.4rem;
+}
+
+.order__info__product__size select
+{
+    width: 50%;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.order__info__product__quantity
+{
+    width: 60%;
+    align-items: start;
+    display: flex;
+}
+.order__info__product__quantity input{
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.order__info__product__quantity button
+{
+    font-size: 1.4rem;
+}
+
 .order__info__option{
     width: 100%;
     padding: .4rem;
