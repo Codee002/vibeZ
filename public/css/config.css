@@ -15,6 +15,8 @@
     --font-color: rgb(5, 5, 5);
     --font-extra-color: rgb(101, 103, 107);
     --brightness: brightness(0.8);
+    --hover-color: rgb(209 209 209 / 28%);
+    --border-color: #ced4da;
 }
 
 [data-bs-theme=dark]:root {
@@ -24,6 +26,8 @@
     --font-color: rgb(228, 230, 235);
     --font-extra-color: rgb(176, 179, 184);
     --brightness: brightness(1.2);
+    --hover-color: rgba(136, 136, 136, 0.269);
+    --border-color: #555555;
 }
 
 html {
