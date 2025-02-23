@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -7,14 +8,30 @@ Route::get('/', function () {
 });
 
 // ----------------------- Route Admin -----------------------
-Route::get('/admin', function () {
-    return view('admin.index');
-});
+Route::prefix("/admin")
+    ->name("admin.")
+    ->group(function () {
+        // Trang index
+        Route::get('/', function () {
+            return view('admin.index');
+        });
 
-Route::get('admin/widgets/small-box', function () {
-    return view('admin.components.widgets.small-box'); 
-})->name('admin.small-box');
+        // Category
+        Route::controller(CategoryController::class)
+            ->prefix("/category")
+            ->name("category.")
+            ->group(function () {
+                Route::get("/", "index")->name("index");
+                Route::get("/create", "create")->name("create");
+                Route::post("/store", "store")->name("store");
+                Route::get("/edit/{category}", "edit")->name("edit");
+                Route::put("/update/{category}", "update")->name("update");
+                Route::get("/detail/{category}", "detail")->name("detail");
+                Route::get("/search", "search")->name("search");
+                Route::delete("/destroy/{category}", "destroy")->name("destroy");
+            });
 
+    });
 // ----------------------- Route Auth -----------------------
 Route::get('/login', function () {
     return view('auth.components.login');
@@ -31,7 +48,6 @@ Route::get('/forgot', function () {
 Route::get('/active_email', function () {
     return view('auth.components.activeEmail');
 })->name("active_email");
-
 
 // ----------------------- Route Home -----------------------
 Route::get('/home', function () {
@@ -77,4 +93,3 @@ Route::get('/setting', function () {
 Route::get('/security', function () {
     return view('pages.components.security');
 })->name("security");
-
