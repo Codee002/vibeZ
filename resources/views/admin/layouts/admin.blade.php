@@ -35,11 +35,13 @@
         integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous" />
 
 
-
+    {{-- LINK BOXICON --}}
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- LINK CSS -->
-    <link rel="stylesheet" href="adminlte/dist/css/adminlte.css" />
+    {{-- <link rel="stylesheet" href="adminlte/dist/css/adminlte.css" /> --}}
+    <link rel="stylesheet" href="{{ asset("adminlte/dist/css/adminlte.css") }}" />
     <!-- LINK ICON -->
-    <link rel="shortcut icon" href="assets/images/logo/7.png">
+    <link rel="shortcut icon" href="{{ asset("assets/images/logo/7.png") }} ">
     <!-- TITLE -->
     @yield('title')
 </head>
@@ -54,7 +56,25 @@
 
         @include('admin.partials.sidebar')
 
-        @yield('content')
+        <main class="app-main">
+            <!--begin::App Content Header-->
+            <div class="app-content-header">
+                <!--begin::Container-->
+                <div class="container-fluid">
+                    <!--begin::Row-->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3 class="mb-0">@yield("namePage")</h3>
+                        </div>
+                    </div>
+                    <!--end::Row-->
+                </div>
+                <!--end::Container-->
+            </div>
+            <!--end::App Content Header-->
+
+            @yield("content")
+        </main>
 
         @include('admin.partials.footer')
     </div>
@@ -74,7 +94,7 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
     </script>
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-    <script src="adminlte/dist/js/adminlte.js"></script>
+    <script src="{{ asset("adminlte/dist/js/adminlte.js") }}"></script>
     <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
