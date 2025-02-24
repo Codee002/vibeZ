@@ -92,13 +92,13 @@
                           </a>
                           <ul class="nav nav-treeview">
                               <li class="nav-item">
-                                  <a href="./UI/general.html" class="nav-link">
+                                  <a href="{{route("admin.warehouse.create")}}" class="nav-link">
                                      
                                       <p>Thêm kho</p>
                                   </a>
                               </li>
                               <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
+                                  <a href="{{route("admin.warehouse.index")}}" class="nav-link">
                                      
                                       <p>Danh sách các kho</p>
                                   </a>
@@ -142,13 +142,13 @@
                           </a>
                           <ul class="nav nav-treeview">
                               <li class="nav-item">
-                                  <a href="./UI/general.html" class="nav-link">
+                                  <a href="{{route("admin.product.create")}}" class="nav-link">
                                      
                                       <p>Thêm sản phẩm</p>
                                   </a>
                               </li>
                               <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
+                                  <a href="{{route("admin.product.index")}}" class="nav-link">
                                      
                                       <p>Danh sách sản phẩm</p>
                                   </a>

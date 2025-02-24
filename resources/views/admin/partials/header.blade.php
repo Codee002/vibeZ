@@ -8,7 +8,7 @@
             <i class="bi bi-list"></i>
           </a>
         </li>
-        <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Trang chủ</a></li>
+        <li class="nav-item d-none d-md-block"><a href="{{ route("home") }}" class="nav-link">Trang chủ</a></li>
       </ul>
       <!--end::Start Navbar Links-->
       <!--begin::End Navbar Links-->
