@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.components.home');
 });
 
 // ----------------------- Route Admin -----------------------
@@ -30,6 +32,12 @@ Route::prefix("/admin")
                 Route::get("/search", "search")->name("search");
                 Route::delete("/destroy/{category}", "destroy")->name("destroy");
             });
+
+        // Trang Warehouse
+        Route::resource('warehouse', WarehouseController::class);
+
+        // Trang Product
+        Route::resource('product', ProductController::class);
 
     });
 // ----------------------- Route Auth -----------------------
