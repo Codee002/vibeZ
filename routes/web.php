@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,9 @@ Route::prefix("/admin")
 
         // Trang Product
         Route::resource('product', ProductController::class);
+
+        // Trang Receipt
+        Route::resource("receipt", ReceiptController::class);
 
     });
 // ----------------------- Route Auth -----------------------
