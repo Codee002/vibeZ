@@ -28,18 +28,15 @@ class StoreProductRequest extends FormRequest
             'des'      => 'required',
             'images'   => 'required|array',
             'images.*' => 'required|image',
-            "buying_price" => "required|numeric|min:1",
-            "selling_price" => "required|numeric|min:1",
         ];
     }
 
     public function messages()
     {
         return [
+            "regex" => ':attribute không chứa ký tự đặc biệt',
             "required" => ':attribute không được rỗng',
             "images.*" => ":attribute phải là hình ảnh",
-            "numeric" => ":attribute phải là số",
-            "min" => ":attribute phải lớn hơn 0"
         ];
     }
 
@@ -52,8 +49,6 @@ class StoreProductRequest extends FormRequest
             "category" => 'Danh mục',
             "des" => 'Mô tả',
             'images' => "Ảnh",
-            'buying_price' => 'Giá mua',
-            'selling_price' => 'Giá bán',
         ];
     }
 }
