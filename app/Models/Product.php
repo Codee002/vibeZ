@@ -40,13 +40,41 @@ class Product extends Model
         return $this->hasMany(SalePrice::class);
     }
 
-    public function warehose_details()
+    public function getSalePrice($size)
+    {
+        foreach ($this->sale_prices as $detail) {
+            if ($detail['size'] == $size) {
+                return $detail['price'];
+            }
+        }
+        return NULL;
+    }
+
+
+    public function warehouse_details()
     {
         return $this->hasMany(WarehouseDetail::class);
+    }
+
+    public function getTotalWarehouse()
+    {
+        return ($this->warehouse_details->sum("quantity"));
     }
 
     public function receipt_details()
     {
         return $this->hasMany(ReceiptDetail::class);
+    }
+
+    public function getPurchasePrice($size)
+    {
+        // dd($this->receipt_details);
+        foreach ($this->receipt_details as $detail) {
+            if ($detail['size'] == $size) {
+                return $detail['purchase_price'];
+            }
+
+        }
+        return null;
     }
 }

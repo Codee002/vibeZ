@@ -18,6 +18,10 @@ class Size extends Model
         return $this->belongsToMany(Product::class);
     }
 
+    public function sale_prices()
+    {
+        return $this->hasMany(SalePrice::class, 'size'. 'size');
+    }
 
     // Tham số 2: Tên cột khóa ngoại của bảng warehouse_details
     // Tham số 3: Tên cột khóa chính của bảng size
