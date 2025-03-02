@@ -15,18 +15,18 @@ class ReceiptDetail extends Model
 
     public function product()
     {
-        $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class);
     }
 
     // Tham số thứ 2: Tên khóa ngoại của bảng Warehouses
     // Tham số thứ 3: Tên khóa chính của bảng size
     public function size()
     {
-        $this->belongsTo(Size::class);
+        return $this->belongsTo(Size::class);
     }
 
     public function receipt()
     {
-        $this->belongsTo(Receipt::class);
+        return $this->belongsTo(Receipt::class);
     }
 }

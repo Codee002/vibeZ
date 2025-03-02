@@ -26,6 +26,6 @@ class Receipt extends Model
     
     public function getQuantity()
     {
-        $this->hasMany(ReceiptDetail::class)->sum('quantity');
+        return $this->hasMany(ReceiptDetail::class)->sum('quantity');
     }
 }
