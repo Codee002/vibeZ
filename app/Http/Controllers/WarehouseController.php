@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreWarehouseRequest;
 use App\Http\Requests\UpdateWarehouseRequest;
 use App\Models\Warehouse;
+use App\Models\WarehouseDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -55,7 +56,12 @@ class WarehouseController extends Controller
      */
     public function show(Warehouse $warehouse)
     {
-        return view("admin.warehouse.show", compact('warehouse'));
+        $warehouse_details = $warehouse->warehouse_details()->paginate(8);
+        $warehouse->load('warehouse_details');
+        foreach ($warehouse_details as $warehouse_detail) {
+            $warehouse_detail->load('product', 'size');
+        }
+        return view("admin.warehouse.show", compact('warehouse', 'warehouse_details'));
     }
 
     /**
@@ -91,6 +97,43 @@ class WarehouseController extends Controller
                 $warehouse->delete();
             });
             return redirect()->route("admin.warehouse.index")->with("success", "Xóa kho thành công");
+        } catch (\Throwable $th) {
+            return redirect()->back()->with("danger", $th->getMessage());
+        }
+    }
+
+    public function activedProduct(WarehouseDetail $warehouse_detail)
+    {
+        try {
+            DB::transaction(function () use ($warehouse_detail) {
+                $warehouse_detail->update(['status' => "actived"]);
+            });
+            return redirect()->back()->with("success", "Kích hoạt sản phẩm thành công");
+        } catch (\Throwable $th) {
+            return redirect()->back()->with("danger", $th->getMessage());
+        }
+
+    }
+    public function disabledProduct(WarehouseDetail $warehouse_detail)
+    {
+        try {
+            DB::transaction(function () use ($warehouse_detail) {
+                $warehouse_detail->update(['status' => "disabled"]);
+            });
+            return redirect()->back()->with("success", "Hủy kích hoạt sản phẩm thành công");
+        } catch (\Throwable $th) {
+            return redirect()->back()->with("danger", $th->getMessage());
+        }
+
+    }
+
+    public function destroyWarehouseDetail(WarehouseDetail $warehouseDetail)
+    {
+        try {
+            DB::transaction(function () use ($warehouseDetail) {
+                $warehouseDetail->delete();
+            });
+            return redirect()->back()->with("success", "Xóa sản phẩm khỏi kho thành công");
         } catch (\Throwable $th) {
             return redirect()->back()->with("danger", $th->getMessage());
         }
