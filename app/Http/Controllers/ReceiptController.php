@@ -91,7 +91,7 @@ class ReceiptController extends Controller
         $warehouse   = Warehouse::with(['warehouse_details'])->find($warehouseId);
 
         // Kiểm tra kho còn đủ để nhập
-        if ($warehouse->getQuantity() + $quantity > $warehouse->capacity) {
+        if ($warehouse->getQuantity() + $warehouse->getQuantityPending() + $quantity > $warehouse->capacity) {
             return redirect()->back()->with("danger", "Kho không còn đủ chổ trống!")->withInput();
         }
 
@@ -110,21 +110,14 @@ class ReceiptController extends Controller
                             'purchase_price' => $data['purchase_price'],
                         ]);
 
-                        WarehouseDetail::query()->create([
-                            'quantity'     => $data['quantity'],
-                            'size'         => $size,
-                            'product_id'   => $id,
-                            'warehouse_id' => $request->warehouse,
-                        ]);
-
                         SalePrice::updateOrCreate(
                             [
                                 'product_id' => $id,
                                 'size'       => $size,
                             ],
                             [
-                                'price'      => $data['sale_price'],
-                                'quantity'   => $data['quantity'],
+                                'price'    => $data['sale_price'],
+                                'quantity' => $data['quantity'],
                             ]
                         );
                     }
@@ -145,23 +138,43 @@ class ReceiptController extends Controller
         return view("admin.receipt.show", compact('receipt'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function handleReceipt(Receipt $receipt)
     {
-        return view("admin.receipt.edit");
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        // Kiểm tra ảnh trước khi xóa
+        // dd($receipt);
+        if ($receipt['status'] != 'pending') {
+            return redirect()->back()->with("danger", "Phiếu nhập đã được xử lý!");
+        }
         try {
+            DB::transaction(function () use ($receipt) {
+                $warehouse = $receipt->warehouse;
 
-            return redirect()->route("admin.product.index")->with("success", "Chỉnh sửa sản phẩm thành công");
+                foreach ($receipt->receipt_details as $receipt_detail) {
+                    // Kiểm tra đã có sản phẩm và size đó chưa
+                    $warehouse_detail = $warehouse->issetProductSize($receipt_detail['product_id'], $receipt_detail['size']);
+                    if ($warehouse_detail) {
+                        $quantityUpdate = $warehouse_detail['quantity'] + $receipt_detail['quantity'];
+                        $warehouse_detail->update([
+                            "quantity" => $quantityUpdate,
+                        ]);
+                    } else {
+                        WarehouseDetail::query()->create(
+                            [
+                                'warehouse_id' => $warehouse['id'],
+                                'product_id'   => $receipt_detail['product_id'],
+                                'size'         => $receipt_detail['size'],
+                                'quantity'     => $receipt_detail['quantity'],
+                            ]
+                        );
+                    }
+                }
+
+                // Đổi trạng thái của phiếu nhập
+                $receipt->update([
+                    'status' => "completed",
+                ]);
+
+            });
+            return redirect()->route("admin.receipt.index")->with("success", "Xử lý phiếu nhập thành công<br>Các sản phẩm đã được nhập vào kho");
         } catch (\Throwable $th) {
             return redirect()->back()->with("danger", $th->getMessage())->withInput();
         }
