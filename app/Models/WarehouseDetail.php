@@ -1,33 +1,34 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class WarehouseDetail extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
-        'quantity',
-        'size',
-        'product_id',
         'warehouse_id',
-        'status'
+        'product_id',
+        'size',
+        'quantity',
+        'status',
     ];
 
     public function product()
     {
-        $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class);
     }
 
     // Tham số thứ 2: Tên khóa ngoại của bảng Warehouses
     // Tham số thứ 3: Tên khóa chính của bảng size
     public function size()
     {
-        $this->belongsTo(Size::class, 'size', 'size');
+        return $this->belongsTo(Size::class, 'size', 'size');
     }
 
     public function warehouse()
     {
-        $this->belongsTo(Warehouse::class);
+        return $this->belongsTo(Warehouse::class);
     }
 }
