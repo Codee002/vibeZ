@@ -31,7 +31,8 @@
                 </form>
             </div>
             <div class="text-end col-9">
-                <a href="{{ route('admin.warehouse.create') }}" class="btn btn-success text-white text-end ms-3">Thêm kho</a>
+                <a href="{{ route('admin.warehouse.create') }}" class="btn btn-success text-white text-end ms-3">Thêm
+                    kho</a>
             </div>
         </div>
 
@@ -43,11 +44,10 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <th>STT</th>
-                <th>Địa chỉ</th>
+                <th>Vị trí</th>
                 <th>Dung tích</th>
-                <th>Xem chi tiết</th>
-                <th>Sửa</th>
-                <th>Xóa</th>
+                <th>Số sản phẩm</th>
+                <th>Thao tác</th>
             </thead>
 
             <tbody>
@@ -56,12 +56,12 @@
                         <td>{{ $loop->iteration }}</td>
                         <td> {{ $warehouse['address'] }} </td>
                         <td> {{ $warehouse['capacity'] }} </td>
-                        <td><a href="{{ route('admin.warehouse.show', $warehouse) }}" class="btn btn-warning btn-sm"><i
-                                    class='bx bxs-detail'></i></a></td>
-                        <td><a href="{{ route('admin.warehouse.edit', $warehouse) }}" class="btn btn-warning btn-sm"><i
-                                    class='bx bxs-edit'></i></a></td>
-                        <td>
-                            <form action="{{ route('admin.warehouse.destroy', $warehouse) }}" method="POST">
+                        <td> {{$warehouse->getQuantity()}} </td>
+                        <td><a href="{{ route('admin.warehouse.show', $warehouse) }}" class="btn btn-secondary btn-sm"><i
+                                    class='bx bxs-detail'></i></a>
+                            <a href="{{ route('admin.warehouse.edit', $warehouse) }}" class="btn btn-warning btn-sm"><i
+                                    class='bx bxs-edit'></i></a>
+                            <form action="{{ route('admin.warehouse.destroy', $warehouse) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method ("DELETE")
                                 <button type="submit" class="btn btn-danger btn-sm"
