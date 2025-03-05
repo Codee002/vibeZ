@@ -34,7 +34,7 @@ class StoreProductRequest extends FormRequest
     public function messages()
     {
         return [
-            "regex" => ':attribute không chứa ký tự đặc biệt',
+            "regex"    => ':attribute không chứa ký tự đặc biệt',
             "required" => ':attribute không được rỗng',
             "images.*" => ":attribute phải là hình ảnh",
         ];
@@ -43,12 +43,12 @@ class StoreProductRequest extends FormRequest
     public function attributes()
     {
         return [
-            "name" => 'Tên sản phẩm',
+            "name"     => 'Tên sản phẩm',
             'images.*' => "File được chọn",
-            "sizes" => "Kích thước",
+            "sizes"    => "Kích thước",
             "category" => 'Danh mục',
-            "des" => 'Mô tả',
-            'images' => "Ảnh",
+            "des"      => 'Mô tả',
+            'images'   => "Ảnh",
         ];
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,8 +21,8 @@ class StoreWarehouseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "address" => ['required', 'regex:/^[\p{L}\p{M}\s]+$/u', 'unique:warehouses'],
-            "capacity" => 'required|integer|min:1'
+            "address"  => ['required', 'regex:/^[\p{L}\p{M}\s]+$/u', 'unique:warehouses'],
+            "capacity" => 'required|integer|min:1',
         ];
     }
 
@@ -32,17 +31,17 @@ class StoreWarehouseRequest extends FormRequest
         return [
             "required" => ':attribute không được rỗng',
             "unique"   => ':attribute đã tồn tại',
-            "integer" => ':attribute phải là số nguyên',
-            "min" => ":attribute phải lớn hơn 0" ,
-            "regex" => ":attribute là chữ cái không chứa ký tự đặc biệt"
+            "integer"  => ':attribute phải là số nguyên',
+            "min"      => ":attribute phải lớn hơn 0",
+            "regex"    => ":attribute là chữ cái không chứa ký tự đặc biệt",
         ];
     }
 
     public function attributes()
     {
         return [
-            "address" => 'Địa chỉ',
-            "capacity" => "Dung tích kho"
+            "address"  => 'Địa chỉ',
+            "capacity" => "Dung tích kho",
         ];
     }
 }
