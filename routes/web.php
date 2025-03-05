@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthenController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReceiptController;
@@ -36,30 +37,31 @@ Route::prefix("/admin")
 
         // Trang Warehouse
         Route::resource('warehouse', WarehouseController::class);
+        Route::post('warehouse/activedProduct/{warehouse_detail}', [WarehouseController::class, "activedProduct"])->name('warehouse.activedProduct');
+        Route::post('warehouse/disabledProduct/{warehouse_detail}', [WarehouseController::class, "disabledProduct"])->name('warehouse.disabledProduct');
+        Route::delete('warehouse/destroyWarehouseDetail/{warehouse_detail}', [WarehouseController::class, "destroyWarehouseDetail"])->name('warehouse.destroyWarehouseDetail');
 
         // Trang Product
         Route::resource('product', ProductController::class);
 
         // Trang Receipt
+        Route::get("receipt/choiceProduct", [ReceiptController::class, 'choiceProduct'])->name('receipt.choiceProduct');
+        Route::post("receipt/handleReceipt/{receipt}", [ReceiptController::class, "handleReceipt"])->name('receipt.handleReceipt');
         Route::resource("receipt", ReceiptController::class);
 
     });
 // ----------------------- Route Auth -----------------------
-Route::get('/login', function () {
-    return view('auth.components.login');
-})->name("login");
+Route::get('/login', [AuthenController::class, "showFormLogin"])->name("login");
+Route::post('/login', [AuthenController::class, "handleLogin"]);
 
-Route::get('/register', function () {
-    return view('auth.components.register');
-})->name("register");
+Route::get('/register', [AuthenController::class, "showFormRegister"])->name("register");
+Route::post('/register', [AuthenController::class, "handleRegister"])->name("register");
 
-Route::get('/forgot', function () {
-    return view('auth.components.forgot');
-})->name("forgot");
+Route::get('/forgot', [AuthenController::class, "showFormForgot"])->name("forgot");
+// Route::post('/forgot', [AuthenController::class, "handleForgot"])->name("forgot");
 
-Route::get('/active_email', function () {
-    return view('auth.components.activeEmail');
-})->name("active_email");
+Route::get('/logout', [AuthenController::class, "logout"])->name("logout");
+
 
 // ----------------------- Route Home -----------------------
 Route::get('/home', function () {
