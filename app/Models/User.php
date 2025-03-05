@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    const TYPE_ADMIN = 'admin';
+    const TYPE_MEMBER = 'member';
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -19,8 +21,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
+        'gender',
+        'birthday',
+        'avatar',
     ];
 
     /**
@@ -44,5 +50,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isAdmin()
+    {
+        return $this->role == self::TYPE_ADMIN;
+    }
+
+    public function isMember()
+    {
+        return $this->role == self::TYPE_MEMBER;
     }
 }
