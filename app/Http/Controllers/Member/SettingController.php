@@ -33,6 +33,7 @@ class SettingController extends Controller
                 ];
                 if ($user['email'] != $request['email']) {
                     $data['email_active'] = '0';
+                    $data['two_step_auth'] = '0';
                 }
                 // dd($data);
                 $user->update($data);
@@ -147,6 +148,24 @@ class SettingController extends Controller
             return redirect()->back()->with("danger", $th->getMessage())->withInput();
         }
 
+    }
+
+    public function authTwoStep(Request $request)
+    {
+        $user = Auth::user();
+        if ($user['email_active'] == 0)
+        {
+            return redirect()->back()->with("danger", "Vui lòng xác thực email khi sử dụng tính năng này")->withInput();
+        }
+
+        $type = $request['type'];
+        /**
+         * @var User $user
+         */
+        $user->update([
+            'two_step_auth' => $type,
+        ]);
+        return redirect()->route("setting.security")->with("success", "Đổi trạng thái thành công");
     }
 
 }
