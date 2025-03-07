@@ -18,7 +18,12 @@ main{
     position: relative;
     padding: 10rem 15rem;
     background: var(--main-bg);
-    font-size: 1.5rem;
+    /* font-size: 1.5rem; */
+    font-size: 1rem;
+}
+
+main p{
+    margin: 0;
 }
 
 /* Nav */
@@ -43,12 +48,14 @@ main .settingNavWrapper
 
 .settingWrapper__header__icon--back
 {
-    font-size: 1.4rem;
+    /* font-size: 1.4rem; */
+    font-size: 1rem;
 }
 
 .settingNavWrapper__header__title
 {
-    font-size: 1.6rem;
+    /* font-size: 1.6rem; */
+    font-size: 1rem;
     font-weight: 600;
 }
 
@@ -78,7 +85,8 @@ main .settingNavWrapper
 
 .settingNavWrappter__nav__icon i
 { 
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
+    font-size: .8rem;
     color: var(--font-color);
     margin-right: 1rem;
 }
@@ -91,18 +99,18 @@ main .settingNavWrapper
 /* Thông tin cá nhân */
 main .settingUserInfo
 {
-    margin-top: 2rem;
-    margin-bottom: 5rem;
+    margin-top: 1rem;
     background-color: var(--main-extra-bg);
     border-radius: 1rem;
     padding: 3rem 3rem;
     box-shadow: rgba(0, 0, 0, 0.1) 0.1rem 0.1rem;
-    width: 70%;
+    width: 90%;
 }
 
 .settingUserInfo__title
 {
-    font-size: 2.4rem;
+    /* font-size: 2.4rem; */
+    font-size: 1.6rem;
     font-weight: 600;
     margin-bottom: 2rem;
 }
@@ -117,7 +125,7 @@ main .settingUserInfo
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: .8rem;
     border: 1px solid var(--extra-bg);
     box-shadow: rgba(0, 0, 0, 0.1) 0.1rem 0.05rem;
 }
@@ -126,12 +134,12 @@ main .settingUserInfo
 {
     background-color: var(--main-extra-bg) !important;
     color: var(--font-color);
-    padding: .8rem;
 }
 
 .settingUserInfo__navWrapper__modalBackground button
 {
-    font-size: 1.6rem;
+    /* font-size: 1.6rem; */
+    font-size: 1rem;
 }
 
 .modal-dialog .form-group
@@ -141,7 +149,8 @@ main .settingUserInfo
 
 .modal-dialog .modal-title
 {
-    font-size: 2rem;
+    /* font-size: 2rem; */
+    font-size: 1.2rem;
 }
 
 .modal-dialog .form-control{
@@ -149,7 +158,9 @@ main .settingUserInfo
     border: 1px solid var(--border-color) !important;
     border-radius: 0.6rem !important;
     color: var(--font-color) !important;
-    font-size: 1.4rem;
+    /* font-size: 1.4rem; */
+    font-size: 1rem;
+
 }
 
 .pwd-eye
@@ -202,7 +213,8 @@ main .settingUserInfo
     right: 2rem;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
+    font-size: .8rem;
 }
 
 .settingUserInfo__navWrapper__nav:hover{
@@ -223,7 +235,8 @@ main .settingUserInfo
 
 .settingUserInfo__navWrapper__nav__title
 {
-    font-size: 1.6rem;
+    /* font-size: 1.6rem; */
+    font-size: 1rem;
     font-weight: 550;
     margin-bottom: .1rem;
     margin-left: .4rem;
@@ -233,7 +246,8 @@ main .settingUserInfo
 {
     margin-left: 1.4rem;
     font-weight: 350;
-    font-size: 1.6rem;
+    /* font-size: 1.6rem; */
+    font-size: 1rem;
 }
 
 /* Bảo mật */
