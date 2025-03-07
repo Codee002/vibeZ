@@ -10,6 +10,7 @@ use Gregwar\Captcha\PhraseBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -27,6 +28,10 @@ class AuthenController extends Controller
     // Đăng nhập
     public function showFormLogin()
     {
+        // Xóa session Forgot User
+        session()->forget("userForgot");
+        session()->forget("userChangePassword");
+
         // Lưu captcha
         session(['captcha' => $this->captcha->getPhrase()]);
         return view("auth.components.login", [
@@ -47,27 +52,90 @@ class AuthenController extends Controller
             'username' => $request['username'],
             'password' => $request['password'],
         ])) {
-            $request->session()->regenerate();
-
             /**
              * @var User $user
              */
             $user = Auth::user();
-            if ($user->isAdmin()) {
-                return redirect()->route('admin.product.index');
+
+            if ($user['two_step_auth'] == 0) {
+                $request->session()->regenerate();
+                if ($user->isAdmin()) {
+                    return redirect()->route('admin.product.index');
+                }
+                return redirect()->route('home');
+            } else {
+                Auth::logout();
+                // Tạo token ngẫu nhiên
+                $token = Str::random(60);
+                $link  = $request->schemeAndHttpHost() . "/checkLoginToken/" . $user['id'] . '/' . $token;
+                $name  = "Xác thực 2 bước";
+
+                // Gửi gmail
+                $data = [
+                    'content' => 'Có phải bạn đang đăng nhập? <br>Để đăng nhập hãy xác thực bằng link dưới đây:',
+                    'token'   => $link,
+                    'user'    => $user,
+                    'name'    => $name,
+                ];
+                try {
+                    Mail::send('auth.components.emailView', $data, function ($message) use ($user) {
+                        $message->from(env("MAIL_FROM_ADDRESS"), 'vibeZ');
+                        $message->to($user['email']);
+                        $message->subject('Xác thực 2 bước');
+                    });
+                    DB::transaction(function () use ($user, $token) {
+                        /**
+                         * @var User $user
+                         */
+                        $user->update([
+                            'login_token' => $token,
+                        ]);
+                    });
+                } catch (\Throwable $th) {
+                    return redirect()->back()->with("danger", $th->getMessage())->withInput();
+                }
+                return redirect()->back()->with(
+                    ['success' => "Hãy kiểm tra gmail để hoàn thành xác thực 2 bước"],
+                );
             }
-
-            return redirect()->route('home');
         }
-
         return back()->with([
             'danger' => 'Tài khoản hoặc mật khẩu không đúng',
         ])->onlyInput('username');
     }
 
+    // Xác thực 2 bước
+    public function checkLoginToken($userId, $token)
+    {
+        $user = User::query()->find($userId);
+        if ($user['login_token'] == $token) {
+            try {
+                DB::transaction(function () use ($user) {
+                    /**
+                     * @var User $user
+                     */
+                    $user->update([
+                        'login_token' => null,
+                    ]);
+                });
+                Auth::login($user);
+                request()->session()->regenerate();
+                return redirect()->route("home");
+            } catch (\Throwable $th) {
+                return redirect()->back()->with("danger", $th->getMessage())->withInput();
+            }
+        } else {
+            return view('auth.components.tokenError');
+        }
+    }
+
     // Đăng ký
     public function showFormRegister()
     {
+        // Xóa session Forgot User
+        session()->forget("userForgot");
+        session()->forget("userChangePassword");
+
         // Lưu captcha
         session(['captcha' => $this->captcha->getPhrase()]);
         return view("auth.components.register", [
@@ -90,8 +158,13 @@ class AuthenController extends Controller
             'success' => 'Đăng ký tài khoản thành công']);
     }
 
+    // Quên mật khẩu
     public function showFormForgot()
     {
+        // Xóa session Forgot User
+        session()->forget("userForgot");
+        session()->forget("userChangePassword");
+
         // Lưu captcha
         session(['captcha' => $this->captcha->getPhrase()]);
         return view("auth.components.forgot", [
@@ -99,6 +172,7 @@ class AuthenController extends Controller
         ]);
     }
 
+    // Tìm tài khoản quên mật khẩu
     public function handleForgot(Request $request)
     {
         $data = $request->validate(
@@ -129,24 +203,131 @@ class AuthenController extends Controller
             ])->withInput();
         }
 
+        session(["userForgot" => $user['id']]);
+        return redirect()->route("sendBy");
+    }
+
+    // View phương thức gửi token
+    public function sendBy()
+    {
+        if (! session("userForgot")) {
+            return abort(403);
+        }
+
+        $user = User::query()->find(session("userForgot"));
         return view("auth.components.sendBy", [
-            "user" => $user,
+            'user' => $user,
         ]);
-
     }
 
-    public function showFormReset()
+    // Chọn phương thức gửi forgotToken
+    public function getTokenForgot(Request $request, User $user)
     {
-        // Lưu captcha
-        session(['captcha' => $this->captcha->getPhrase()]);
+        if (! $user['email']) {
+            return redirect()->back()->with([
+                'danger' => 'Tài khoản chưa cập nhật email',
+            ]);
+        }
+        if ($user['email_active'] == 0) {
+            return redirect()->back()->with([
+                'danger' => 'Email chưa kích hoạt',
+            ]);
+        }
+
+        // Tạo token ngẫu nhiên
+        $token = Str::random(60);
+        $link  = $request->schemeAndHttpHost() . "/checkForgotToken/" . $user['id'] . '/' . $token;
+        $name  = "Lấy lại mật khẩu";
+
+        // Gửi gmail
+        $data = [
+            'content' => 'Để lấy lại mật khẩu, vui lòng vào link dưới đây:',
+            'token'   => $link,
+            'user'    => $user,
+            'name'    => $name,
+        ];
+        try {
+            Mail::send('auth.components.emailView', $data, function ($message) use ($user) {
+                $message->from(env("MAIL_FROM_ADDRESS"), 'vibeZ');
+                $message->to($user['email']);
+                $message->subject('Lấy lại mật khẩu');
+            });
+            DB::transaction(function () use ($user, $token) {
+                /**
+                 * @var User $user
+                 */
+                $user->update([
+                    'email_token' => $token,
+                ]);
+            });
+        } catch (\Throwable $th) {
+            return redirect()->back()->with("danger", $th->getMessage())->withInput();
+        }
+
+        return redirect()->back()->with(
+            ['success' => "Gửi mail thành công, hãy kiểm tra gmail"],
+        );
+    }
+
+    // Kiểm tra token forgot
+    public function checkForgotToken($userId, $token)
+    {
+        $user = User::query()->find($userId);
+        if ($user['email_token'] == $token) {
+            try {
+                DB::transaction(function () use ($user) {
+                    /**
+                     * @var User $user
+                     */
+                    $user->update([
+                        'email_token' => null,
+                    ]);
+                });
+
+                session(["userChangePassword" => $userId]);
+                return redirect()->route("reset")->with("success", "Kiểm tra thành công, vui lòng nhập mật khẩu mới");
+            } catch (\Throwable $th) {
+                return redirect()->back()->with("danger", $th->getMessage())->withInput();
+            }
+        } else {
+            return view('auth.components.tokenError');
+        }
+    }
+
+    // View Reset
+    public function showFormReset(Request $request)
+    {
+        $user = User::query()->find(session("userChangePassword"));
+        if (! $user) {
+            abort(403);
+        }
+
         return view("auth.components.reset", [
-            'captcha' => $this->captcha,
+            'user' => $user,
         ]);
     }
 
-    public function handleReset()
+    // Đặt lại mật khẩu
+    public function handleReset(Request $request, User $user)
     {
-        dd("Reset");
+        $data = $request->validate([
+            'password'              => ['required', 'min:8', 'max:20', 'confirmed'],
+            'password_confirmation' => ['required'],
+        ], [
+            'password.required'              => 'Mật khẩu không được trống',
+            'password_confirmation.required' => 'Mật khẩu nhập lại không được trống',
+            'password.min'                   => 'Mật khẩu phải có độ dài từ 8 - 20 ký tự',
+            'password.max'                   => 'Mật khẩu phải có độ dài từ 8 - 20 ký tự',
+            'password.confirmed'             => "Mật khẩu nhập lại không trùng khớp",
+        ]);
+
+        $password = Hash::make($data['password']);
+        $user->update([
+            'password' => $password,
+        ]);
+
+        return redirect()->route('login')->with([
+            'success' => 'Đổi mật khẩu thành công']);
     }
 
     // Đăng xuất
@@ -158,7 +339,7 @@ class AuthenController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->route('login');
     }
 
     // Kích hoạt Email
@@ -166,7 +347,6 @@ class AuthenController extends Controller
     {
 
         if ($request->isMethod("POST")) {
-            // dd($request);
             // Kiểm tra Capcha
             if ($request['captcha'] != session('captcha')) {
                 return redirect()->back()->withErrors([
@@ -216,6 +396,7 @@ class AuthenController extends Controller
         ]);
     }
 
+    // Kiểm tra token active Email
     public function activeEmail($token)
     {
         if (! Auth::check()) {
