@@ -27,7 +27,7 @@
                             {{ session('danger') }}
                         </div>
                     @endif
-                    
+
                     <!-- Name -->
                     <div class="form-group  mg-form">
                         <div class="form-floating mb-3 mt-3">
@@ -140,7 +140,9 @@
                     <p class=" text-center">Đã có tài khoản?
                         <a class="text-decoration-none" href="{{ route('login') }}">Đăng nhập</a>
                     </p>
-
+                    <p class=" text-center"><a class="text-decoration-none" href="{{ route('forgot') }}">Quên mật
+                            khẩu?</a>
+                    </p>
                 </form>
 
                 <p class="text-center footer-form"><a href="">Hỗ trợ</a> | <a href="">Chính sách & bảo

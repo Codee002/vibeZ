@@ -9,7 +9,7 @@
         <div class="">
             <div class="form-wrapper">
                 <form action="{{ route('login') }}" method="POST">
-                    @CSRF
+                    @csrf
 
                     {{-- LOGO --}}
                     <a href="{{ route('home') }}">
