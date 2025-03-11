@@ -15,8 +15,8 @@
 
         <!------- Search ------->
         <div class="inputSearch">
-            <form method="get" action="/_timkiem/timkiem.html" id="frmSearch" onsubmit="return frmValidate()">
-                <input name="input" type="text" placeholder="Tìm kiếm" id="TimKiem">
+            <form method="GET" action="{{route("product")}}" id="frmSearch" onsubmit="return frmValidate()">
+                <input name="search" type="text" placeholder="Tìm kiếm" id="TimKiem" value="">
                 <button title="Tìm kiếm" id="TimKiembtn" type="submit"><i class='bx bx-search-alt'></i></button>
             </form>
 
@@ -28,15 +28,18 @@
         </div>
 
         <!------- User ------->
-        <div class="user ">
-            <div class="user_Lover_container">
-                <a href="{{ route('cart') }}"><i class='bx bxs-cart-alt' id="user_Love"></i>Giỏ hàng</a>
-            </div>
+        @if (Auth::check() && Auth::user()->isMember())
+            <div class="user ">
+                <div class="user_Lover_container">
+                    <a href="{{ route('cart') }}"><i class='bx bxs-cart-alt' id="user_Love"></i>Giỏ hàng</a>
 
-            <div>
-                <a href="{{ route('login') }}"> <i class='bx bxs-user'></i>Tài khoản</a>
+                </div>
+
+                <div>
+                    <a href="{{ route('setting.info') }}"> <i class='bx bxs-user'></i>{{ Auth::user()['name'] }}</a>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 </header>
 <!----------------------- Header end ----------------------------->
