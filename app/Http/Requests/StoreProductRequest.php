@@ -21,7 +21,7 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name"     => ['required', 'regex:/^[\p{L}\p{M}\s]+$/u'],
+            "name"     => ['required', 'regex:/^[\p{L}\p{M}\s\d\.\-]+$/u'],
             "category" => 'required',
             "sizes"    => 'required|array',
             "sizes.*"  => 'required|integer',
@@ -36,7 +36,7 @@ class StoreProductRequest extends FormRequest
         return [
             "regex"    => ':attribute không chứa ký tự đặc biệt',
             "required" => ':attribute không được rỗng',
-            "images.*" => ":attribute phải là hình ảnh",
+            "images.img" => ":attribute phải là hình ảnh",
         ];
     }
 
