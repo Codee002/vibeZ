@@ -54,7 +54,7 @@
                 @foreach ($data as $product)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>
+                        <td class="">
                             @if ($product->images->isNotEmpty())
                                 @if ($product->images[0] && \Storage::exists($product->images[0]->img_path))
                                     <img src="{{ \Storage::url($product->images[0]->img_path) }}" alt=""
@@ -64,7 +64,7 @@
                         </td>
                         <td> {{ $product['name'] }} </td>
                         <td> {{ $product->category->name }} </td>
-                        <td><a href="{{ route('admin.product.show', $product) }}" class="btn btn-warning btn-sm"><i
+                        <td><a href="{{ route('admin.product.show', $product) }}" class="btn btn-secondary btn-sm"><i
                                     class='bx bxs-detail'></i></a>
                             <a href="{{ route('admin.product.edit', $product) }}" class="btn btn-warning btn-sm"><i
                                     class='bx bxs-edit'></i></a>

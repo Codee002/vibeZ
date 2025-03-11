@@ -31,34 +31,6 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="buying_price">Giá mua</label>
-                <input type="text" placeholder="Nhập vào giá mua" name="buying_price" id="buying_price"
-                    class="form-control
-                 @error('buying_price') is-invalid @enderror"
-                    value="{{ old('buying_price') }}">
-                @error('buying_price')
-                    <span class="invalid-feedback" style="display: block">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-
-
-            <div class="form-group mb-3">
-                <label for="selling_price">Giá bán</label>
-                <input type="text" placeholder="Nhập vào giá bán" name="selling_price" id="selling_price"
-                    class="form-control
-                 @error('selling_price') is-invalid @enderror"
-                    value="{{ old('selling_price') }}">
-                @error('selling_price')
-                    <span class="invalid-feedback" style="display: block">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-
-
-            <div class="form-group mb-3">
                 <label for="category">Danh mục sản phẩm</label>
                 <select placeholder="Nhập vào danh mục sản phẩm" name="category" id="category"
                     class="form-select
