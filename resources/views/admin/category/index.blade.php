@@ -45,10 +45,9 @@
             <thead>
                 <th>STT</th>
                 <th>Danh mục</th>
+                <th>Số sản phẩm</th>
                 <th>Ngày tạo</th>
-                <th>Xem chi tiết</th>
-                <th>Sửa</th>
-                <th>Xóa</th>
+                <th>Thao tác</th>
             </thead>
 
             <tbody>
@@ -56,13 +55,13 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td> {{ $category['name'] }} </td>
+                        <td>0</td>
                         <td> {{ \Carbon\Carbon::parse($category['created_at'])->format('d/m/Y') }} </td>
-                        <td><a href="{{ route('admin.category.detail', $category) }}" class="btn btn-warning btn-sm"><i
-                                    class='bx bxs-detail'></i></a></td>
-                        <td><a href="{{ route('admin.category.edit', $category) }}" class="btn btn-warning btn-sm"><i
-                                    class='bx bxs-edit'></i></a></td>
-                        <td>
-                            <form action="{{ route('admin.category.destroy', $category) }}" method="POST">
+                        <td><a href="{{ route('admin.category.show', $category) }}" class="btn btn-secondary btn-sm"><i
+                                    class='bx bxs-detail'></i></a>
+                            <a href="{{ route('admin.category.edit', $category) }}" class="btn btn-warning btn-sm"><i
+                                    class='bx bxs-edit'></i></a>
+                            <form action="{{ route('admin.category.destroy', $category) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method ("DELETE")
                                 <button type="submit" class="btn btn-danger btn-sm"
