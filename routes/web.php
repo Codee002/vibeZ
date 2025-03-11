@@ -1,10 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReceiptController;
+use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\AuthenController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ReceiptController;
-use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\member\ContactController;
+use App\Http\Controllers\Member\SettingController;
+use App\Http\Middleware\isAdmin;
+use App\Http\Middleware\isMember;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,26 +19,15 @@ Route::get('/', function () {
 // ----------------------- Route Admin -----------------------
 Route::prefix("/admin")
     ->name("admin.")
+    ->middleware(['auth', isAdmin::class])
     ->group(function () {
         // Trang index
         Route::get('/', function () {
             return view('admin.index');
         });
 
-        // Category
-        Route::controller(CategoryController::class)
-            ->prefix("/category")
-            ->name("category.")
-            ->group(function () {
-                Route::get("/", "index")->name("index");
-                Route::get("/create", "create")->name("create");
-                Route::post("/store", "store")->name("store");
-                Route::get("/edit/{category}", "edit")->name("edit");
-                Route::put("/update/{category}", "update")->name("update");
-                Route::get("/detail/{category}", "detail")->name("detail");
-                Route::get("/search", "search")->name("search");
-                Route::delete("/destroy/{category}", "destroy")->name("destroy");
-            });
+        // Trang Category
+        Route::resource('category', CategoryController::class);
 
         // Trang Warehouse
         Route::resource('warehouse', WarehouseController::class);
@@ -51,31 +45,36 @@ Route::prefix("/admin")
 
     });
 // ----------------------- Route Auth -----------------------
-Route::get('/login', [AuthenController::class, "showFormLogin"])->name("login");
-Route::post('/login', [AuthenController::class, "handleLogin"]);
-
-Route::get('/register', [AuthenController::class, "showFormRegister"])->name("register");
-Route::post('/register', [AuthenController::class, "handleRegister"])->name("register");
-
-Route::get('/forgot', [AuthenController::class, "showFormForgot"])->name("forgot");
-// Route::post('/forgot', [AuthenController::class, "handleForgot"])->name("forgot");
-
-Route::get('/logout', [AuthenController::class, "logout"])->name("logout");
-
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', [AuthenController::class, "showFormLogin"])->name("login");
+    Route::post('/login', [AuthenController::class, "handleLogin"]);
+    Route::get('/checkLoginToken/{userId}/{token}', [AuthenController::class, "checkLoginToken"])->name("checkLoginToken");
+    Route::get('/register', [AuthenController::class, "showFormRegister"])->name("register");
+    Route::post('/register', [AuthenController::class, "handleRegister"])->name("register");
+    Route::get('/forgot', [AuthenController::class, "showFormForgot"])->name("forgot");
+    Route::post('/handleForgot', [AuthenController::class, "handleForgot"])->name("handleForgot");
+    Route::get('/sendBy', [AuthenController::class, "sendBy"])->name("sendBy");
+    Route::post('/getTokenForgot/{user}', [AuthenController::class, "getTokenForgot"])->name("getTokenForgot");
+    Route::get('/checkForgotToken/{userId}/{token}', [AuthenController::class, "checkForgotToken"])->name("checkForgotToken");
+    Route::get('/reset', [AuthenController::class, "showFormReset"])->name("reset");
+    Route::post('/handleReset', [AuthenController::class, "handleReset"])->name("handleReset");
+});
+Route::middleware(['auth'])->group(function() {
+    Route::get('/activeEmail/{token}', [AuthenController::class, "activeEmail"])->name("activeEmail");
+    Route::get('/sendEmail', [AuthenController::class, "sendEmail"])->name("sendEmail");
+    Route::post('/sendEmail', [AuthenController::class, "sendEmail"])->name("sendEmail");
+    Route::get('/logout', [AuthenController::class, "logout"])->name("logout");
+});
 
 // ----------------------- Route Home -----------------------
-Route::get('/home', function () {
-    return view('pages.components.home');
-})->name("home");
+Route::get('/home', [HomeController::class, "index"])->name("home");
 
 Route::get('/', function () {
     return view('pages.layouts.layout');
 });
 
 // ----------------------- Route Product -----------------------
-Route::get('/product', function () {
-    return view('pages.components.product');
-})->name("product");
+Route::get('/product', [ProductController::class, "showListProduct"])->name("product");
 
 Route::get('/detail', function () {
     return view('pages.components.detail');
@@ -87,9 +86,11 @@ Route::get('/cart', function () {
 })->name("cart");
 
 // ----------------------- Route Contact -----------------------
-Route::get('/contact', function () {
-    return view('pages.components.contact');
-})->name("contact");
+Route::middleware(['auth', isMember::class])->group(function() {
+    Route::get('/contact', [ContactController::class, "index"])->name("contact");
+    Route::post('/handleContact', [ContactController::class, "handleContact"])->name("handleContact");
+
+});
 
 // ----------------------- Route Order -----------------------
 Route::get('/order_detail', function () {
@@ -100,10 +101,19 @@ Route::get('/order_history', function () {
 })->name("order_history");
 
 // ----------------------- Route Setting -----------------------
-Route::get('/setting', function () {
-    return view('pages.components.setting');
-})->name("setting");
 
-Route::get('/security', function () {
-    return view('pages.components.security');
-})->name("security");
+Route::controller(SettingController::class)
+    ->prefix('/setting')
+    ->name('setting.')
+    ->middleware(['auth', isMember::class])
+    ->group(function () {
+        Route::get('info', 'showUserInformation')->name("info");
+        Route::put('updateEmailPhone', "updateEmailPhone")->name("updateEmailPhone");
+        Route::put('updateName', "updateName")->name("updateName");
+        Route::put('updateBirthday', "updateBirthday")->name("updateBirthday");
+        Route::put('updateGender', "updateGender")->name("updateGender");
+
+        Route::get('security', 'showSecurity')->name("security");
+        Route::put('changePassword', "changePassword")->name("changePassword");
+        Route::post('authTwoStep', "authTwoStep")->name("authTwoStep");
+    });
