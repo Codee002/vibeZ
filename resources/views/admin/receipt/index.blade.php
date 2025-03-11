@@ -1,7 +1,8 @@
 @extends('admin.layouts.admin')
 
 @section('title')
-    <title>Phiếu nhập</title>
+    <title>
+        Phiếu nhập</title>
 @endsection
 
 {{-- @section('namePage', 'Danh sách phiếu nhập') --}}
@@ -10,7 +11,7 @@
     <div class="container" style="width: 90%">
         @if (session('success'))
             <div class="alert alert-success">
-                {{ session('success') }}
+                {!! session('success') !!}
             </div>
         @endif
 
@@ -46,6 +47,7 @@
                 <th>Tổng sản phẩm</th>
                 <th>Kho nhập</th>
                 <th>Ngày tạo</th>
+                <th>Ngày xử lý</th>
                 <th>Trạng thái</th>
                 <th>Thao tác</th>
             </thead>
@@ -58,18 +60,30 @@
 
                         <td> {{ $receipt->getQuantity() }} </td>
                         <td> {{ $receipt->warehouse->address }} </td>
+                        <td>
+                            @if ($receipt['status'] == 'pending')
+                                <p>Đang chờ xử lý</p>
+                            @else
+                                <p>{{ \Carbon\Carbon::parse($receipt['updated_at'])->format('d/m/Y') }}</p>
+                            @endif
+                        </td>
                         <td> {{ \Carbon\Carbon::parse($receipt['created_at'])->format('d/m/Y') }} </td>
                         <td>
                             @if ($receipt['status'] == 'pending')
-                                <p class="btn btn-danger">Đang xử lý</p>
+                                <form action="{{ route('admin.receipt.handleReceipt', $receipt) }}" method="POST"
+                                    onsubmit="return confirm('Đồng ý chuyển sang trạng thái đã xử lý?\n' 
+                                    + 'Trạng thái này sẽ chuyển các sản phẩm vào kho hàng tương ứng')">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger">Đang xử lý</button>
+                                </form>
                             @else
                                 <p class="btn btn-success">Đã nhập</p>
                             @endif
                         </td>
                         <td><a href="{{ route('admin.receipt.show', $receipt) }}" class="btn btn-secondary btn-sm"><i
                                     class='bx bxs-detail'></i></a>
-                            <a href="{{ route('admin.receipt.edit', $receipt) }}" class="btn btn-warning btn-sm"><i
-                                    class='bx bxs-edit'></i></a>
+                            {{-- <a href="{{ route('admin.receipt.edit', $receipt) }}" class="btn btn-warning btn-sm"><i
+                                    class='bx bxs-edit'></i></a> --}}
                             <form action="{{ route('admin.receipt.destroy', $receipt) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method ("DELETE")

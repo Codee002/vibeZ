@@ -19,24 +19,24 @@
         @endif
         <h3 class="text-center fw-bolder ">Chi tiết phiếu nhập</h3>
         <div class="row" style="margin: auto">
-            <div class="col-8 d-flex align-items-center" style="padding: .5rem;">
-                <p class="detail_title">Kho đã nhập: </p>
-                <p class="d-flex align-items-center">{{ $receipt->warehouse->address }}</p>
+            <div class="col-8 d-flex align-items-center row" style="padding: .5rem;">
+                <p class="detail_title col-2">Kho đã nhập: </p>
+                <p class="d-flex align-items-center col-5">{{ $receipt->warehouse->address }}</p>
             </div>
-            <div class="col-8 d-flex align-items-center" style="padding: .5rem;">
-                <p class="detail_title">Tổng sản phẩm: </p>
-                <p>{{ $receipt->getQuantity() }}</p>
+            <div class="col-8 d-flex align-items-center row" style="padding: .5rem;">
+                <p class="detail_title col-2">Tổng sản phẩm: </p>
+                <p class="col-5">{{ $receipt->getQuantity() }}</p>
             </div>
-            <div class="col-8 d-flex align-items-center" style="padding: .5rem;">
-                <p class="detail_title">Trạng thái: </p>
-                <p>{{ $receipt['status'] == 'pending' ? 'Đang xử lý' : 'Đã nhập' }}</p>
+            <div class="col-8 d-flex align-items-center row" style="padding: .5rem;">
+                <p class="detail_title col-2">Trạng thái: </p>
+                <p class="col-5">{{ $receipt['status'] == 'pending' ? 'Đang xử lý' : 'Đã nhập' }}</p>
             </div>
-            <div class="col-8 d-flex align-items-center" style="padding: .5rem;">
-                <p class="detail_title">Ngày tạo: </p>
-                <p>{{ \Carbon\Carbon::parse($receipt['created_at'])->format('d/m/Y') }}</p>
+            <div class="col-8 d-flex align-items-center row" style="padding: .5rem;">
+                <p class="detail_title col-2">Ngày tạo: </p>
+                <p class="col-5">{{ \Carbon\Carbon::parse($receipt['created_at'])->format('d/m/Y') }}</p>
             </div>
 
-            <div class="col-8 d-flex align-items-center" style="padding: .5rem;">
+            <div class="col-8 d-flex align-items-center row" style="padding: .5rem;">
                 <p class="detail_title">Chi tiết các sản phẩm: </p>
             </div>
             <div class="order__info">
