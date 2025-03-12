@@ -15,7 +15,7 @@ class Product extends Model
         'unit',
         'category_id',
     ];
-
+    // ---------------- Relationship -------------
     public function images()
     {
         return $this->hasMany(Image::class);
@@ -51,6 +51,16 @@ class Product extends Model
         return $this->hasMany(ReceiptDetail::class);
     }
 
+    public function cart_details()
+    {        
+        return $this->hasMany(CartDetail::class);
+    }
+
+    public function order_details()
+    {        
+        return $this->hasMany(OrderDetail::class);
+    }
+
     // ----------------------------------------------------------------------------------------------
     /**
      * Lấy ra tất cả các sản phẩm
@@ -59,7 +69,7 @@ class Product extends Model
      *          Tính chung tất cả các kho
      * Trả về Id, Tên Sản Phẩm, Tên danh mục
      */
-    public static function getAllProduct($perPage = null, $search = null, $category = null)
+    public static function getAllProduct($perPage = null, $search = null, $category = null, $price = null)
     {
         $query = WarehouseDetail::select(
             "warehouse_details.product_id",

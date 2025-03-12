@@ -59,6 +59,24 @@ class User extends Authenticatable
         ];
     }
 
+    // ----------- RelationShip -------------
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    public function delivery_infos()
+    {
+        return $this->hasMany(DeliveryInfo::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+
+    // ------------------------------------------
     public function isAdmin()
     {
         return $this->role == self::TYPE_ADMIN;
@@ -68,4 +86,6 @@ class User extends Authenticatable
     {
         return $this->role == self::TYPE_MEMBER;
     }
+
+    
 }

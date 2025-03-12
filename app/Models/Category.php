@@ -14,8 +14,14 @@ class Category extends Model
         "parent_id"
     ];
 
+    // ---------------- Relationship -------------
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function discounts()
+    {
+        return $this->hasMany(Discount::class);
     }
 }

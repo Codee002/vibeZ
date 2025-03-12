@@ -13,6 +13,7 @@ class Size extends Model
 
     protected $primaryKey = "size";
 
+    // ---------------- Relationship -------------
     public function products()
     {
         return $this->belongsToMany(Product::class);
@@ -33,5 +34,15 @@ class Size extends Model
     public function receipt_details()
     {
         return $this->hasMany(ReceiptDetail::class, "size", 'size');
+    }
+
+    public function cart_details()
+    {
+        return $this->hasMany(CartDetail::class, "size", 'size');
+    }
+
+    public function order_details()
+    {
+        return $this->hasMany(OrderDetail::class, "size", 'size');
     }
 }
