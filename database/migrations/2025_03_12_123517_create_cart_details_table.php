@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('cart_details', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Cart::class)->constrained();
-            $table->foreignIdFor(Product::class)->constrained();
-            $table->unsignedInteger('size');
+            $table->foreignIdFor(Product::class)->nullable()->constrained();
+            $table->unsignedInteger('size')->nullable();
             $table->foreign("size")->references('size')->on('sizes');
             $table->integer("quantity");
         });
