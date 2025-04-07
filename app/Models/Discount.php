@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -9,11 +9,12 @@ class Discount extends Model
 {
     use SoftDeletes;
     protected $fillable = [
+        "category_id",
         "des",
         "percent",
+        "status",
         "start_at",
         "end_at",
-        "category_id",
     ];
 
     // ---------------- Relationship -------------
@@ -24,6 +25,57 @@ class Discount extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsToMany(Order::class);
+    }
+
+    // ---------------- Funciton -------------
+    public function getTotalDay()
+    {
+        $startDate = Carbon::parse($this->start_at);
+        $endDate   = Carbon::parse($this->end_at);
+        return $startDate->diffInDays($endDate) + 1;
+    }
+
+    // Nếu ngày cần kiểm tra nằm giữa thì trả về true, ngược lại false
+    public static function checkDate($day, $start, $end)
+    {
+        $startDate = Carbon::parse($start);
+        $endDate   = Carbon::parse($end);
+        $checkDate = Carbon::parse($day);
+        return $checkDate->between($startDate, $endDate);
+    }
+
+    // Lấy KM ở ngày cụ thể hiện tại
+    public static function getAllDiscounts($date)
+    {
+        $results   = [];
+        $discounts = Discount::query()
+            ->with("category")
+            ->get()
+            ->all();
+        foreach ($discounts as $discount) {
+            $startDate = Carbon::parse($discount['start_at']);
+            $endDate   = Carbon::parse($discount['end_at']);
+            if ($date->between($startDate, $endDate)) {
+                $results[] = $discount;
+            }
+
+        }
+        // dd($discounts, $date, $results);
+        return $results;
+    }
+
+    // Lấy KM đã kích hoạt ở ngày cụ thể hiện tại
+    public static function getActivedDiscounts($date)
+    {
+        $results   = [];
+        $discounts = Discount::getAllDiscounts($date);
+        foreach ($discounts as $discount) {
+            if ($discount['status'] == "actived") {
+                $results[] = $discount;
+            }
+
+        }
+        return $results;
     }
 }
