@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginAccountRequest;
 use App\Http\Requests\StoreAccountRequest;
+use App\Models\Cart;
+use App\Models\CartDetail;
 use App\Models\User;
 use Carbon\Carbon;
 use Gregwar\Captcha\CaptchaBuilder;
@@ -153,6 +155,11 @@ class AuthenController extends Controller
         }
 
         $user = User::query()->create($request->all());
+
+        // Tạo giỏ hàng
+        $cart = Cart::query()->create([
+            "user_id" => $user['id']
+        ]);
 
         return redirect()->route('/register')->with([
             'success' => 'Đăng ký tài khoản thành công']);
