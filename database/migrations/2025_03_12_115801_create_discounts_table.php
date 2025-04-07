@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Category::class)->constrained();
             $table->string("des");
-            $table->decimal("percent");
+            $table->integer("percent");
             $table->date("start_at");
             $table->date("end_at");
             $table->softDeletes();
