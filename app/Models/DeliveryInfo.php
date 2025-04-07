@@ -9,8 +9,10 @@ class DeliveryInfo extends Model
 {
     use SoftDeletes;
     protected $fillable = [
+        "name",
         "address",
         "phone",
+        "default",
         "user_id",
     ];
 
