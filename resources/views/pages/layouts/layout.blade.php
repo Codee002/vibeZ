@@ -14,13 +14,13 @@
 
 
     {{-- Link Config CSS  --}}
-    <link rel="stylesheet" href="css/config.css?ver=3">
+    <link rel="stylesheet" href="{{ asset("css/config.css?ver=3") }}">
 
     {{-- Link My CSS  --}}
-    <link rel="stylesheet" href="css/layouts.css?ver=2">
+    <link rel="stylesheet" href="{{ asset("css/layouts.css?ver=2") }}">
     @yield('css')
     <!-- LINK ICON -->
-    <link rel="shortcut icon" href="assets/images/logo/7.png">
+    <link rel="shortcut icon" href="{{ asset("assets/images/logo/7.png") }}">
     {{-- Title --}}
     @yield('title')
 </head>
@@ -34,6 +34,6 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/layouts.js"></script>
+<script src="{{ asset("js/layouts.js") }}"></script>
 
 </html>

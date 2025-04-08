@@ -27,7 +27,7 @@
                     </li>
                 </a>
 
-                <a href="{{ route('order_history') }}" @if (request()->is('order_history*')) class="active" @endif>
+                <a href="{{ route('order.history') }}" @if (request()->is('order/history*')) class="active" @endif>
                     <li>
                         <i class='bx bxs-package'></i>
                         <span>Đơn đã mua</span>
