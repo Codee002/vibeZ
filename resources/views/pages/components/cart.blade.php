@@ -125,7 +125,7 @@
                             <i class="fa-solid fa-caret-down friendList__main__info__menu__activeMenu"
                                 data-bs-toggle="dropdown"></i>
                             <ul class="dropdown-menu friendList__main__info__dropdownMenu">
-                                <li><a class="dropdown-item" href="" style="color: var(--font-color)">Xem sản
+                                <li><a class="dropdown-item" href="{{route('product.detail', $detail->product['id'])}}" style="color: var(--font-color)">Xem sản
                                         phẩm</a>
                                 </li>
                                 <li>
@@ -133,12 +133,12 @@
                                     </hr>
                                 </li>
                                 <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#modal1"><strong>Xóa sản phẩm</strong></a></li>
+                                        data-bs-target="#modal{{$detail['id']}}"><strong>Xóa sản phẩm</strong></a></li>
                             </ul>
                         </div>
 
                         <!-- Modal -->
-                        <div class="modal" id="modal1">
+                        <div class="modal" id="modal{{$detail['id']}}">
                             <div class="modal-dialog">
                                 <div class="modal-content">
 
