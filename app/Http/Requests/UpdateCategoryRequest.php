@@ -20,8 +20,9 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+        $categoryId = $this->route('category')->id;
         return [
-            "name" => 'required|unique:categories|max:255',
+            "name" => ['required', 'max:255', 'unique:categories,name,'. $categoryId],
         ];
     }
 
@@ -30,6 +31,7 @@ class UpdateCategoryRequest extends FormRequest
         return [
             "required" => ':attribute không được rỗng',
             "unique"   => ':attribute đã tồn tại',
+            "max"   => ':attribute không được lớn hơn 255 ký tự',
         ];
     }
 
