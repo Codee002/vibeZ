@@ -15,7 +15,6 @@
                 <p class="settingUserInfo__title">Bảo mật</p>
 
                 <!-- FLASH MESSAGE -->
-                <!-- FLASH MESSAGE -->
                 @if ($errors->any())
                     <div class="alert alert-danger mb-4">
                         <ul>

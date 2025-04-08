@@ -115,15 +115,21 @@ function addressValidate(id) {
 function genderValidate(name) {
     let check = 0;
     let inputs = document.getElementsByName(name);
-    if (input == null)
+    if (inputs.length == 0)
         return;
     let errorMessage;
-
+    console.log()
     inputs.forEach((e) => {
+        console.log(e);
         if (e.checked) {
             check = 1;
         }
         errorMessage = e.parentElement.querySelector(".invalid-feedback");
+
+        e.onchange = () => {
+            check = 1;
+            errorMessage.textContent = ""
+        }
     })
     if (check == 0) {
         errorMessage.textContent = "Vui lòng không để trống !"
@@ -134,37 +140,35 @@ function genderValidate(name) {
 
 // Validate birthday
 function birthdayValidate(id) {
-    let check = 1;
+    let check = true;
     let input = document.getElementById(id);
     if (input == null)
         return;
     let inputParent = input.parentElement;
     let errorMessage = inputParent.querySelector(".invalid-feedback");
+    const today = new Date(); // Lấy ngày hiện tại
+    today.setDate(today.getDate() - 1); // Không cho phép ngày sinh là hiện tại
 
-    // Lấy ra thời gian
-    let date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    let dayString = year + "-" + month + "-" + day;
 
-    if (input.value == 0) {
-        input.classList.add("is-invalid");
-        errorMessage.textContent = "Vui lòng không để trống !"
-        check = 0;
+    input.onchange = (e) => {
+        const birthday = new Date(input.value); // Chuyển đổi giá trị input sang đối tượng Date
+
+        if (input.value == 0) {
+            input.classList.add("is-invalid");
+            errorMessage.textContent = "Vui lòng không để trống !"
+            check = false;
+        }
+        else if (birthday >= today) {
+            input.classList.add("is-invalid");
+            errorMessage.textContent = "Ngày sinh phải nhỏ hơn ngày hiện tại !"
+            check = false;
+        }
+        else {
+            input.classList.remove("is-invalid");
+            errorMessage.textContent = "";
+            check = true;
+        }
     }
-    else if (input.value >= dayString) {
-        input.classList.add("is-invalid");
-        errorMessage.textContent = "Thời gian phải nhỏ hơn ngày hiện tại !"
-        check = 0;
-    }
-    else {
-        input.classList.remove("is-invalid");
-        errorMessage.textContent = ""
-    }
-    if (check)
-        return true;
-    return false;
 }
 
 // Validate password
@@ -200,9 +204,9 @@ function newpassValidate(id) {
             input.classList.add("is-invalid");
             errorMessage.textContent = "Vui lòng không để trống !"
         }
-        else if (input.value.length < 8) {
+        else if (input.value.length < 8 || input.value.length > 20 ) {
             input.classList.add("is-invalid");
-            errorMessage.textContent = "Mật khẩu phải lớn hơn 8 ký tự !";
+            errorMessage.textContent = "Mật khẩu phải từ 8 - 20 ký tự !";
         }
         else {
             input.classList.remove("is-invalid");
@@ -263,11 +267,33 @@ function formConfirm(arrId = []) {
 }
 
 
+// Hide, show Password
+let eyeElements = document.querySelectorAll(".pwd-eye");
+let inputPassword = document.getElementById("pwd");
+
+eyeElements.forEach((eye) => {
+    let parent = eye.parentElement;
+    eye.onclick = (e) => {
+        let passInput = parent.querySelector("input");
+
+        // Ẩn, hiện mật khẩu
+        if (passInput.type == "password") {
+            passInput.type = "text";
+            eye.classList.replace("fa-eye", "fa-eye-slash");
+        }
+        else {
+            passInput.type = "password";
+            eye.classList.replace("fa-eye-slash", "fa-eye");
+        }
+    }
+})
 
 addressValidate("address");
-phoneValidate("phone_number");
+phoneValidate("phone");
+genderValidate('gender')
+birthdayValidate("birthday")
 nameValidate("name");
 emailValidate("email");
 oldpassValidate("oldpass");
 newpassValidate("password");
-passwordConfirm("password_confirm", "password");
+passwordConfirm("password_confirmation", "password");
