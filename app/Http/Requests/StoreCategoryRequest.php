@@ -30,6 +30,7 @@ class StoreCategoryRequest extends FormRequest
         return [
             "required" => ':attribute không được rỗng',
             "unique"   => ':attribute đã tồn tại',
+            "max"   => ':attribute không được lớn hơn 255 ký tự',
         ];
     }
 
