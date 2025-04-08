@@ -11,6 +11,7 @@ class OrderDetail extends Model
         'product_id',
         'size',
         'quantity',
+        'price',
     ];
 
     // ---------------- Relationship -------------
