@@ -10,7 +10,7 @@
             <div class="form-wrapper">
                 <form action="{{ route('handleForgot') }}" method="POST">
                     @csrf
-                    <a href="{{ redirect()->back() }}"><i class="fa-solid fa-arrow-left back"></i></a>
+                    <a href="{{ url()->previous() }}"><i class="fa-solid fa-arrow-left back"></i></a>
 
                     <p class="text-center fs-3 fw-semibold fw-bolder">Quên mật khẩu?</p>
 
