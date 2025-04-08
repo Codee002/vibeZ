@@ -28,7 +28,7 @@ class ReceiptController extends Controller
             return view("admin.product.index", ['data' => $data, 'search' => $search]);
 
         } else {
-            $data = Receipt::with(['warehouse', 'receipt_details'])->paginate(3);
+            $data = Receipt::with(['warehouse', 'receipt_details'])->paginate(6);
         }
         return view("admin.receipt.index", compact('data'));
     }
@@ -58,8 +58,6 @@ class ReceiptController extends Controller
 
         }
         //    dd($products);
-        // Lúc này thì đã tạo mảng gửi dữ liệu sang được rồi, nhưng tránh
-        // trường hợp N+1 Query nên tìm từng phần tử rồi load Relationship
         $data = [];
         foreach ($products as $id => $size) {
             $product = Product::with("images", 'sizes', 'category', 'receipt_details', 'sale_prices')
