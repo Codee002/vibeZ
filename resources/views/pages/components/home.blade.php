@@ -39,11 +39,11 @@
                         </div>
                     </a>
 
-                    <a href="{{ route('order_history') }}">
+                    <a href="{{ route('order.history') }}">
                         <div class="visitContainer__item">
                             <div class="content">
                                 <i class='bx bxs-package'></i>
-                                <a href="{{ route('order_history') }}">
+                                <a href="{{ route('order.history') }}">
                                     <p>Đơn hàng</p>
                                 </a>
                             </div>
@@ -71,7 +71,7 @@
                             {{-- {{ dd($product) }} --}}
                             @if ($product['category_name'] == 'Giày Converse')
                                 <div class="contentContainer col-3">
-                                    <a href="">
+                                    <a href="{{route("product.detail" , $product['product_id'])}}">
                                         @if ($product['image'])
                                             @if ($product['image'] && \Storage::exists($product['image']))
                                                 <img src="{{ \Storage::url($product['image']) }}" alt=""
@@ -96,7 +96,7 @@
                             @endif
                         @endforeach
                     </div>
-                    <a href="" class="productPreviewContainer__more">
+                    <a href="{{ route("product", ['category' => 25]) }}" class="productPreviewContainer__more">
                         <p>Xem Thêm</p>
                     </a>
                 </div>
@@ -111,7 +111,7 @@
                             {{-- {{ dd($product) }} --}}
                             @if ($product['category_name'] == 'Giày Nike')
                                 <div class="contentContainer col-3">
-                                    <a href="">
+                                    <a href="{{route("product.detail" , $product['product_id'])}}">
                                         @if ($product['image'])
                                             @if ($product['image'] && \Storage::exists($product['image']))
                                                 <img src="{{ \Storage::url($product['image']) }}" alt=""
@@ -136,7 +136,7 @@
                             @endif
                         @endforeach
                     </div>
-                    <a href="" class="productPreviewContainer__more">
+                    <a href="{{ route("product", ['category' => 25]) }}" class="productPreviewContainer__more">
                         <p>Xem Thêm</p>
                     </a>
                 </div>
@@ -151,7 +151,7 @@
                             {{-- {{ dd($product) }} --}}
                             @if ($product['category_name'] == 'Giày Adidas')
                                 <div class="contentContainer col-3">
-                                    <a href="">
+                                    <a href="{{route("product.detail" , $product['product_id'])}}">
                                         @if ($product['image'])
                                             @if ($product['image'] && \Storage::exists($product['image']))
                                                 <img src="{{ \Storage::url($product['image']) }}" alt=""
@@ -176,7 +176,7 @@
                             @endif
                         @endforeach
                     </div>
-                    <a href="" class="productPreviewContainer__more">
+                    <a href="{{ route("product", ['category' => 26]) }}" class="productPreviewContainer__more">
                         <p>Xem Thêm</p>
                     </a>
                 </div>

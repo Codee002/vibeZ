@@ -4,10 +4,9 @@
 }
 
 header{
-    height: 7rem;
+    height: 5rem;
     border: 0.5rem;
     box-shadow: 0.1rem 0.1rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
-
 }
 
 body{
@@ -20,6 +19,8 @@ body{
 
 main{
     margin: 0px;
+    padding: 0rem;
+    padding-bottom: 1rem;
 }
 
 main a{
@@ -42,34 +43,31 @@ main .Content-container{
 }
 
 /* KhamPha */
-.KhamPha-container{
-    margin: 4rem 0;
-}
-
-.KhamPha-container .KhamPha_title{
+.visitContainer__title{
     margin-top: 1rem;
-    font-size: 2rem;
+    /* font-size: 2rem; */
+    font-size: 1.2rem;
     font-weight: 600;
     padding: 0.4rem;
 }
 
-.KhamPha{
+.visitContainer{
     display: flex;
     width: 100%;
 }
 
-.KhamPha .DieuHuong{
+.visitContainer .visitContainer__item{
     width: 25%;
-    height: 12rem;
+    height: 7rem;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 0.1rem solid #e6ecf0;
-    border-radius: 1.5rem;
-    margin: 0.4rem;
+    border-radius: 0.5rem;
+    margin: 0.2rem;
 }
 
-.KhamPha .DieuHuong .content{
+.visitContainer .visitContainer__item .content{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,51 +76,54 @@ main .Content-container{
 
 }
 
-.KhamPha .DieuHuong:hover{
+.visitContainer .visitContainer__item:hover{
     color:var( --extra1-color);
     border: 0.1rem solid var(  --hover-border-color);
     background-color: var(  --hover-background-color);
     cursor: pointer;
 }
 
-.KhamPha .DieuHuong:hover a{
+.visitContainer .visitContainer__item:hover a{
     color:var( --extra1-color);
 }
 
-.KhamPha .DieuHuong .content i{
-    font-size: 3rem;
+.visitContainer .visitContainer__item .content i{
+    /* font-size: 3rem; */
+    font-size: 2rem;
     margin-right: 2rem;
     color: var( --extra1-color);
 }
 
-.KhamPha .DieuHuong .content p{
-    font-size: 2rem;
+.visitContainer .visitContainer__item .content p{
+    /* font-size: 2rem; */
+    font-size: 1.2rem;
     font-weight: 400;
 }
 
 
 
 /* Đăng bán */
-.Content-container .DangBan .XemTruoc{
+.Content-container .productPreviewContainer .productPreviewContainer__item{
     display: flex;
 }
-.Content-container .DangBan .XemTruoc a{
+.Content-container .productPreviewContainer .productPreviewContainer__item a{
     display: block;
-    width: 20%;
+    width: 25%;
 }
 
-.DangBan{
-    margin: 5rem 0;
+.productPreviewContainer{
+    margin: 2rem 0;
 }
 
-.DangBan .XemTruoc_title{
+.productPreviewContainer .productPreviewContainer__title{
     margin-top: 1rem;
-    font-size: 2rem;
+    /* font-size: 2rem; */
+    font-size: 1.2rem;
     font-weight: 600;
     padding: 0.4rem;
 }
 
-.DangBan .XemTruoc .sanpham{
+.productPreviewContainer .productPreviewContainer__item .productPreviewContainer__item__product{
     width: 100%;
     border: 0.1rem solid var(  --hover-background-color)16;
     border-radius: 1rem;
@@ -134,92 +135,59 @@ main .Content-container{
     cursor: pointer;
 }
 
-.DangBan .XemTruoc .sanpham:hover{
+.productPreviewContainer .productPreviewContainer__item .productPreviewContainer__item__product:hover{
     box-shadow: 0.1rem 0.1rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
 }
 
-.XemTruoc .sanpham img{
+.productPreviewContainer__item .productPreviewContainer__item__product img{
     width: 95%;
-    border-radius: 1rem;
-    height: 20rem;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
+    border-radius: 0.5rem;
+    height: 18rem;
+    margin-bottom: 0.3rem;
+    margin-top: 0.3rem;
 }
 
-.XemTruoc .sanpham p{
-    font-size: 1.4rem;
+.productPreviewContainer__item .productPreviewContainer__item__product p{
+    /* font-size: 1.4rem; */
+    font-size: 1rem;
     align-self: flex-start;
     padding: 0 1rem;
 }
 
-.XemTruoc .sanpham .mota{
+.productPreviewContainer__item .productPreviewContainer__item__product .des{
     height: 4rem;
     font-weight: 450;
     /* margin-bottom: 2rem; */
 }
 
-.XemTruoc .sanpham .size{
+.productPreviewContainer__item .productPreviewContainer__item__product .size{
     font-weight: 500;
 }
 
-.XemTruoc .sanpham .giatien{
-    font-size: 2rem;
+.productPreviewContainer__item .productPreviewContainer__item__product .price{
+    /* font-size: 2rem; */
+    font-size: 1.2rem;
     font-weight: 700;
     color: var( --extra1-color);
 }
 
 
-.DangBan .LienKet{
+.productPreviewContainer .productPreviewContainer__more{
     text-align: center;
-    font-size: 2rem;
+    /* font-size: 2rem; */
+    font-size: 1.2rem;
     font-weight: 700;
     color: var( --extra1-color);
 }
 
-.DangBan .LienKet p{
+.productPreviewContainer .productPreviewContainer__more p{
     transition: 0.2s;
 }
 
-.DangBan .LienKet p:hover{
+.productPreviewContainer .productPreviewContainer__more p:hover{
     transform: scale(1.1);
     color: var(  --hover-extra1-color);
 }
-
-
-/* Tiện ích */
-.tienich-container{
-    width: 50% ;
-}
-
-.DangBan .tienich{
-    box-shadow: 0.1rem 0.1rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
-}
-
-.DangBan .tienich:hover{
-    border-color: var( --extra1-color);
-}
-
-.DangBan .tienich .mota{
-    height: 5rem;
-}
-
-.DangBan .tienich i{
-    font-size: 3rem;
-}
-
-.DangBan .tienich i.bxs-hard-hat{
-    color:orange ;
-}
-
-.DangBan .tienich i.bxs-graduation{
-    color: rgb(0, 149, 255);
-}
-
-.DangBan .tienich .size{
-    font-size: 1.6rem;
-    font-weight: 450;
-}
-
 
 /*------------------- MAIN END -------------------- */
 
