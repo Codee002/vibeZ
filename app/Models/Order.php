@@ -1,17 +1,16 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
     protected $fillable = [
         "status",
         "user_id",
-        "discount_id",
         "delivery_info_id",
+        "payment_method_id",
+        "total_price",
     ];
 
     // ---------------- Relationship -------------
@@ -25,9 +24,9 @@ class Order extends Model
         return $this->belongsTo(DeliveryInfo::class);
     }
 
-    public function discount()
+    public function discounts()
     {
-        return $this->belongsTo(Discount::class);
+        return $this->belongsToMany(Discount::class);
     }
 
     public function evaluates()
@@ -38,5 +37,93 @@ class Order extends Model
     public function order_details()
     {
         return $this->hasMany(OrderDetail::class);
+    }
+
+    public function payment_method()
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
+    // ---------------- Function -------------
+    // Tính tổng SL hóa đơn
+    public function getTotalQuantity()
+    {
+        $sum = 0;
+        foreach ($this->order_details as $detail) {
+            $sum += $detail['quantity'];
+        }
+        return $sum;
+    }
+
+    // Tính tổng tiền hóa đơn
+    public function getTotalPrice()
+    {
+        $sum = 0;
+        foreach ($this->order_details as $detail) {
+            $sum += $detail['quantity'] * $detail['price'];
+        }
+        return $sum;
+    }
+
+    // Tính tổng tiền giảm giá
+    public function getTotalDiscount()
+    {
+        $sum = 0;
+        foreach ($this->discounts as $discount) {
+            for ($i = 0; $i < count($this->order_details); $i++)
+            // dd($this, $discount, $this->order_details[$i]);
+            {
+                if ($this->order_details[$i]->product['category_id'] == $discount['category_id']) {
+                    $sum += $this->order_details[$i]['quantity'] * $this->order_details[$i]['price'] * $discount['percent'] / 100.0;
+                }
+            }
+
+        }
+        return $sum;
+    }
+
+    /**
+     * Lấy ra những cặp SP - Size của 1 hóa đơn
+     * key: Mã Sản phẩm (product_id)
+     * value: Size (size)
+     */
+    public function getOrderProducts()
+    {
+        $results = [];
+        foreach ($this->order_details as $detail) {
+            // dd($this, $detail);
+            $results[$detail['product_id']][] = $detail["size"];
+        }
+        return $results;
+    }
+
+    // Lấy SL sản phẩm của hóa đơn
+    public function getQuantityProduct($productId, $size)
+    {
+        foreach ($this->order_details as $detail) {
+            if ($detail['product_id'] == $productId &&
+                $detail['size'] == $size) {
+                return $detail['quantity'];
+            }
+        }
+    }
+
+    // Lấy tất cả SL của sản phẩm đang chờ trong hóa đơn
+    public static function getAllProductPendingQuantity($productId, $size)
+    {
+        $quantity = 0;
+        $orders   = Order::where("status", "pending")
+            ->with("order_details")->get()->all();
+        foreach ($orders as $order) {
+            foreach ($order->order_details as $detail) {
+                if ($detail['product_id'] == $productId &&
+                    $detail['size'] == $size) {
+                    $quantity += $detail['quantity'];
+                }
+            }
+
+        }
+        // dd($quantity);
+        return $quantity;
     }
 }
