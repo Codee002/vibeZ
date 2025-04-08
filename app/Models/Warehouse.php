@@ -91,4 +91,76 @@ class Warehouse extends Model
         }
         return $quantity;
     }
+
+    // Kiểm tra xem kho có chứa SP cần tìm không
+    public function productExist($productId, $size)
+    {
+        foreach ($this->warehouse_details as $detail) {
+            if ($detail['product_id'] == $productId &&
+                $detail['size'] == $size) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Lấy ra ID các kho có chứa SP cần tìm
+     * Trả về 1 mảng chứa các kho có SP
+     */
+    public static function getProductWarehouse($productId, $size)
+    {
+        $results    = [];
+        $warehouses = Warehouse::get()->all();
+        foreach ($warehouses as $warehouse) {
+            $warehouse = $warehouse->load("warehouse_details");
+            if ($warehouse->productExist($productId, $size)) {
+                $results[] = $warehouse;
+            }
+        }
+        return $results;
+    }
+
+    // Lấy tổng SL của 1 SP của 1 kho
+    public function getProductQuantity($productId, $size)
+    {
+        $quantity = 0;
+        foreach ($this->warehouse_details as $detail) {
+            if ($detail['product_id'] == $productId
+                && $detail['size'] == $size) {
+                $quantity = $detail['quantity'];
+            }
+
+        }
+        return $quantity;
+    }
+
+    // Lấy tổng SL của 1 SP đang active của 1 kho
+    public function getProductActiveQuantity($productId, $size)
+    {
+        $quantity = 0;
+        foreach ($this->warehouse_details as $detail) {
+            if ($detail['product_id'] == $productId
+                && $detail['size'] == $size
+                && $detail['status'] == 'actived') {
+                $quantity = $detail['quantity'];
+            }
+
+        }
+        return $quantity;
+    }
+
+    // Lấy tổng SL của 1 SP đang disabled của 1 kho
+    public function getProductDisableQuantity($productId, $size)
+    {
+        $quantity = 0;
+        foreach ($this->warehouse_details as $detail) {
+            if ($detail['product_id'] == $productId
+                && $detail['size'] == $size
+                && $detail['status'] == 'disabled') {
+                $quantity = $detail['quantity'];
+            }
+        }
+        return $quantity;
+    }
 }
