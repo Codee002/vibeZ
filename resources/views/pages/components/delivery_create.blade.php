@@ -5,14 +5,26 @@
 @endsection
 
 @section('css')
-<link rel="stylesheet" href="{{asset("css/delivery.css")}}">
+    <link rel="stylesheet" href="{{ asset('css/delivery.css') }}">
 @endsection
 
 @section('content')
     <main>
         <p class="title">Thêm thông tin nhận hàng</p>
-        <form action="{{ route('delivery.store') }}" class="col-8" style="margin: 0 auto; width: 40rem"
-            method="post" onsubmit="return confirm('Bạn chắc chắn muốn thêm thông tin này?')">
+        {{-- FLASH MESSAGES --}}
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('danger'))
+            <div class="alert alert-danger">
+                {{ session('danger') }}
+            </div>
+        @endif
+        <form action="{{ route('delivery.store') }}" class="col-8" style="margin: 0 auto; width: 40rem" method="post"
+            onsubmit="return confirm('Bạn chắc chắn muốn thêm thông tin này?')">
             @csrf
             <div class="form-group mb-3">
                 <label for="capacity">Họ tên</label>
@@ -51,13 +63,10 @@
             </div>
             <div class="form-group d-flex align-items-center  mb-3">
                 <label for="default">Đặt làm mặc định</label>
-                <input type="checkbox" id="default" name="default"
-                    class="form-check-input ms-2" 
-                    value="1">
+                <input type="checkbox" id="default" name="default" class="form-check-input ms-2" value="1">
             </div>
             <div class="form-group mb-3 d-flex" style="justify-content: end;">
-                <a href="{{ route('admin.warehouse.index') }}"
-                    class="btn btn-secondary text-white text-decoration-none m-1">Hủy</a>
+                <a href="{{ url()->previous() }}" class="btn btn-secondary text-white text-decoration-none m-1">Hủy</a>
                 <button href="" class="btn btn-primary text-white text-decoration-none m-1">Thêm</button>
             </div>
         </form>
