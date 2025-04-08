@@ -40,6 +40,7 @@ class WarehouseDetail extends Model
         $details = WarehouseDetail::query()
         ->where("product_id", $productId)
         ->where("size", $size)
+        ->where("status", 'actived')
         ->get();
         $quantity = 0;
         foreach ($details as $detail)
