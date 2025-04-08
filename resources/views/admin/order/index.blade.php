@@ -62,6 +62,8 @@
                                 <button type="button" class="btn btn-warning">Đang duyệt</button>
                             @elseif ($order['status'] == 'rejecting')
                                 <button type="button" class="btn btn-danger">Từ chối</button>
+                            @elseif ($order['status'] == 'aborting')
+                                <button type="button" class="btn btn-danger">Đã hủy</button>
                             @elseif ($order['status'] == 'shipping')
                                 <button type="button" class="btn btn-secondary">Đang giao</button>
                             @elseif ($order['status'] == 'completing')

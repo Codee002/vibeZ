@@ -91,7 +91,6 @@
                             <p>{{ number_format($detail['price'] * $detail['quantity'], 0, ',', '.') }}</p>
                         </div>
                     </div>
-                    
                 @endforeach
             </div>
 
@@ -138,6 +137,8 @@
                             <p class="text-warning">Đang duyệt</p>
                         @elseif ($order['status'] == 'rejecting')
                             <p class="text-danger">Từ chối</p>
+                        @elseif ($order['status'] == 'aborting')
+                            <p class="text-danger">Đã hủy</p>
                         @elseif ($order['status'] == 'shipping')
                             <p class="text-secondary">Đang giao</p>
                         @elseif ($order['status'] == 'completing')
