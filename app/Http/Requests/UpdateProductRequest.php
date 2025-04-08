@@ -21,7 +21,7 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name"          => ['required', 'regex:/^[\p{L}\p{M}\s]+$/u'],
+            "name"          => ['required', 'regex:/^[\p{L}\p{M}\s\d\.\-]+$/u'],
             "category"      => 'required',
             "sizes"         => 'required|array',
             "sizes.*"       => 'required|integer',
@@ -31,8 +31,6 @@ class UpdateProductRequest extends FormRequest
             'addImages'     => 'nullable|array',
             'addImages.*'   => 'nullable|image',
             'deleteTmages'  => 'nullable',
-            "buying_price"  => "required|numeric|min:1",
-            "selling_price" => "required|numeric|min:1",
         ];
 
     }
@@ -44,8 +42,6 @@ class UpdateProductRequest extends FormRequest
             "required"   => ':attribute không được rỗng',
             "images.*"   => ":attribute phải là hình ảnh",
             "addmages.*" => ":attribute phải là hình ảnh",
-            "numeric"    => ":attribute phải là số",
-            "min"        => ":attribute phải lớn hơn 0",
         ];
     }
 
@@ -59,8 +55,6 @@ class UpdateProductRequest extends FormRequest
             "category"      => 'Danh mục',
             "des"           => 'Mô tả',
             'images'        => "Ảnh",
-            'buying_price'  => 'Giá mua',
-            'selling_price' => 'Giá bán',
         ];
     }
 }
