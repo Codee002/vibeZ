@@ -111,6 +111,9 @@ Route::middleware(['auth', isMember::class])->group(function () {
     Route::post("/order", [OrderController::class, "order"])->name("order");
     Route::post("/order/store", [OrderController::class, "store"])->name("order.store");
     Route::get("order/history", [OrderController::class, "history"])->name("order.history");
+    Route::get("order/history/{order}", [OrderController::class, "detail"])->name("order.history.detail");
+    Route::post("order/abort/{order}", [OrderController::class, "abort"])->name("order.abort");
+    Route::post("order/receive/{order}", [OrderController::class, "receive"])->name("order.receive");
     Route::get("order/detail", [OrderController::class, "detail"])->name("order.detail");
 });
 
