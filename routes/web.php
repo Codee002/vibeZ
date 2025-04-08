@@ -1,12 +1,18 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DiscountController;
+use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReceiptController;
 use App\Http\Controllers\Admin\WarehouseController;
+use App\Http\Controllers\Admin\OrderAdminController;
 use App\Http\Controllers\AuthenController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Member\CartController;
 use App\Http\Controllers\member\ContactController;
+use App\Http\Controllers\Member\DeliveryInfoController;
+use App\Http\Controllers\Member\OrderController;
 use App\Http\Controllers\Member\SettingController;
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isMember;
@@ -43,6 +49,21 @@ Route::prefix("/admin")
         Route::post("receipt/handleReceipt/{receipt}", [ReceiptController::class, "handleReceipt"])->name('receipt.handleReceipt');
         Route::resource("receipt", ReceiptController::class);
 
+        // Trang Payment Method
+        Route::resource("payment_method", PaymentMethodController::class);
+
+        // Trang Discount
+        Route::resource("discount", DiscountController::class);
+        Route::post("discount/activedDiscount/{discount}", [DiscountController::class, "activedDiscount"])->name("discount.activedDiscount");
+        Route::post("discount/disabledDiscount/{discount}", [DiscountController::class, "disabledDiscount"])->name("discount.disabledDiscount");
+
+        // Trang Order
+        Route::get("order", [OrderAdminController::class, "index"])->name("order.index");
+        Route::get("order/edit/{order}", [OrderAdminController::class, "edit"])->name("order.edit");
+        Route::get("order/show/{order}", [OrderAdminController::class, "show"])->name("order.show");
+        Route::get("order/accept/{order}", [OrderAdminController::class, "accept"])->name("order.accept");
+        Route::post("order/reject/{order}", [OrderAdminController::class, "reject"])->name("order.reject");
+        Route::post("order/handle/{order}", [OrderAdminController::class, "handleOrder"])->name("order.handle");
     });
 // ----------------------- Route Auth -----------------------
 Route::middleware(['guest'])->group(function () {
@@ -59,7 +80,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/reset', [AuthenController::class, "showFormReset"])->name("reset");
     Route::post('/handleReset', [AuthenController::class, "handleReset"])->name("handleReset");
 });
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth'])->group(function () {
     Route::get('/activeEmail/{token}', [AuthenController::class, "activeEmail"])->name("activeEmail");
     Route::get('/sendEmail', [AuthenController::class, "sendEmail"])->name("sendEmail");
     Route::post('/sendEmail', [AuthenController::class, "sendEmail"])->name("sendEmail");
@@ -75,33 +96,37 @@ Route::get('/', function () {
 
 // ----------------------- Route Product -----------------------
 Route::get('/product', [ProductController::class, "showListProduct"])->name("product");
-
-Route::get('/detail', function () {
-    return view('pages.components.detail');
-})->name("detail");
+Route::get('/product/detail/{product}', [ProductController::class, "productDetail"])->name("product.detail");
 
 // ----------------------- Route Cart -----------------------
-Route::get('/cart', function () {
-    return view('pages.components.cart');
-})->name("cart");
+Route::middleware(['auth', isMember::class])->group(function () {
+    Route::post('/addToCart', [CartController::class, "addToCart"])->name("addToCart");
+    Route::get('/cart', [CartController::class, "showCart"])->name("cart");
+    Route::get('/updateQuantity/{quantity}', [CartController::class, "updateQuantity"])->name("updateQuantity");
+    Route::get('/deleteCart/{cart_detail}', [CartController::class, "deleteCart"])->name("deleteCart");
+});
+
+// ----------------------- Route Order -----------------------
+Route::middleware(['auth', isMember::class])->group(function () {
+    Route::post("/order", [OrderController::class, "order"])->name("order");
+    Route::post("/order/store", [OrderController::class, "store"])->name("order.store");
+    Route::get("order/history", [OrderController::class, "history"])->name("order.history");
+    Route::get("order/detail", [OrderController::class, "detail"])->name("order.detail");
+});
+
+// ----------------------- Route DeliveryInfo -----------------------
+Route::middleware(['auth', isMember::class])->group(function () {
+    Route::resource("delivery", DeliveryInfoController::class);
+});
 
 // ----------------------- Route Contact -----------------------
-Route::middleware(['auth', isMember::class])->group(function() {
+Route::middleware(['auth', isMember::class])->group(function () {
     Route::get('/contact', [ContactController::class, "index"])->name("contact");
     Route::post('/handleContact', [ContactController::class, "handleContact"])->name("handleContact");
 
 });
 
-// ----------------------- Route Order -----------------------
-Route::get('/order_detail', function () {
-    return view('pages.components.order_detail');
-})->name("order_detail");
-Route::get('/order_history', function () {
-    return view('pages.components.order_history');
-})->name("order_history");
-
 // ----------------------- Route Setting -----------------------
-
 Route::controller(SettingController::class)
     ->prefix('/setting')
     ->name('setting.')
