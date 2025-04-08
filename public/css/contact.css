@@ -1,8 +1,13 @@
 /*------------------- MAIN LIÊN HỆ-------------------- */
 main {
-    padding: 8rem 24rem;
+    padding: 4rem 12rem;
     margin: auto;
     background-color: #fff;
+    font-size: 1rem;
+}
+
+main p {
+    margin: 0rem;
 }
 
 main a {
@@ -10,13 +15,9 @@ main a {
     color: #333;
 }
 
-main {
-    font-size: 1.6rem;
-}
-
 .lienhe {
-    margin-left: 2rem;
-    margin-right: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 h1 {
@@ -27,20 +28,25 @@ h1 {
     display: block;
 }
 
-.gopy {
+.contactContent {
     /* background-color: var(--extra1-color); */
-    padding-right: 30%;
-    padding-left: 30%;
-    font-size: 1.6rem;
-    line-height: 4rem;
-    margin-bottom: 3rem;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    margin-bottom: 2rem;
+    width: 60%;
+    margin: auto;
 }
 
-.gopy select {
+.contactContent select {
     border: 1px solid #c2c2c2;
     margin-bottom: 1rem;
     text-align: center;
-    font-size: 1.6rem;
+    /* font-size: 1.6rem; */
+}
+
+.contactContent textarea
+{
+    height: 10rem !important;
 }
 
 .form-group.invalid .error-message {
@@ -58,49 +64,24 @@ h1 {
 
 .form-group .form-control {
     border-radius: 1.2rem;
-    padding: 1rem 2rem;
+    padding: 1rem;
 }
 
-.form-gui {
-    text-align: center;
-    width: 50%;
+.myBtn {
+    width: 40%;
     background-color: var(--extra1-color);
     color: #fff;
     font-weight: 600;
     border-radius: 0.8rem;
-    padding: 1rem 1.4rem;
-    border: none;
-    margin-top: 1.2rem;
     cursor: pointer;
-    font-size: 1.6rem;
     padding: 0.5rem;
-    margin-left: 50%;
-    transform: translateX(-50%);
-    height: 5rem;
+
+}
+.supportContact {
+    width: 90%;
+    margin: auto
 }
 
-.gopy-label {
-    text-align: left;
-}
-
-main input {
-    height: 6rem !important;
-}
-
-
-main input,
-main textarea {
-    font-size: 1.6rem !important;
-}
-
-main .supports p .address:hover {
+main .supportContact b:hover a {
     color: var(--extra1-color);
-}
-
-main .supports p {
-    margin-bottom: 3rem;
-}
-
-.form-control {
-    padding: 0 1rem;
 }
