@@ -1,10 +1,9 @@
 /*------------------- MAIN -------------------- */
-
-.cart__option {
+/* .cart__option {
     width: 50%;
     padding: .4rem;
-}
-
+} */
+/* 
 .cart__option button {
     width: 100%;
     cursor: pointer;
@@ -14,75 +13,18 @@
     border: 0.1rem solid #c2c2c2;
     background-color: #fff;
     transition: 0.2s;
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 600;
-}
+} */
 
-.cart__option button:hover {
+/* .cart__option button:hover {
     transform: scale(1.1);
     border-color: var(--extra1-color);
     color: var(--extra1-color);
-}
-
-
-
-main .search {
-    text-align: left;
-    margin-top: 5rem;
-    font-size: 2rem;
-    justify-content: center;
-    width: 60%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 5rem;
-}
-
-
-main .search .tieude {
-    font-size: 2.6rem;
-    font-weight: 500;
-    margin-left: 2rem;
-    margin-bottom: 3rem;
-    text-align: center;
-}
-
-
-main .search #hienthi .tukhoa {
-    width: 100%;
-    height: 6rem;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    border: 0.1rem solid #c2c2c2;
-    border-radius: 1.5rem;
-    margin: 0.4rem;
-    padding-left: 6rem;
-    font-weight: 400;
-}
-
-main .search #hienthi .tukhoa:hover {
-    color: #0499a8
-}
-
-main .TraVe {
-    height: 20rem;
-    /* border: 0.1rem solid #c2c2c2; */
-    font-size: 1.6rem;
-    display: flex;
-    justify-content: left;
-}
-
-
-main .TraVe i {
-    font-size: 2.4rem;
-    color: red;
-    margin-right: 2rem;
-}
-
-
+} */
 
 main {
-    padding: 10rem 15rem;
+    padding: 5rem 15rem;
     background-color: #fff;
 }
 
@@ -91,185 +33,107 @@ main a {
     text-decoration: none;
 }
 
-
-main .tonhat {
-    display: flex;
+main p
+{
 }
 
-main h1 {
-    margin-bottom: 4rem;
-    margin-top: 2rem;
-    font-size: 3rem;
+main .search {
+    margin-top: 1rem;
+    /* font-size: 2rem; */
+    font-size: 1.2rem;
+    justify-content: center;
+    /* width: 60%; */
+    margin-left: auto;
+    margin-right: auto;
 }
 
-main .flex {
-    margin-right: 2rem;
-    margin-bottom: 3rem;
-    font-size: 2rem;
-    width: 30rem;
-}
 
 main .contentContainer {
     display: flex;
-    padding: 2em;
+    padding: 1.2rem;
     position: relative;
     cursor: pointer;
     height: 27rem;
-    border-radius: 1.5rem;
+    border-radius: 0.5rem;
+    flex-direction: column;
+    box-sizing: border-box;
 }
 
-main .tym {
-    text-align: end;
-    border: 0.1rem solid;
-    position: relative;
+.contentContainer:hover {
+    box-shadow: 0rem 0rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
+
 }
 
-main .flex img {
-    width: 30rem;
-    height: 23rem;
-    border-radius: 1.2rem;
+.product_img {
+    height: 15rem;
+    width: 14rem;
+    margin-bottom: 1.2rem;
 }
 
-main p {
-    font-size: 1.6rem;
-    font-weight: 500;
+.productInfoContainer {
+    height: 8rem;
 }
 
+.product_name {
+    font-weight: 700;
+    display: block;
+    height: 3.6rem;
+    text-overflow: ellipsis;
+    /* white-space: nowrap; */
+    /* overflow: hidden; */
+}
 
-main p.cword {
+.product_category {
+    display: block;
+    height: 1.2rem;
+    font-weight: 350;
+    text-align: justify;
+    /* font-size: 1.5rem; */
+    font-size: 1rem;
+}
+
+.product_price {
     color: var(--extra1-color);
-    font-size: 2rem;
+    /* font-size: 2rem; */
+    font-size: 1.2rem;
     font-weight: 700;
     position: relative;
     display: flex;
     align-items: center;
+    height: 1.5rem;
 }
 
-main p.cword i {
-    font-size: 2.5rem;
+.product_price i {
+    /* font-size: 2.5rem; */
+    font-size: 1.6rem;
     color: var(--extra1-color);
     position: absolute;
-    right: -5rem;
+    right: 0rem;
     cursor: pointer;
     transition: 0.2s;
 }
 
-main p.cword i:hover {
+.product_price i:hover {
     transform: scale(1.3);
 }
 
-main .an {
-    font-weight: 350;
-    text-align: justify;
-    font-size: 1.5rem;
-}
 
-main p.tieude {
-    font-weight: 500;
-    font-size: 1.8rem;
-}
-
-main .tim {
-    width: 2.6rem;
-}
-
-main div.rong {
-    width: 50rem;
-}
-
-main .pic {
-    width: 3rem;
-    height: 3rem;
-    border: 0.1rem solid;
-    border-radius: 50%;
-    margin-right: 0.5rem;
-}
-
-main .phai {
-    margin-left: 3rem;
-    box-shadow: 0rem 0rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
-    width: 45rem;
-    padding: 2rem;
-    border-radius: 2rem;
-    height: 86rem;
-}
-
-main .benphai {
-    width: 50rem;
-    height: 10rem;
-    font-size: 1.2rem;
-    margin-bottom: 3rem;
-    cursor: pointer;
-
-}
-
-main .benphai:hover {
-    color: var(--extra1-color);
-}
-
-main p.rong {
-    width: 20rem;
-    font-size: 1.8rem;
-    font-weight: 400;
-    text-align: justify;
-    margin-left: 1rem;
-}
-
-main .anh {
-    width: 15rem;
-    height: 10rem;
-    margin-bottom: 20rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-}
-
-main .tintuc {
-    font-size: 2.4rem;
-    font-weight: 500;
-}
-
-
-main .contentContainer:hover {
-    box-shadow: 0rem 0rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
-
-}
-
-main .title {
-    font-size: 2.4rem;
-    font-weight: 700;
-    margin-bottom: 5rem;
-}
-
-main .DieuHuong {
-    height: 15rem;
+.order__info__product__quantity
+{
+    width: 50%;
+    align-items: start;
     display: flex;
-    align-items: center;
-    justify-content: center;
+}
+.order__info__product__quantity input{
+    /* font-size: 1.4rem; */
+    font-size: 1rem;
+    text-align: center;
 }
 
-
-main .DieuHuong ul li a {
-    width: 5rem;
-    height: 3rem;
-    color: #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0.5rem;
-}
-
-main .DieuHuong ul li a:hover {
-    color: var(--extra1-color);
-    background-color: var(--extra1-color)16;
-}
-
-main .DieuHuong ul li.active a:hover {
-    color: #fff;
-}
-
-main .DieuHuong ul li.active a {
-    background-color: var(--extra1-color) !important;
-    border: 1px solid var(--extra1-color);
+.order__info__product__quantity button
+{
+    /* font-size: 1.4rem; */
+    font-size: 1rem;
 }
 
 /*------------------- MAIN END -------------------- */

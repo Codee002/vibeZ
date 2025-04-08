@@ -11,155 +11,228 @@
 @section('content')
     <main>
         <hr>
-        <div class="search">
-            <div>
-                <p class="tieude">Từ Khóa Tìm Kiếm: <b>Tìm kiếm</p>
-            </div>
+        <div class="search" action="{{ route('product') }}" method="GET">
+            <form action="" style="width: 100%">
+                <div class="row">
+                    <div class="form-group mb-3 col-3">
+                        <input type="text" name="search" class="form-control" placeholder="Tìm kiếm"
+                            value={{ $search }}>
+                    </div>
+                    <div class="col-3">
+                        <button type="submit" style="width:50%" class="btn btn-primary text-center">
+                            <i class='bx bx-search-alt'></i> Tìm</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group mb-3 col-3">
+                        <select name="category" id="category" class="form-select">
+                            <option value="" selected>Chọn danh mục</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category['id'] }}"
+                                    @isset($categorySearch)
+                                    {{ $category['id'] == $categorySearch['id'] ? 'selected' : '' }}
+                                    @endisset>
+                                    {{ $category['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- <div class="form-group mb-3 col-3">
+                        <select name="price" id="price" class="form-select">
+                            <option value="" selected>Giá</option>
+                            <option value="<1000">Bé hơn 1000</option>
+                            <option value="1000-2000">1000-2000</option>
+                            <option value="2000-3000">2000-3000</option>
+                            <option value="3000-4000">3000-4000</option>
+                            <option value="4000-5000">4000-5000</option>
+                            <option value=">5000">Lớn hơn 5000</option>
+                        </select>
+                    </div> --}}
+                    {{-- <div class="form-group mb-3 col-3">
+                    <select name="sale" id="sale" class="form-select">
+                        <option value="" disabled selected>Khuyến mãi</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                        @endforeach
+                    </select>
+                </div> --}}
+                    {{-- <div class="form-group mb-3 col-3">
+                        <select name="sort" id="sort" class="form-select">
+                            <option value="" disabled selected>Sắp xếp</option>
+                            <option value="0">Giá giảm dần</option>
+                            <option value="1">Giá tăng dần</option>
+
+                        </select>
+                    </div> --}}
+                </div>
+            </form>
         </div>
         <hr>
-        <p class="title">Sản Phẩm Cập Nhật Mới Nhất T2/2025</p>
+        @if (isset($search) || isset($categorySearch))
+            @isset($search)
+                <h5 class="">Từ Khóa Tìm Kiếm: <b>{{ $search }}</h5>
+            @endisset
+            @isset($categorySearch)
+                <h5 class="mb-4">Danh Mục: <b>{{ $categorySearch['name'] }}</h5>
+            @endisset
+        @else
+            <h4 class="mb-4">Sản Phẩm Cập Nhật Mới Nhất T3/2025</h4>
+        @endif
 
-        <div class="tonhat tay">
+        <!-- FLASH MESSAGE -->
+        @if ($errors->any())
+            <div class="alert alert-danger mb-4">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('danger'))
+            <div class="alert alert-danger">
+                {{ session('danger') }}
+            </div>
+        @endif
+
+
+        <div class="">
             <div class="row">
-                <div class="col-6">
-                    <div class="contentContainer ">
-                        <div class="flex">
-                            <img src="https://trivela.vn/wp-content/uploads/2023/10/GIAY-PUREBOOST-23-IF2367.jpg.webp">
+                @if ($products->isNotEmpty())
+                    {{-- {{ dd($products) }} --}}
+                    @foreach ($products as $product)
+                        <div class="contentContainer col-3">
+                            <a href="{{ route('product.detail', $product['product_id']) }}">
+                                @if ($product['image'])
+                                    @if ($product['image'] && \Storage::exists($product['image']))
+                                        <img src="{{ \Storage::url($product['image']) }}" alt=""
+                                            class="product_img">
+                                    @endif
+                                @endif
+
+                                <div class="productInfoContainer">
+                                    <p class="product_name">{{ $product['product_name'] }}
+                                    </p>
+                                    <p class="product_category">{{ $product['category_name'] }}
+                                    </p>
+                                    <p class="product_price">
+                                        {{ number_format($product->price['price'], 0, ',', ' Triệu ') }}
+                                        <i class="bx bxs-cart-add" data-bs-toggle="modal"
+                                            data-bs-target="#Model{{ $product['product_id'] }}"></i>
+                                    </p>
+                                </div>
+                            </a>
                         </div>
-                        <div class="flex">
-                            <p class="tieude" onclick="getLink('/_sp/sp3_1.html')">Giày PureBoost 23
-                            </p>
-                            <p class="an" onclick="getLink('/_sp/sp3_1.html')">Đường M1, Phường Bình Hưng Hòa, Quận
-                                Bình
-                                Tân, TPHCM
-                            </p>
-                            <p class="cword">3 triệu <i class="bx bxs-cart-add" id="sp5_1"
-                                    onclick="save('sp5_1')"></i></p>
+                        {{-- {{dd($product)}} --}}
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="Model{{ $product['product_id'] }}" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog ">
+                                <div class="modal-content settingUserInfo__navWrapper__modalBackground">
+                                    <div class="modal-header">
+                                        <strong>
+                                            <h5 class="modal-title text-center ms-auto">
+                                                Thêm vào giỏ hàng</h5>
+                                        </strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <form action="{{ route('addToCart') }}" method="POST">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <label for="product_id" class="form-label ">
+                                                    Sản phẩm:</label>
+                                                <div class="mb-3">
+                                                    <!-- Fix csrf -->
+                                                    @csrf
+                                                    <input type="text" id="product_name" class="form-control mb-1"
+                                                        disabled value="{{ $product['product_name'] }}">
+                                                    {{-- <input type="hidden" name="product_id" id="product_id"
+                                                        value="{{ $product['product_id'] }}"> --}}
+                                                </div>
+                                                <label for="phone" class="form-label"> Kích thước:</label>
+                                                <div class="mb-3">
+                                                    <input type="hidden" name="product_id" id="product_id"
+                                                        value="{{ $product['product_id'] }}">
+                                                    <select name="size" id=""
+                                                        class="form-select selectQuantity mb-2">
+                                                        @foreach ($product['sizes'] as $size)
+                                                            <option value="{{ $size }}">{{ $size }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <i id="quantity[{{ $product['product_id'] }}]">Số lượng còn lại:
+                                                        {{ $quantities[$product['product_id']][$product['sizes'][0]] }}</i>
+                                                </div>
+                                                {{-- <label for="phone" class="form-label"> Số lượng còn lại:</label> --}}
+                                                {{-- <div class="mb-3">
+                                                   <input type="number" value="1" disabled class="form-control">
+                                                </div> --}}
+                                                <label for="phone" class="form-label"> Số lượng:</label>
+                                                <div class="order__info__product__quantity">
+                                                    <div class="order__info__product__quantity__prepend">
+                                                        <button class="btn btn-outline-secondary" type="button">-</button>
+                                                    </div>
+                                                    <input type="text" class="form-control" value="1"
+                                                        name="quantity" min="1">
+                                                    <div class="order__info__product__quantity__apend">
+                                                        <button class="btn btn-outline-secondary" type="button">+</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="modal-footer d-flex justify-content-between settingUserInfo__navWrapper__modalBackground">
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> Hủy
+                                                bỏ</button>
+                                            <button type="submit" class="btn btn-primary">Thêm</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <div class="tim"></div>
-                    </div>
-                    <div class="contentContainer ">
-                        <div class="flex"><img src="https://trivela.vn/wp-content/uploads/2023/10/GIAY-PUREBOOST-23-IF2367.jpg.webp"
-                                onclick="getLink('/_sp/sp3_2.html')">
-
-                        </div>
-                        <div class="flex">
-                            <p class="tieude" onclick="getLink('/_sp/sp3_2.html')">Giày PureBoost 23
-                            </p>
-                            <p class="an" onclick="getLink('/_sp/sp3_2.html')">Đường M1, Phường Bình Hưng Hòa, Quận
-                                Bình
-                                Tân, TPHCM
-
-                            </p>
-                            <p class="cword">2 triệu 800 nghìn
-                                <i class="bx bxs-cart-add" id="sp5_2" onclick="save('sp5_2')"></i>
-                            </p>
-                        </div>
-                        <div class="tim"></div>
-                    </div>
-
-
-                    <div class="contentContainer ">
-                        <div class="flex"><img src="https://trivela.vn/wp-content/uploads/2023/10/GIAY-PUREBOOST-23-IF2367.jpg.webp"
-                                onclick="getLink('/_sp/sp3_3.html')">
-                        </div>
-                        <div class="flex">
-                            <p class="tieude" onclick="getLink('/_sp/sp3_3.html')">Giày PureBoost 23
-                            </p>
-                            <p class="an" onclick="getLink('/_sp/sp3_3.html')">Lê Trọng Tấn, Phường Bình Hưng Hòa,
-                                Quận
-                                Bình Tân, TPHCM
-
-                            </p>
-                            <p class="cword">2 triệu 800 nghìn
-                                <i class="bx bxs-cart-add" id="sp5_3" onclick="save('sp5_3')"></i>
-                            </p>
-                        </div>
-                        <div class="tim"></div>
-                    </div></a>
-                </div>
-
-                <div class="col-6">
-
-                    <div class="contentContainer ">
-                        <div class="flex"><img src="https://trivela.vn/wp-content/uploads/2023/10/GIAY-PUREBOOST-23-IF2367.jpg.webp"
-                                onclick="getLink('/_sp/sp3_6.html')">
-
-                        </div>
-                        <div class="flex">
-                            <p class="tieude" onclick="getLink('/_sp/sp3_6.html')">Giày PureBoost 23
-                            </p>
-                            <p class="an" onclick="getLink('/_sp/sp3_6.html')">Đường M1, Phường Bình Hưng Hòa,
-                                Quận
-                                Bình Tân, TPHCM
-                            </p>
-                            <p class="cword">2 triệu 800 nghìn
-                                <i class="bx bxs-cart-add" id="sp5_6" onclick="save('sp5_6')"></i>
-
-                            </p>
-                        </div>
-                        <div class="tim"></div>
-                    </div>
-
-
-                    <div class="contentContainer ">
-                        <div class="flex"><img src="https://trivela.vn/wp-content/uploads/2023/10/GIAY-PUREBOOST-23-IF2367.jpg.webp"
-                                onclick="getLink('/_sp/sp3_7.html')">
-                        </div>
-                        <div class="flex">
-                            <p class="tieude" onclick="getLink('/_sp/sp3_7.html')">Giày PureBoost 23
-                            <p class="an" onclick="getLink('/_sp/sp3_7.html')">Phạm Đăng Giảng, Phường Bình Hưng
-                                Hòa,
-                                Quận Bình Tân, TPHCM
-                            </p>
-                            <p class="cword">3 triệu
-                                <i class="bx bxs-cart-add" id="sp5_7" onclick="save('sp5_7')"></i>
-
-                            </p>
-                        </div>
-                        <div class="tim"></div>
-                    </div>
-
-                    <div class="contentContainer ">
-                        <div class="flex"><img src="https://trivela.vn/wp-content/uploads/2023/10/GIAY-PUREBOOST-23-IF2367.jpg.webp"
-                                onclick="getLink('/_sp/sp3_8.html')">
-
-                        </div>
-                        <div class="flex">
-                            <p class="tieude" onclick="getLink('/_sp/sp3_8.html')">Giày PureBoost 23
-                            </p>
-                            <p class="an" onclick="getLink('/_sp/sp3_8.html')">Nguyễn Thị Tú, Phường Bình Hưng Hòa
-                                B,
-                                Quận Bình Tân, TPHCM
-                            </p>
-                            <p class="cword">2 triệu 700 nghìn
-                                <i class="bx bxs-cart-add" id="sp5_8" onclick="save('sp5_8')"></i>
-
-                            </p>
-                        </div>
-                        <div class="tim"></div>
-                    </div>
-
-
-
-                </div>
-
-                <div class="DieuHuong">
-                    <ul class="pagination">
-                        <!-- <li class="page-item"><a class="page-link" href="#">Previous</a></li> -->
-                        <li class="page-item active"><a class="page-link" href="muaban1.html">1</a></li>
-                        <li class="page-item"><a class="page-link" href="muaban2.html">2</a></li>
-                        <li class="page-item"><a class="page-link" href="muaban3.html">3</a></li>
-                        <li class="page-item"><a class="page-link" href="muaban4.html">4</a></li>
-                        <li class="page-item"><a class="page-link" href="muaban5.html">5</a></li>
-                        <li class="page-item"><a class="page-link" href="muaban6.html">6</a></li>
-                        <li class="page-item"><a class="page-link" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="muaban100.html">100</a></li>
-                        <!-- <li class="page-item"><a class="page-link" href="#">Next</a></li> -->
-                    </ul>
+                    @endforeach
+                @else
+                    <h4 class="text-center">Không tìm thấy sản phẩm với từ khóa <b>{{ $search }}</b></h4>
+                @endif
+                <div class="mt-5">
+                    {{ $products->withQueryString()->links() }}
                 </div>
             </div>
-
         </div>
     </main>
+    <script>
+        // Số lượng
+        const selectInput = document.querySelectorAll('select[name="size"]');
+
+        console.log(selectInput);
+        selectInput.forEach(radio => {
+            radio.addEventListener('change', function() {
+                const selectedSize = this.value;
+                const productInput = this.parentElement.querySelector("input[name='product_id']")
+                const productId = productInput.value
+                const quantityMessage = document.getElementById("quantity[" + productId + "]")
+                console.log(selectedSize, productId, quantityMessage, "quantity[" + productId + "]")
+
+                const quantities = @json($quantities);
+                const pendingQuantities = @json($pendingQuantities);
+
+                quantityMessage.textContent = "Số lượng còn lại: " + 
+                (quantities[productId][selectedSize] - pendingQuantities[productId][selectedSize])
+
+            });
+        });
+    </script>
+@endsection
+@section('js')
+    <script src="{{ asset('/js/product.js') }}"></script>
 @endsection

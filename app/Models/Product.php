@@ -52,19 +52,18 @@ class Product extends Model
     }
 
     public function cart_details()
-    {        
+    {
         return $this->hasMany(CartDetail::class);
     }
 
     public function order_details()
-    {        
+    {
         return $this->hasMany(OrderDetail::class);
     }
 
     // ----------------------------------------------------------------------------------------------
     /**
      * Lấy ra tất cả các sản phẩm
-     *          Đang kích hoạt
      *          Không tính theo Size
      *          Tính chung tất cả các kho
      * Trả về Id, Tên Sản Phẩm, Tên danh mục
@@ -82,6 +81,52 @@ class Product extends Model
         )
             ->join("products", "warehouse_details.product_id", "=", "products.id")
             ->join("categories", "products.category_id", "=", "categories.id")
+        // ->where("warehouse_details.status", "actived")
+            ->groupBy("warehouse_details.product_id",
+                "warehouse_details.status", "products.name", "categories.name", "categories.id") // Nhóm theo id, size và status
+            ->having("totalQuantity", ">", 0);
+
+        // Tìm theo tên
+        if ($search) {
+            $query->where("products.name", "LIKE", "%" . $search . "%");
+        }
+        // Tìm theo danh mục
+        if ($category) {
+            $query->where("categories.id", $category);
+        }
+
+        // Phân trang
+        if (! empty($perPage)) {
+            $query = $query->paginate($perPage);
+        } else {
+            $query = $query->get();
+        }
+
+        // dd($query->toSql());
+        return $query;
+    }
+
+    /**
+     * Lấy ra tất cả các sản phẩm đã kích hoạt
+     *          Đã kích hoạt
+     *          Không tính theo Size
+     *          Tính chung tất cả các kho
+     * Trả về Id, Tên Sản Phẩm, Tên danh mục
+     */
+    public static function getAllActiveProduct($perPage = null, $search = null, $category = null, $price = null)
+    {
+        $query = WarehouseDetail::select(
+            "warehouse_details.product_id",
+            // "warehouse_details.size",
+            "warehouse_details.status",
+            DB::raw('SUM(warehouse_details.quantity) as totalQuantity'),
+            "products.name as product_name",    // Lấy tên sản phẩm
+            "categories.id as category_id",     // Lấy mã danh mục
+            "categories.name as category_name", // Lấy tên danh mục
+        )
+            ->join("products", "warehouse_details.product_id", "=", "products.id")
+            ->join("categories", "products.category_id", "=", "categories.id")
+            ->where("warehouse_details.status", "actived")
             ->groupBy("warehouse_details.product_id",
                 "warehouse_details.status", "products.name", "categories.name", "categories.id") // Nhóm theo id, size và status
             ->having("totalQuantity", ">", 0);

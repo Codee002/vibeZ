@@ -13,3 +13,13 @@ quantityInputs.forEach(input => {
     input.value++;
   });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  var addToCartButtons = document.querySelectorAll('.bxs-cart-add');
+
+  addToCartButtons.forEach(function (button) {
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+    });
+  });
+});

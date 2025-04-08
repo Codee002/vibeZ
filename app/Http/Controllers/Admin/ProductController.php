@@ -6,9 +6,11 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Image;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\SalePrice;
 use App\Models\Size;
+use App\Models\WarehouseDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -32,8 +34,8 @@ class ProductController extends Controller
 
         } else {
             $data = Product::with(['category', 'images', 'sizes'])
-            ->orderBy("updated_at", "DESC")
-            ->paginate(8);
+                ->orderBy("updated_at", "DESC")
+                ->paginate(8);
         }
         return view("admin.product.index", compact('data'));
     }
@@ -112,7 +114,7 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         // Kiểm tra ảnh trước khi xóa
-        if(!empty($request->deleteImages)){
+        if (! empty($request->deleteImages)) {
             if ($product->images->count() == count($request->deleteImages)) {
                 return redirect()->route("admin.product.edit", $product)->with("danger", "Sản phẩm phải có ít nhất 1 hình ảnh");
             }
@@ -197,34 +199,46 @@ class ProductController extends Controller
     public function showListProduct(Request $request)
     {
         // dd($request->all(), $request['null']);
-        $products = Product::getAllProduct(16, $request['search'], $request['category']);
+        $quantities        = [];
+        $pendingQuantities = [];
+        $products          = Product::getAllActiveProduct(16, $request['search'], $request['category']);
         foreach ($products as $product) {
             $product['image'] = Image::getImage($product['product_id']);
             $product['price'] = SalePrice::query()->where("product_id", $product['product_id'])->first();
-            $product['sizes']  = Size::getSizeInWarehouse($product['product_id']);
-            // dd($product);
+            $product['sizes'] = Size::getSizeActiveInWarehouse($product['product_id']);
+            foreach ($product['sizes'] as $size) {
+                // Lấy tổng SL sản phẩm của tổng các kho đang được kích hoạt
+                $quantities[$product['product_id']][$size] = WarehouseDetail::getQuantityActive($product['product_id'], $size);
+
+                // Lấy ra tổng SL sản phẩm đang được chờ duyệt đơn
+                $pendingQuantities[$product['product_id']][$size] = Order::getAllProductPendingQuantity($product['product_id'], $size);
+            }
         }
-        $categories = Category::query()->get();
+        $categories     = Category::query()->get();
         $categorySearch = Category::find($request['category']);
-        return view("pages.components.product",
-            ["products"      => $products,
-                "categories"     => $categories,
-                "search"         => $request['search'] ?? null,
-                "categorySearch" => $categorySearch]);
+        // dd($products->all());
+
+        return view("pages.components.product", [
+            "products"          => $products,
+            "categories"        => $categories,
+            "quantities"        => $quantities,
+            "pendingQuantities" => $pendingQuantities,
+            "search"            => $request['search'] ?? null,
+            "categorySearch"    => $categorySearch]);
     }
 
     public function productDetail(Product $product)
     {
         // dd($product);
         $product->load("sizes", "images", "sale_prices");
-        $allProducts = Product::getAllProduct();
+        $allProducts = Product::getAllActiveProduct();
         foreach ($allProducts as $suggest) {
             $suggest['price'] = SalePrice::getPrice($suggest['product_id']);
             $suggest['image'] = Image::getImage($suggest['product_id']);
             // dd($products);
         }
         return view("pages.components.detail", [
-            "product" => $product,
+            "product"     => $product,
             "allProducts" => $allProducts,
         ]);
     }
