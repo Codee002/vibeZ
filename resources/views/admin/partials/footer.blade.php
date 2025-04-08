@@ -4,9 +4,8 @@
     <!--end::To the end-->
     <!--begin::Copyright-->
     <strong>
-      Copyright &copy; 2014-2024&nbsp;
+      Copyright &copy; 2025-2026&nbsp;
       <a href="{{ route("home") }}" class="text-decoration-none">VibeZ</a>.
     </strong>
-    All rights reserved.
     <!--end::Copyright-->
   </footer>

@@ -44,6 +44,7 @@
     <link rel="shortcut icon" href="{{ asset("assets/images/logo/7.png") }} ">
     <!-- TITLE -->
     @yield('title')
+    @yield('css')
 </head>
 <!--end::Head-->
 
@@ -56,7 +57,7 @@
 
         @include('admin.partials.sidebar')
 
-        <main class="app-main">
+        <main class="app-main p-0" style="height: 100%">
             <!--begin::App Content Header-->
             <div class="app-content-header">
                 <!--begin::Container-->
@@ -303,8 +304,10 @@
         const sparkline3 = new ApexCharts(document.querySelector('#sparkline-3'), option_sparkline3);
         sparkline3.render();
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!--end::Script-->
 </body>
 <!--end::Body-->
+@yield('script')
 
 </html>

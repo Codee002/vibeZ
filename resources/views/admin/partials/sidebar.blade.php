@@ -61,19 +61,18 @@
                           <ul class="nav nav-treeview">
                               <li class="nav-item">
                                   <a href="./UI/general.html" class="nav-link">
-                                     
                                       <p>Danh sách tài khoản</p>
                                   </a>
                               </li>
                               <li class="nav-item">
                                   <a href="./UI/icons.html" class="nav-link">
-                                     
+
                                       <p>Tài khoản bị khóa</p>
                                   </a>
                               </li>
                               <li class="nav-item">
                                   <a href="./UI/timeline.html" class="nav-link">
-                                     
+
                                       <p>Khách hàng thân quen</p>
                                   </a>
                               </li>
@@ -83,173 +82,80 @@
                       {{-- Kho --}}
                       <li class="nav-header">Kho hàng</li>
                       <li class="nav-item">
-                          <a href="#" class="nav-link">
+                          <a href="{{ route('admin.warehouse.index') }}" class="nav-link">
                               <i class='bx bxs-home-alt-2'></i>
                               <p>
-                                  Kho
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
+                                  Kho hàng
                               </p>
                           </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="{{route("admin.warehouse.create")}}" class="nav-link">
-                                     
-                                      <p>Thêm kho</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="{{route("admin.warehouse.index")}}" class="nav-link">
-                                     
-                                      <p>Danh sách các kho</p>
-                                  </a>
-                              </li>
-                          </ul>
                       </li>
 
                       {{-- Danh mục --}}
                       <li class="nav-header">Danh mục sản phẩm</li>
                       <li class="nav-item">
-                          <a href="#" class="nav-link">
+                          <a href="{{ route('admin.category.index') }}" class="nav-link">
                               <i class='bx bxs-category'></i>
                               <p>
                                   Danh mục
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
                               </p>
                           </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href=" {{route("admin.category.create")}} " class="nav-link">
-                                      <p>Thêm danh mục</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="{{route("admin.category.index")}}" class="nav-link">
-                                      <p>Danh sách danh mục</p>
-                                  </a>
-                              </li>
-                          </ul>
                       </li>
 
                       {{-- Sản phẩm --}}
                       <li class="nav-header">Sản phẩm</li>
                       <li class="nav-item">
-                          <a href="#" class="nav-link">
+                          <a href="{{ route('admin.product.index') }}" class="nav-link">
                               <i class='bx bxs-food-menu'></i>
                               <p>
                                   Sản phẩm
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
                               </p>
                           </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="{{route("admin.product.create")}}" class="nav-link">
-                                     
-                                      <p>Thêm sản phẩm</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="{{route("admin.product.index")}}" class="nav-link">
-                                     
-                                      <p>Danh sách sản phẩm</p>
-                                  </a>
-                              </li>
-                          </ul>
                       </li>
 
+
                       {{-- Khuyến mãi --}}
-                      <li class="nav-header">Chương trình khuyến mãi</li>
+                      <li class="nav-header">Khuyến mãi</li>
                       <li class="nav-item">
-                          <a href="#" class="nav-link">
+                          <a href="{{ route('admin.discount.index') }}" class="nav-link">
                               <i class='bx bxs-discount'></i>
                               <p>
                                   Khuyến mãi
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
                               </p>
                           </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="./UI/general.html" class="nav-link">
-                                     
-                                      <p>Thêm khuyến mãi</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
-                                     
-                                      <p>Danh sách khuyến mãi</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
-                                     
-                                      <p>Khuyến mãi đang áp dụng</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
-                                     
-                                      <p>Khuyến mãi đã hết hạn</p>
-                                  </a>
-                              </li>
-                          </ul>
                       </li>
+
 
                       {{-- Đơn hàng --}}
                       <li class="nav-header">Đơn hàng</li>
                       <li class="nav-item">
-                          <a href="#" class="nav-link">
+                          <a href="{{ route('admin.order.index') }}" class="nav-link">
                               <i class='bx bxs-package'></i>
                               <p>
                                   Đơn hàng
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
                               </p>
                           </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="./UI/general.html" class="nav-link">
-                                     
-                                      <p>Xem danh sách đơn hàng</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
-                                     
-                                      <p>Đơn hàng hiện có</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
-                                     
-                                      <p>Đơn trả về</p>
-                                  </a>
-                              </li>
-                          </ul>
                       </li>
 
                       {{-- Nhập hàng --}}
                       <li class="nav-header">Nhập hàng</li>
                       <li class="nav-item">
-                          <a href="#" class="nav-link">
-                            <i class='bx bx-import' ></i>
+                          <a href="{{ route('admin.receipt.index') }}" class="nav-link">
+                              <i class='bx bx-import'></i>
                               <p>
-                                  Nhập hàng
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
+                                  Phiếu nhập
                               </p>
                           </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="./UI/general.html" class="nav-link">
-                                     
-                                      <p>Tạo phiếu nhập</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
-                                     
-                                      <p>Danh sách phiếu nhập</p>
-                                  </a>
-                              </li>
-                          </ul>
+                      </li>
+
+                      {{-- Phương thức thanh toán --}}
+                      <li class="nav-header">Thanh toán</li>
+                      <li class="nav-item">
+                          <a href="{{ route('admin.payment_method.index') }}" class="nav-link">
+                              <i class='bx bxs-home-alt-2'></i>
+                              <p>
+                                  Phương thức thanh toán
+                              </p>
+                          </a>
                       </li>
                   </ul>
                   <!--end::Sidebar Menu-->
