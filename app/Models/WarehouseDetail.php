@@ -34,4 +34,18 @@ class WarehouseDetail extends Model
     }
 
     // ---------------------------------------------------------------------------------
+    // Lấy ra tổng SL SP đang active của tổng các kho
+    public static function getQuantityActive($productId, $size)
+    {
+        $details = WarehouseDetail::query()
+        ->where("product_id", $productId)
+        ->where("size", $size)
+        ->get();
+        $quantity = 0;
+        foreach ($details as $detail)
+        {
+            $quantity += $detail['quantity'];
+        }
+        return $quantity;
+    }
 }
