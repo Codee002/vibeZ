@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\Product;
+use App\Models\SalePrice;
 use App\Models\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,12 +25,15 @@ class ProductController extends Controller
         if ($search) {
             $data = Product::query()
                 ->where('name', 'like', "%" . $search . "%")
-                ->with(['categories', 'images', 'sizes'])
+                ->with(['category', 'images', 'sizes'])
+                ->orderBy("updated_at", "DESC")
                 ->paginate(3);
             return view("admin.product.index", ['data' => $data, 'search' => $search]);
 
         } else {
-            $data = Product::with(['category', 'images', 'sizes'])->paginate(3);
+            $data = Product::with(['category', 'images', 'sizes'])
+            ->orderBy("updated_at", "DESC")
+            ->paginate(8);
         }
         return view("admin.product.index", compact('data'));
     }
@@ -108,9 +112,10 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         // Kiểm tra ảnh trước khi xóa
-        if ($product->images->count() == count($request->deleteImages))
-        {
-            return redirect()->route("admin.product.edit", $product)->with("danger", "Sản phẩm phải có ít nhất 1 hình ảnh");
+        if(!empty($request->deleteImages)){
+            if ($product->images->count() == count($request->deleteImages)) {
+                return redirect()->route("admin.product.edit", $product)->with("danger", "Sản phẩm phải có ít nhất 1 hình ảnh");
+            }
         }
         try {
             DB::transaction(function () use ($request, $product) {
@@ -167,21 +172,60 @@ class ProductController extends Controller
     {
         try {
             DB::transaction(function () use ($product) {
-                $product->sizes()->sync([]);
-                $product->images()->delete();
+                // $product->sizes()->sync([]);
+                // $product->images()->delete();
                 $product->delete();
             });
-            if ($product->images) {
-                foreach ($product->images as $image) {
-                    if ($image->img_path && Storage::exists($image->img_path)) {
-                        Storage::delete($image->img_path);
-                    }
 
-                }
-            }
+            // Xóa ảnh
+            // if ($product->images) {
+            //     foreach ($product->images as $image) {
+            //         if ($image->img_path && Storage::exists($image->img_path)) {
+            //             Storage::delete($image->img_path);
+            //         }
+
+            //     }
+            // }
+
             return redirect()->route("admin.product.index")->with("success", "Xóa sản phẩm thành công");
         } catch (\Throwable $th) {
             return redirect()->back()->with("danger", $th->getMessage())->withInput();
         }
+    }
+
+    //----------------- Phía chức năng của người dùng ----------------
+    public function showListProduct(Request $request)
+    {
+        // dd($request->all(), $request['null']);
+        $products = Product::getAllProduct(16, $request['search'], $request['category']);
+        foreach ($products as $product) {
+            $product['image'] = Image::getImage($product['product_id']);
+            $product['price'] = SalePrice::query()->where("product_id", $product['product_id'])->first();
+            $product['sizes']  = Size::getSizeInWarehouse($product['product_id']);
+            // dd($product);
+        }
+        $categories = Category::query()->get();
+        $categorySearch = Category::find($request['category']);
+        return view("pages.components.product",
+            ["products"      => $products,
+                "categories"     => $categories,
+                "search"         => $request['search'] ?? null,
+                "categorySearch" => $categorySearch]);
+    }
+
+    public function productDetail(Product $product)
+    {
+        // dd($product);
+        $product->load("sizes", "images", "sale_prices");
+        $allProducts = Product::getAllProduct();
+        foreach ($allProducts as $suggest) {
+            $suggest['price'] = SalePrice::getPrice($suggest['product_id']);
+            $suggest['image'] = Image::getImage($suggest['product_id']);
+            // dd($products);
+        }
+        return view("pages.components.detail", [
+            "product" => $product,
+            "allProducts" => $allProducts,
+        ]);
     }
 }
