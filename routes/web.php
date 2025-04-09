@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Member\CartController;
 use App\Http\Controllers\member\ContactController;
 use App\Http\Controllers\Member\DeliveryInfoController;
+use App\Http\Controllers\Member\EvaluateController;
 use App\Http\Controllers\Member\OrderController;
 use App\Http\Controllers\Member\SettingController;
 use App\Http\Middleware\isAdmin;
@@ -120,6 +121,15 @@ Route::middleware(['auth', isMember::class])->group(function () {
 // ----------------------- Route DeliveryInfo -----------------------
 Route::middleware(['auth', isMember::class])->group(function () {
     Route::resource("delivery", DeliveryInfoController::class);
+});
+
+// ----------------------- Route Evaluate -----------------------
+Route::middleware(['auth', isMember::class])->group(function () {
+    Route::get("evaluate/create/{order}", [EvaluateController::class, "create"])->name('evaluate.create');
+    Route::get("evaluate/show/{order}", [EvaluateController::class, "show"])->name('evaluate.show');
+    Route::post("evaluate/store/{order}", [EvaluateController::class, "store"])->name('evaluate.store');
+    Route::get("evaluate/edit/{order}/{evaluate}", [EvaluateController::class, "edit"])->name('evaluate.edit');
+    Route::post("evaluate/update/{order}/{evaluate}", [EvaluateController::class, "update"])->name('evaluate.update');
 });
 
 // ----------------------- Route Contact -----------------------
