@@ -61,6 +61,10 @@ class Product extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
+    public function evaluates()
+    {
+        return $this->hasMany(Evaluate::class);
+    }
     // ----------------------------------------------------------------------------------------------
     /**
      * Lấy ra tất cả các sản phẩm
