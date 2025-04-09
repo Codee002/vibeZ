@@ -126,4 +126,22 @@ class Order extends Model
         // dd($quantity);
         return $quantity;
     }
+
+    // Lấy các SP đã mua của đơn hàng mà không tính theo size
+    public function getListProductOrder()
+    {
+        $results = [];
+        $tempIds = [];
+        $this->load(["order_details"]);
+        $this->order_details->load(["product", "size"]);
+        foreach(   $this->order_details as $detail)
+        {
+            if (!in_array($detail['product_id'], $tempIds))
+            {
+                $tempIds[] = $detail['product_id'];
+                $results[] = $detail;
+            }
+        }
+        return $results;
+    }
 }
