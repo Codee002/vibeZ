@@ -134,8 +134,7 @@ class OrderController extends Controller
 
                 // Nếu đặt qua giỏ hàng thì xóa khỏi giỏ
                 if ($request['type'] == "cart") {
-                    foreach($request['cartDetailId'] as $cartId)
-                    {
+                    foreach ($request['cartDetailId'] as $cartId) {
                         CartDetail::find($cartId)->delete();
                     }
                 }
@@ -156,11 +155,11 @@ class OrderController extends Controller
             $data = Order::query()
                 ->where('name', 'like', "%" . $search . "%")
                 ->orderBy('created_at', "desc")
-                ->with('user', 'payment_method', 'delivery_info', 'discounts', 'order_details')
+                ->with('user', 'payment_method', 'delivery_info', 'discounts', 'order_details', 'evaluates')
                 ->paginate(5);
             return view("admin.order.index", ['data' => $data, 'search' => $search]);
         } else {
-            $data = Order::with('user', 'payment_method', 'delivery_info', 'discounts', 'order_details')
+            $data = Order::with('user', 'payment_method', 'delivery_info', 'discounts', 'order_details', 'evaluates')
                 ->orderBy('created_at', "desc")
                 ->where("user_id", $user['id'])
                 ->paginate(5);
@@ -171,7 +170,7 @@ class OrderController extends Controller
     public function detail(Order $order)
     {
         $priceDelivery = 30;
-        $order         = $order->load(['user', 'payment_method', 'delivery_info', 'discounts', 'order_details']);
+        $order         = $order->load(['user', 'payment_method', 'delivery_info', 'discounts', 'order_details', 'evaluates']);
         return view("pages.components.order_history_detail", compact("order", 'priceDelivery'));
     }
 
