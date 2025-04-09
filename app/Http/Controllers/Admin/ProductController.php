@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
+use App\Models\Evaluate;
 use App\Models\Image;
 use App\Models\Order;
 use App\Models\Product;
@@ -230,16 +231,21 @@ class ProductController extends Controller
     public function productDetail(Product $product)
     {
         // dd($product);
-        $product->load("sizes", "images", "sale_prices");
-        $allProducts = Product::getAllActiveProduct();
+        $product->load("sizes", "images", "sale_prices", "evaluates");
+        $product->evaluates->load("order");
+        $countEvaluate = Evaluate::countEvaluate($product['id']);
+        $averageRate   = Evaluate::averageRate($product['id']);
+        $allProducts   = Product::getAllActiveProduct();
         foreach ($allProducts as $suggest) {
             $suggest['price'] = SalePrice::getPrice($suggest['product_id']);
             $suggest['image'] = Image::getImage($suggest['product_id']);
             // dd($products);
         }
         return view("pages.components.detail", [
-            "product"     => $product,
-            "allProducts" => $allProducts,
+            "product"       => $product,
+            "allProducts"   => $allProducts,
+            "countEvaluate" => $countEvaluate,
+            "averageRate"   => $averageRate,
         ]);
     }
 }
