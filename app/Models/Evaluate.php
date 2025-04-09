@@ -27,8 +27,35 @@ class Evaluate extends Model
     }
 
     // ---------------- Function -------------
-    // public function getListProductOrder()
-    // {
+    public static function countEvaluate($productId)
+    {
+        $count     = 0;
+        $evaluates = Evaluate::get()->all();
+        foreach ($evaluates as $evaluate) {
+            if ($evaluate['product_id'] == $productId) {
+                $count++;
+            }
+        }
+        return $count;
+    }
 
-    // }
+    public static function totalRate($productId)
+    {
+        $sum       = 0;
+        $evaluates = Evaluate::get()->all();
+        foreach ($evaluates as $evaluate) {
+            if ($evaluate['product_id'] == $productId) {
+                $sum += $evaluate['rate'];
+            }
+        }
+        return $sum;
+    }
+
+    public static function averageRate($productId)
+    {
+        if (Evaluate::countEvaluate($productId) == 0) {
+            return 0;
+        }
+        return Evaluate::totalRate($productId) / Evaluate::countEvaluate($productId);
+    }
 }
