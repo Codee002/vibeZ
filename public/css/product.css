@@ -136,4 +136,33 @@ main .contentContainer {
     font-size: 1rem;
 }
 
+.evaluate__container{
+
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 1.4rem;
+    position: relative;
+}
+    
+.evaluate__container:hover
+{
+    box-shadow: 0rem 0rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.evaluate__container i.nav
+{
+    /* font-size: 2.4rem; */
+    font-size: 1.6rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.evaluate__container .product-evaluate
+{
+    padding: 0rem 2rem;
+}
+
+
 /*------------------- MAIN END -------------------- */
