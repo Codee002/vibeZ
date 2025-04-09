@@ -6,6 +6,7 @@ use App\Http\Requests\StoreEvaluateRequest;
 use App\Http\Requests\UpdateEvaluateRequest;
 use App\Models\Evaluate;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -15,9 +16,18 @@ class EvaluateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($productId)
     {
-        //
+        $product = Product::find($productId);
+        $product->load("sizes", "images", "sale_prices", "evaluates");
+        $product->evaluates->load("order");
+        $countEvaluate = Evaluate::countEvaluate($product['id']);
+        $averageRate   = Evaluate::averageRate($product['id']);
+        return view("pages.components.evaluate_index", [
+            "product"       => $product,
+            "countEvaluate" => $countEvaluate,
+            "averageRate"   => $averageRate,
+        ]);
     }
 
     /**
