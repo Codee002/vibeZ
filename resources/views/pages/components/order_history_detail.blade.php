@@ -180,13 +180,21 @@
                             </button>
                         </form>
                     @elseif ($order['status'] == 'completing')
-                        <form action="" method="get" style="width: 45%"
-                            class="ms-3">
-                            @csrf
-                            <button class="btn " type="submit" style="font-weight:600; width: 100%">
-                                Đánh giá
-                            </button>
-                        </form>
+                        @if ($order->evaluates->isEmpty())
+                            <form action="{{ route('evaluate.create', $order) }}" method="get" style="width: 45%"
+                                class="ms-3">
+                                <button class="btn " type="submit" style="font-weight:600; width: 100%">
+                                    Đánh giá
+                                </button>
+                            </form>
+                        @else
+                            <form action="{{ route('evaluate.show',  $order) }}" method="get" style="width: 45%"
+                                class="ms-3">
+                                <button class="btn " type="submit" style="font-weight:600; width: 100%">
+                                    Xem đánh giá
+                                </button>
+                            </form>
+                        @endif
                     @endif
                 </div>
             </div>
