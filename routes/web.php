@@ -131,6 +131,7 @@ Route::middleware(['auth', isMember::class])->group(function () {
     Route::get("evaluate/edit/{order}/{evaluate}", [EvaluateController::class, "edit"])->name('evaluate.edit');
     Route::post("evaluate/update/{order}/{evaluate}", [EvaluateController::class, "update"])->name('evaluate.update');
 });
+Route::get("evaluate/{productId}", [EvaluateController::class, "index"])->name('evaluate.index');
 
 // ----------------------- Route Contact -----------------------
 Route::middleware(['auth', isMember::class])->group(function () {
