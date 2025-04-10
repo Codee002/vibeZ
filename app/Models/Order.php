@@ -127,6 +127,44 @@ class Order extends Model
         return $quantity;
     }
 
+    // Lấy tất cả SL của sản phẩm đã bán của hóa đơn
+    public static function getAllProductCompletingQuantity($productId, $size)
+    {
+        $quantity = 0;
+        $orders   = Order::where("status", "completing")
+            ->with("order_details")->get()->all();
+        foreach ($orders as $order) {
+            foreach ($order->order_details as $detail) {
+                if ($detail['product_id'] == $productId &&
+                    $detail['size'] == $size) {
+                    $quantity += $detail['quantity'];
+                }
+            }
+
+        }
+        // dd($quantity);
+        return $quantity;
+    }
+
+    // Lấy tất cả SL của sản phẩm đã bán của hóa đơn
+    public static function getAllProductShippingQuantity($productId, $size)
+    {
+        $quantity = 0;
+        $orders   = Order::where("status", "shipping")
+            ->with("order_details")->get()->all();
+        foreach ($orders as $order) {
+            foreach ($order->order_details as $detail) {
+                if ($detail['product_id'] == $productId &&
+                    $detail['size'] == $size) {
+                    $quantity += $detail['quantity'];
+                }
+            }
+
+        }
+        // dd($quantity);
+        return $quantity;
+    }
+
     // Lấy các SP đã mua của đơn hàng mà không tính theo size
     public function getListProductOrder()
     {
@@ -134,14 +172,135 @@ class Order extends Model
         $tempIds = [];
         $this->load(["order_details"]);
         $this->order_details->load(["product", "size"]);
-        foreach(   $this->order_details as $detail)
-        {
-            if (!in_array($detail['product_id'], $tempIds))
-            {
+        foreach ($this->order_details as $detail) {
+            if (! in_array($detail['product_id'], $tempIds)) {
                 $tempIds[] = $detail['product_id'];
                 $results[] = $detail;
             }
         }
         return $results;
     }
+
+    // Lấy ra tổng SL đã bán của sản phẩm
+    public static function getAllQuantityCompleting($productId, $size)
+    {
+        $count  = 0;
+        $orders = Order::where("status", "completing")
+            ->with("order_details")->get()->all();
+        foreach ($orders as $order) {
+            foreach ($order->order_details as $detail) {
+                if ($detail['product_id'] == $productId
+                    && $detail['size'] == $size) {
+                    $count += $detail['quantity'];
+                }
+            }
+
+        }
+
+        // dd($price);
+        return $count;
+    }
+
+    // Lấy ra tổng giá đã bán của sản phẩm
+    public static function getAllPriceCompleting($productId, $size)
+    {
+        $priceTemp = 0;
+        $orders    = Order::where("status", "completing")
+            ->with("order_details")->get()->all();
+        foreach ($orders as $order) {
+            foreach ($order->order_details as $detail) {
+                if ($detail['product_id'] == $productId
+                    && $detail['size'] == $size) {
+                    $priceTemp += $detail['price'] * $detail['quantity'];
+                }
+            }
+
+        }
+
+        // dd($price);
+        return $priceTemp;
+    }
+
+    // Tính tổng tiền tất cả hóa đơn đã hoàn thành
+    public static function getTotalPriceCompleted($startDate = "", $endDate = "")
+    {
+        $price  = 0;
+        $orders = Order::with("order_details")
+            ->where("status", "completing");
+
+        // Kiểm tra nếu $startDate có giá trị
+        if ($startDate != "") {
+            // dd($startDate);
+            $orders->where("created_at", ">=", $startDate);
+        }
+
+        // Kiểm tra nếu $endDate có giá trị
+        if ($endDate !== "") {
+            $orders->where("created_at", "<=", $endDate);
+        }
+
+        $orders = $orders->get()
+            ->all();
+
+        foreach ($orders as $order) {
+            foreach ($order->order_details as $detail) {
+
+                $price += $detail['price'] * $detail['quantity'];
+            }
+        }
+        return $price;
+    }
+
+    // Tính tổng SL SP của tất cả hóa đơn đã hoàn thành
+    public static function getTotalQuantityCompleted($startDate = "", $endDate = "")
+    {
+        $price  = 0;
+        $orders = Order::with("order_details")
+            ->where("status", "completing");
+
+        // Kiểm tra nếu $startDate có giá trị
+        if ($startDate !== "") {
+            $orders->where("created_at", ">=", $startDate);
+        }
+
+        // Kiểm tra nếu $endDate có giá trị
+        if ($endDate !== "") {
+            $orders->where("created_at", "<=", $endDate);
+        }
+
+        $orders = $orders->get()
+            ->all();
+        foreach ($orders as $order) {
+            // dd($order, $order->receipt_details->sum("purchase_price"));
+            $price += $order->order_details->sum("quantity");
+        }
+        return $price;
+    }
+
+    // Tính tổng SL SP của tất cả hóa đơn đã đang giao
+    public static function getTotalQuantityShipping($startDate = "", $endDate = "")
+    {
+        $price  = 0;
+        $orders = Order::with("order_details")
+            ->where("status", "shipping");
+
+        // Kiểm tra nếu $startDate có giá trị
+        if ($startDate !== "") {
+            $orders->where("created_at", ">=", $startDate);
+        }
+
+        // Kiểm tra nếu $endDate có giá trị
+        if ($endDate !== "") {
+            $orders->where("created_at", "<=", $endDate);
+        }
+
+        $orders = $orders->get()
+            ->all();
+        foreach ($orders as $order) {
+            // dd($order, $order->receipt_details->sum("purchase_price"));
+            $price += $order->order_details->sum("quantity");
+        }
+        return $price;
+    }
+
 }
