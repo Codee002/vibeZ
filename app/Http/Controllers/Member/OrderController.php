@@ -10,6 +10,7 @@ use App\Models\OrderDetail;
 use App\Models\PaymentMethod;
 use App\Models\SalePrice;
 use App\Models\WarehouseDetail;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -200,5 +201,20 @@ class OrderController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with("danger", $th->getMessage());
         }
+    }
+
+    // Xuất file
+    public function printInvoice(Order $order)
+    {
+        $priceDelivery = 30;
+        $order         = $order->load(['user', 'payment_method', 'delivery_info', 'discounts', 'order_details', 'evaluates']);
+
+        $pdf = Pdf::loadView('admin.order.print', compact("order", "priceDelivery"));
+
+        $pdf->setPaper('A4', 'portrait');
+
+        return $pdf->stream('invoice.pdf');
+
+        return view("admin.order.print", compact("order", 'priceDelivery'));
     }
 }
