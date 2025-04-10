@@ -79,28 +79,6 @@
                           </ul>
                       </li>
 
-                      {{-- Kho --}}
-                      <li class="nav-header">Kho hàng</li>
-                      <li class="nav-item">
-                          <a href="{{ route('admin.warehouse.index') }}" class="nav-link">
-                              <i class='bx bxs-home-alt-2'></i>
-                              <p>
-                                  Kho hàng
-                              </p>
-                          </a>
-                      </li>
-
-                      {{-- Danh mục --}}
-                      <li class="nav-header">Danh mục sản phẩm</li>
-                      <li class="nav-item">
-                          <a href="{{ route('admin.category.index') }}" class="nav-link">
-                              <i class='bx bxs-category'></i>
-                              <p>
-                                  Danh mục
-                              </p>
-                          </a>
-                      </li>
-
                       {{-- Sản phẩm --}}
                       <li class="nav-header">Sản phẩm</li>
                       <li class="nav-item">
@@ -112,18 +90,67 @@
                           </a>
                       </li>
 
-
-                      {{-- Khuyến mãi --}}
-                      <li class="nav-header">Khuyến mãi</li>
+                      {{-- Danh mục --}}
                       <li class="nav-item">
-                          <a href="{{ route('admin.discount.index') }}" class="nav-link">
-                              <i class='bx bxs-discount'></i>
+                          <a href="{{ route('admin.category.index') }}" class="nav-link">
+                              <i class='bx bxs-category'></i>
                               <p>
-                                  Khuyến mãi
+                                  Danh mục
                               </p>
                           </a>
                       </li>
 
+                      {{-- Kho --}}
+                      <li class="nav-header">Kho hàng</li>
+                      <li class="nav-item">
+                          <a href="{{ route('admin.warehouse.index') }}" class="nav-link">
+                              <i class='bx bxs-home-alt-2'></i>
+                              <p>
+                                  Kho hàng
+                              </p>
+                          </a>
+                      </li>
+
+                      {{-- Nhập hàng --}}
+                      <li class="nav-item">
+                          <a href="{{ route('admin.receipt.index') }}" class="nav-link">
+                              <i class='bx bx-import'></i>
+                              <p>
+                                  Phiếu nhập
+                              </p>
+                          </a>
+                      </li>
+                      
+                      {{-- Thống kê --}}
+                      <li class="nav-item">
+                          <a href="#" class="nav-link">
+                              <i class='bx bxs-chart'></i>
+                              <p>
+                                  Thống kê
+                                  <i class="nav-arrow bi bi-chevron-right"></i>
+                              </p>
+                          </a>
+
+                          <ul class="nav nav-treeview">
+                              <li class="nav-item">
+                                  <a href="{{ route('admin.statistical.index') }}" class="nav-link">
+                                      <p>Sản phẩm</p>
+                                  </a>
+                              </li>
+
+                              <li class="nav-item">
+                                  <a href="{{ route('admin.statistical.revenue') }}" class="nav-link">
+                                      <p>Doanh thu</p>
+                                  </a>
+                              </li>
+
+                              <li class="nav-item">
+                                  <a href="{{ route('admin.statistical.revenue') }}" class="nav-link">
+                                      <p>Doanh thu theo tháng</p>
+                                  </a>
+                              </li>
+                          </ul>
+                      </li>
 
                       {{-- Đơn hàng --}}
                       <li class="nav-header">Đơn hàng</li>
@@ -136,19 +163,17 @@
                           </a>
                       </li>
 
-                      {{-- Nhập hàng --}}
-                      <li class="nav-header">Nhập hàng</li>
+                      {{-- Khuyến mãi --}}
                       <li class="nav-item">
-                          <a href="{{ route('admin.receipt.index') }}" class="nav-link">
-                              <i class='bx bx-import'></i>
+                          <a href="{{ route('admin.discount.index') }}" class="nav-link">
+                              <i class='bx bxs-discount'></i>
                               <p>
-                                  Phiếu nhập
+                                  Khuyến mãi
                               </p>
                           </a>
                       </li>
 
                       {{-- Phương thức thanh toán --}}
-                      <li class="nav-header">Thanh toán</li>
                       <li class="nav-item">
                           <a href="{{ route('admin.payment_method.index') }}" class="nav-link">
                               <i class='bx bxs-home-alt-2'></i>
@@ -157,6 +182,9 @@
                               </p>
                           </a>
                       </li>
+
+
+
                   </ul>
                   <!--end::Sidebar Menu-->
               </nav>

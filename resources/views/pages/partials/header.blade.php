@@ -10,7 +10,7 @@
         <!------- Logo ------->
         <div class="logo">
             <a href="{{ route('home') }}"><img src="/assets/images/logo/11-format.png" alt="" id="logo">
-                <img id="house" src="/asse/logo/15.png" alt=""></a>
+               </a>
         </div>
 
         <!------- Search ------->
