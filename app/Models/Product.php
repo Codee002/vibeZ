@@ -77,9 +77,10 @@ class Product extends Model
         $query = WarehouseDetail::select(
             "warehouse_details.product_id",
             // "warehouse_details.size",
-            "warehouse_details.status",
+            // "warehouse_details.status",
             DB::raw('SUM(warehouse_details.quantity) as totalQuantity'),
             "products.name as product_name",    // Lấy tên sản phẩm
+            "products.unit as product_unit",    // Lấy đơn vị tính
             "categories.id as category_id",     // Lấy mã danh mục
             "categories.name as category_name", // Lấy tên danh mục
         )
@@ -87,7 +88,7 @@ class Product extends Model
             ->join("categories", "products.category_id", "=", "categories.id")
         // ->where("warehouse_details.status", "actived")
             ->groupBy("warehouse_details.product_id",
-                "warehouse_details.status", "products.name", "categories.name", "categories.id") // Nhóm theo id, size và status
+                 "products.name", "categories.name", "categories.id", "product_unit") // Nhóm theo id, size và status
             ->having("totalQuantity", ">", 0);
 
         // Tìm theo tên
