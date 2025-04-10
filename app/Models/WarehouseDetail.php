@@ -3,7 +3,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 class WarehouseDetail extends Model
 {
@@ -34,17 +33,30 @@ class WarehouseDetail extends Model
     }
 
     // ---------------------------------------------------------------------------------
-    // Lấy ra tổng SL SP đang active của tổng các kho
+    // Lấy ra tổng SL SP của từng Size đang active của tổng các kho
     public static function getQuantityActive($productId, $size)
     {
         $details = WarehouseDetail::query()
-        ->where("product_id", $productId)
-        ->where("size", $size)
-        ->where("status", 'actived')
-        ->get();
+            ->where("product_id", $productId)
+            ->where("size", $size)
+            ->where("status", 'actived')
+            ->get();
         $quantity = 0;
-        foreach ($details as $detail)
-        {
+        foreach ($details as $detail) {
+            $quantity += $detail['quantity'];
+        }
+        return $quantity;
+    }
+
+    // Lấy ra tổng SL SP của từng Size (cả active và disable) của tổng các kho
+    public static function getQuantity($productId, $size)
+    {
+        $details = WarehouseDetail::query()
+            ->where("product_id", $productId)
+            ->where("size", $size)
+            ->get();
+        $quantity = 0;
+        foreach ($details as $detail) {
             $quantity += $detail['quantity'];
         }
         return $quantity;

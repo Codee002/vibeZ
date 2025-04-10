@@ -163,4 +163,20 @@ class Warehouse extends Model
         }
         return $quantity;
     }
+
+    // Lấy tổng SL SP của tất cả các kho (tính chung size, tính cả active và disable)
+    public static function getAllQuantity()
+    {
+        $quantity = 0;
+        $warehouses = Warehouse::
+        with("warehouse_details")
+        ->get()
+        ->all();
+        
+        foreach ($warehouses as $warehouse)
+        {
+            $quantity += $warehouse->warehouse_details->sum("quantity");
+        }
+        return $quantity;
+    }
 }
