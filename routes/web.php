@@ -2,11 +2,12 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DiscountController;
+use App\Http\Controllers\Admin\OrderAdminController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReceiptController;
+use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\Admin\WarehouseController;
-use App\Http\Controllers\Admin\OrderAdminController;
 use App\Http\Controllers\AuthenController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Member\CartController;
@@ -52,6 +53,12 @@ Route::prefix("/admin")
 
         // Trang Payment Method
         Route::resource("payment_method", PaymentMethodController::class);
+
+        // Trang Statistical
+        Route::get("statistical", [StatisticalController::class, "index"])->name("statistical.index");
+        Route::get("statistical/revenue", [StatisticalController::class, "revenue"])->name("statistical.revenue");
+        Route::get("statistical/export", [StatisticalController::class, "export"])->name("statistical.export");
+
 
         // Trang Discount
         Route::resource("discount", DiscountController::class);
@@ -117,6 +124,8 @@ Route::middleware(['auth', isMember::class])->group(function () {
     Route::post("order/receive/{order}", [OrderController::class, "receive"])->name("order.receive");
     Route::get("order/detail", [OrderController::class, "detail"])->name("order.detail");
 });
+Route::get("order/pdf/{order}", [OrderController::class, "printInvoice"])->name("order.pdf");
+
 
 // ----------------------- Route DeliveryInfo -----------------------
 Route::middleware(['auth', isMember::class])->group(function () {
