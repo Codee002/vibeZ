@@ -24,6 +24,24 @@
 
 
             <div class="order__info">
+                <div class="form-group mb-3 row">
+                    <h5 class="">Nhà cung cấp</h5>
+                    <select placeholder="Chọn kho" name="distributor" id="distributor"
+                        class="form-select
+                 @error('distributor') is-invalid @enderror"
+                        style="width: 100%; margin: 0 auto">
+                        <option value="" disabled selected>Chọn kho</option>
+                        @foreach ($distributors as $id => $distributor)
+                            <option value="{{ $id }}">{{ $distributor }}</option>
+                        @endforeach
+                    </select>
+                    @error('distributor')
+                        <span class="invalid-feedback" style="display: block">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
                 <div class="form-group mb-5 row">
                     <h5 class="">Kho</h5>
                     <select placeholder="Chọn kho" name="warehouse" id="warehouse"
@@ -41,6 +59,7 @@
                         </span>
                     @enderror
                 </div>
+
                 <div class="row mb-4">
                     <div class="col-4">
                         <h5>Sản phẩm</h5>
@@ -93,8 +112,10 @@
                                 @error('product' . '.' . $products['product']->id . '.' . $size . '.' . 'purchase_price') is-invalid @enderror"
                                     style="width: 70%;"
                                     name="product[{{ $products['product']->id }}][{{ $size }}][purchase_price]"
-                                    value="{{ old('product' . '.' . $products['product']->id . '.' . $size . '.' . 'purchase_price', 
-                                    $products['product']->getPurchasePrice($size)) }}">
+                                    value="{{ old(
+                                        'product' . '.' . $products['product']->id . '.' . $size . '.' . 'purchase_price',
+                                        $products['product']->getPurchasePrice($size),
+                                    ) }}">
 
                                 @error('product' . '.' . $products['product']->id . '.' . $size . '.' . 'purchase_price')
                                     <span class="invalid-feedback text-center" style="display: block">
@@ -110,8 +131,10 @@
                                 @error('product' . '.' . $products['product']->id . '.' . $size . '.' . 'sale_price') is-invalid @enderror"
                                     style="width: 70%;"
                                     name="product[{{ $products['product']->id }}][{{ $size }}][sale_price]"
-                                    value="{{ old('product' . '.' . $products['product']->id . '.' . $size . '.' . 'sale_price',
-                                     $products['product']->getSalePrice($size) ) }}">
+                                    value="{{ old(
+                                        'product' . '.' . $products['product']->id . '.' . $size . '.' . 'sale_price',
+                                        $products['product']->getSalePrice($size),
+                                    ) }}">
                                 @error('product' . '.' . $products['product']->id . '.' . $size . '.' . 'sale_price')
                                     <span class="invalid-feedback text-center" style="display: block">
                                         <strong>{{ $message }}</strong>
@@ -145,4 +168,10 @@
             </div>
         </form>
     </div>
+
+    <style>
+        .order__info__product {
+            height: 7.5rem;
+        }
+    </style>
 @endsection

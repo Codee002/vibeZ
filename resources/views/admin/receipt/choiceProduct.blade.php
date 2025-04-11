@@ -13,14 +13,15 @@
 
 @section('content')
     <div class="container">
-        @if (session('danger'))
+
+        <h3 class="text-center fw-bolder ">Chọn sản phẩm nhập</h3>
+        <form action="{{ route('admin.receipt.create') }}" class="col-12" style="margin: 3rem auto" method="get">
+            @csrf
+            @if (session('danger'))
             <div class="alert alert-danger">
                 {{ session('danger') }}
             </div>
         @endif
-        <h3 class="text-center fw-bolder ">Chọn sản phẩm nhập</h3>
-        <form action="{{ route('admin.receipt.create') }}" class="col-12" style="margin: 3rem auto" method="get">
-            @csrf
             <div class="order__info">
                 <div class="row mb-4">
                     <div class="col-1"></div>
@@ -110,4 +111,10 @@
             });
         });
     </script>
+
+    <style>
+        .order__info__product{
+            height: 7.5rem;
+        }
+    </style>
 @endsection

@@ -20,12 +20,20 @@
         <h3 class="text-center fw-bolder ">Chi tiết phiếu nhập</h3>
         <div class="row" style="margin: auto">
             <div class="col-8 d-flex align-items-center row" style="padding: .5rem;">
+                <p class="detail_title col-2">Nhà cung cấp: </p>
+                <p class="d-flex align-items-center col-5">{{ $receipt->distributor->name }}</p>
+            </div>
+            <div class="col-8 d-flex align-items-center row" style="padding: .5rem;">
                 <p class="detail_title col-2">Kho đã nhập: </p>
                 <p class="d-flex align-items-center col-5">{{ $receipt->warehouse->address }}</p>
             </div>
             <div class="col-8 d-flex align-items-center row" style="padding: .5rem;">
                 <p class="detail_title col-2">Tổng sản phẩm: </p>
                 <p class="col-5">{{ $receipt->getQuantity() }}</p>
+            </div>
+            <div class="col-8 d-flex align-items-center row" style="padding: .5rem;">
+                <p class="detail_title col-2">Tổng giá tiền: </p>
+                <p class="col-5">{{ number_format($receipt->getPrice(), 0, '', '.') }}</p>
             </div>
             <div class="col-8 d-flex align-items-center row" style="padding: .5rem;">
                 <p class="detail_title col-2">Trạng thái: </p>
@@ -95,8 +103,8 @@
 
                         {{-- Giá bán --}}
                         <div class="col d-flex flex-column align-items-center justify-content-center">
-                            <input disabled type="text" class="form-control" style="width: 70%;" 
-                            value="{{$receipt_detail->product->getSalePrice($receipt_detail->size)}}">
+                            <input disabled type="text" class="form-control" style="width: 70%;"
+                                value="{{ $receipt_detail->product->getSalePrice($receipt_detail->size) }}">
                         </div>
 
                         {{-- Số lượng --}}
@@ -117,6 +125,9 @@
             display: flex;
             justify-content: start;
             align-items: center;
+        }
+        .order__info__product{
+            height: 7.5rem;
         }
     </style>
 @endsection
