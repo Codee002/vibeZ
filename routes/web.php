@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DiscountController;
+use App\Http\Controllers\Admin\DistributorController;
 use App\Http\Controllers\Admin\OrderAdminController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\ProductController;
@@ -54,11 +56,17 @@ Route::prefix("/admin")
         // Trang Payment Method
         Route::resource("payment_method", PaymentMethodController::class);
 
+        // Trang Payment Method
+        Route::resource("distributor", DistributorController::class);
+
+        // Trang User
+        Route::get("account/export", [AccountController::class, "exportAccounts"])->name("account.export");
+        Route::resource("account", AccountController::class);
+
         // Trang Statistical
         Route::get("statistical", [StatisticalController::class, "index"])->name("statistical.index");
         Route::get("statistical/revenue", [StatisticalController::class, "revenue"])->name("statistical.revenue");
         Route::get("statistical/export", [StatisticalController::class, "export"])->name("statistical.export");
-
 
         // Trang Discount
         Route::resource("discount", DiscountController::class);
@@ -125,7 +133,6 @@ Route::middleware(['auth', isMember::class])->group(function () {
     Route::get("order/detail", [OrderController::class, "detail"])->name("order.detail");
 });
 Route::get("order/pdf/{order}", [OrderController::class, "printInvoice"])->name("order.pdf");
-
 
 // ----------------------- Route DeliveryInfo -----------------------
 Route::middleware(['auth', isMember::class])->group(function () {
