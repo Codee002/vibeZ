@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReceiptRequest;
+use App\Models\Distributor;
 use App\Models\Product;
 use App\Models\Receipt;
 use App\Models\ReceiptDetail;
@@ -24,11 +25,14 @@ class ReceiptController extends Controller
         if ($search) {
             $data = Receipt::with(['warehouse', 'receipt_details'])
                 ->where('status', 'like', "%" . $search . "%")
-                ->paginate(3);
+                ->orderBy("created_at", "desc")
+                ->paginate(8);
             return view("admin.product.index", ['data' => $data, 'search' => $search]);
 
         } else {
-            $data = Receipt::with(['warehouse', 'receipt_details'])->paginate(6);
+            $data = Receipt::with(['warehouse', 'receipt_details'])
+            ->orderBy("created_at", "desc")
+            ->paginate(8);
         }
         return view("admin.receipt.index", compact('data'));
     }
@@ -43,7 +47,23 @@ class ReceiptController extends Controller
      */
     public function create(Request $request)
     {
+        // Kiểm tra xem người dùng đã chọn chưa
         // dd($request->all());
+        if (!$request['addProducts'])
+        {
+            return redirect()->back()->with("danger", "Vui lòng chọn sản phẩm");
+        }
+        // Kiểm tra xem đã chọn size đầy đủ chưa
+        foreach ($request['addProducts'] as $productId)
+        {
+            // dd($request->all(), !array_key_exists($productId, $request['products']));
+            if (!array_key_exists($productId, $request['products']))
+            {
+                $productTemp = Product::find($productId);
+                return redirect()->back()->with("danger", "Vui lòng chọn size cho sản phẩm " . $productTemp['name']);
+            }
+        }
+
         $addProducts  = $request->addProducts;
         $productSizes = $request->products;
         // dd($products);
@@ -69,7 +89,8 @@ class ReceiptController extends Controller
         }
 
         $warehouses = Warehouse::query()->pluck("address", "id")->all();
-        return view("admin.receipt.create", compact('data', 'warehouses'));
+        $distributors = Distributor::query()->pluck("name", "id")->all();
+        return view("admin.receipt.create", compact('data', 'warehouses', 'distributors'));
     }
 
     /**
@@ -98,6 +119,7 @@ class ReceiptController extends Controller
             DB::transaction(function () use ($request) {
                 $receipt = Receipt::query()->create([
                     "warehouse_id" => $request->warehouse,
+                    "distributor_id" => $request->distributor,
                 ]);
                 foreach ($request->product as $id => $productIds) {
                     foreach ($productIds as $size => $data) {
