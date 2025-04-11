@@ -9,9 +9,11 @@ class Receipt extends Model
     use SoftDeletes;
     protected $fillable = [
         "warehouse_id",
+        'distributor_id',
         'status',
     ];
 
+    // --------------- Relationship ------------
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);
@@ -22,10 +24,27 @@ class Receipt extends Model
         return $this->hasMany(ReceiptDetail::class);
     }
 
+    public function distributor()
+    {
+        return $this->belongsTo(Distributor::class);
+    }
+
     // ---------------- Function -------------
+    // Lấy SL sản phẩm nhập của phiếu đó
     public function getQuantity()
     {
         return $this->hasMany(ReceiptDetail::class)->sum('quantity');
+    }
+
+    // Lấy giá tiền nhập của SP đó
+    public function getPrice()
+    {
+        $sum = 0;
+        foreach($this->receipt_details as $detail)
+        {
+            $sum += $detail['quantity'] * $detail['purchase_price'];
+        }
+        return $sum;
     }
 
     // Lấy tổng giá nhập SP (status = completed)
