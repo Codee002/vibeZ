@@ -49,38 +49,36 @@
                       </li>
 
                       {{-- Tài Khoản --}}
-                      <li class="nav-header">Tài khoản người dùng</li>
+                      <li class="nav-header">Tài khoản</li>
                       <li class="nav-item">
-                          <a href="#" class="nav-link">
+                          <a href="{{ route('admin.account.index') }}" class="nav-link">
                               <i class='bx bxs-user'></i>
                               <p>
-                                  Khách hàng
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
+                                  Người dùng
                               </p>
                           </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="./UI/general.html" class="nav-link">
-                                      <p>Danh sách tài khoản</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
-
-                                      <p>Tài khoản bị khóa</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/timeline.html" class="nav-link">
-
-                                      <p>Khách hàng thân quen</p>
-                                  </a>
-                              </li>
-                          </ul>
                       </li>
+                      <li class="nav-item">
+                        <a href="{{ route('admin.rank.index') }}" class="nav-link">
+                            <i class='bx bxs-diamond'></i>
+                            <p>
+                                Cấp tài khoản
+                            </p>
+                        </a>
+                    </li>
 
                       {{-- Sản phẩm --}}
                       <li class="nav-header">Sản phẩm</li>
+                      {{-- Nhà cung cấp --}}
+                      <li class="nav-item">
+                        <a href="{{ route('admin.distributor.index') }}" class="nav-link">
+                          <i class='bx bxl-mastercard'></i>
+                            <p>
+                                Nhà cung cấp
+                            </p>
+                        </a>
+                    </li>
+
                       <li class="nav-item">
                           <a href="{{ route('admin.product.index') }}" class="nav-link">
                               <i class='bx bxs-food-menu'></i>
@@ -120,7 +118,7 @@
                               </p>
                           </a>
                       </li>
-                      
+
                       {{-- Thống kê --}}
                       <li class="nav-item">
                           <a href="#" class="nav-link">

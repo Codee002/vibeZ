@@ -79,13 +79,21 @@
                 <label for="images">Ảnh sản phẩm</label>
                 <input type="file" accept="image/*" name="images[]" id="images"
                     class="form-control
+                 @error('images.*') is-invalid @enderror
                  @error('images') is-invalid @enderror" multiple>
-                @error('images')
+                @error('images.*')
                     <span class="invalid-feedback" style="display: block">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
+                @error('images')
+                <span class="invalid-feedback" style="display: block">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
             </div>
+
+            {{-- {{dd($errors)}} --}}
 
             <div class="form-group mb-3" id="previewImages">
                 <!-- Script in anh xem truoc -->

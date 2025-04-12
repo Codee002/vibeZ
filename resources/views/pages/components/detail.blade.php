@@ -15,7 +15,28 @@
     <main>
         <div class="mt-4">
             <div class="d-flex row" style="width: 100%">
+                <!-- FLASH MESSAGE -->
+                @if ($errors->any())
+                    <div class="alert alert-danger mb-4" style="font-size: 1rem">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
+                @if (session('success'))
+                    <div class="alert alert-success" style="font-size: 1rem">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session('danger'))
+                    <div class="alert alert-danger" style="font-size: 1rem">
+                        {{ session('danger') }}
+                    </div>
+                @endif
                 {{-- SLIDER --}}
                 <div class=" col-5 p-0">
                     <!--head-card-->
@@ -71,16 +92,164 @@
                     </p>
 
                     <div class="d-flex align-items-center mt-2">
+                        {{-- Thêm vào giỏ --}}
                         <div class="detailContainer__submit">
-                            <button type="submit" class="btn">
+                            <button type="submit" class="btn" data-bs-toggle="modal"
+                                data-bs-target="#ModelAddCart{{ $product['id'] }}">
                                 Thêm vào giỏ
                             </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="ModelAddCart{{ $product['id'] }}"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-size: 1rem">
+                                <div class="modal-dialog ">
+                                    <div class="modal-content settingUserInfo__navWrapper__modalBackground">
+                                        <div class="modal-header">
+                                            <strong>
+                                                <h5 class="modal-title text-center ms-auto">
+                                                    Thêm vào giỏ hàng</h5>
+                                            </strong>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ route('addToCart') }}" method="POST">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <label for="product_id" class="form-label ">
+                                                        Sản phẩm:</label>
+                                                    <div class="mb-3">
+                                                        <!-- Fix csrf -->
+                                                        @csrf
+                                                        <input type="text" id="name" class="form-control mb-1"
+                                                            disabled value="{{ $product['name'] }}">
+                                                        {{-- <input type="hidden" name="product_id" id="product_id"
+                                                    value="{{ $product['product_id'] }}"> --}}
+                                                    </div>
+                                                    <label for="phone" class="form-label"> Kích thước:</label>
+                                                    <div class="mb-3">
+                                                        <input type="hidden" name="product_id"
+                                                            value="{{ $product['id'] }}">
+                                                        <select name="size" id=""
+                                                            class="form-select selectQuantity mb-2">
+                                                            @foreach ($product->sizes as $size)
+                                                                <option value="{{ $size['size'] }}">{{ $size['size'] }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <i id="quantity[{{ $product['id'] }}]">Số lượng còn lại:
+                                                            {{ $quantities[$product['id']][$product->sizes[0]['size']] }}</i>
+                                                    </div>
+                                                    {{-- <label for="phone" class="form-label"> Số lượng còn lại:</label> --}}
+                                                    {{-- <div class="mb-3">
+                                               <input type="number" value="1" disabled class="form-control">
+                                            </div> --}}
+                                                    <label for="phone" class="form-label"> Số lượng:</label>
+                                                    <div class="order__info__product__quantity">
+                                                        <div class="order__info__product__quantity__prepend">
+                                                            <button class="btn btn-outline-secondary"
+                                                                type="button">-</button>
+                                                        </div>
+                                                        <input type="text" class="form-control" value="1"
+                                                            name="quantity" min="1">
+                                                        <div class="order__info__product__quantity__apend">
+                                                            <button class="btn btn-outline-secondary"
+                                                                type="button">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="modal-footer d-flex justify-content-between settingUserInfo__navWrapper__modalBackground">
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                    Hủy
+                                                    bỏ</button>
+                                                <button type="submit" class="btn btn-primary">Thêm</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="detailContainer__submit">
-                            <button type="submit" class="btn">
+                            <button type="submit" class="btn" data-bs-toggle="modal"
+                                data-bs-target="#ModelOrder{{ $product['id'] }}">
                                 Mua ngay
                             </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="ModelOrder{{ $product['id'] }}"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-size: 1rem">
+                                <div class="modal-dialog ">
+                                    <div class="modal-content settingUserInfo__navWrapper__modalBackground">
+                                        <div class="modal-header">
+                                            <strong>
+                                                <h5 class="modal-title text-center ms-auto">
+                                                    Mua ngay</h5>
+                                            </strong>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ route('order') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="type" value="detail">
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <label for="product_id" class="form-label ">
+                                                        Sản phẩm:</label>
+                                                    <div class="mb-3">
+                                                        <!-- Fix csrf -->
+                                                        @csrf
+                                                        <input type="text" id="name" class="form-control mb-1"
+                                                            disabled value="{{ $product['name'] }}">
+                                                        {{-- <input type="hidden" name="product_id" id="product_id"
+                                                                            value="{{ $product['product_id'] }}"> --}}
+                                                    </div>
+                                                    <label for="phone" class="form-label"> Kích thước:</label>
+                                                    <div class="mb-3">
+                                                        <input type="hidden" name="product_id"
+                                                            value="{{ $product['id'] }}">
+                                                        <select name="size" id=""
+                                                            class="form-select selectQuantity mb-2">
+                                                            @foreach ($product->sizes as $size)
+                                                                <option value="{{ $size['size'] }}">{{ $size['size'] }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <i id="quantity[{{ $product['id'] }}]">Số lượng còn lại:
+                                                            {{ $quantities[$product['id']][$product->sizes[0]['size']] }}</i>
+                                                    </div>
+                                                    {{-- <label for="phone" class="form-label"> Số lượng còn lại:</label> --}}
+                                                    {{-- <div class="mb-3">
+                                                                       <input type="number" value="1" disabled class="form-control">
+                                                                    </div> --}}
+                                                    <label for="phone" class="form-label"> Số lượng:</label>
+                                                    <div class="order__info__product__quantity">
+                                                        <div class="order__info__product__quantity__prepend">
+                                                            <button class="btn btn-outline-secondary"
+                                                                type="button">-</button>
+                                                        </div>
+                                                        <input type="text" class="form-control" value="1"
+                                                            name="quantity" min="1">
+                                                        <div class="order__info__product__quantity__apend">
+                                                            <button class="btn btn-outline-secondary"
+                                                                type="button">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="modal-footer d-flex justify-content-between settingUserInfo__navWrapper__modalBackground">
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                    Hủy
+                                                    bỏ</button>
+                                                <button type="submit" class="btn btn-primary">Mua</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -277,27 +446,53 @@
     }
 </style>
 <script>
-    // Sao đánh giá
     document.addEventListener('DOMContentLoaded', function() {
-        const productReviews = document.querySelectorAll('.product-rate');
-        productReviews.forEach(reviewContainer => {
-            const stars = reviewContainer.querySelectorAll('.star-rating .star');
-            const selectedRatingInput = reviewContainer.querySelector('.selected_rating');
-            highlightStars(stars, parseInt(selectedRatingInput.value));
-            console.log(productReviews, reviewContainer, selectedRatingInput)
+        // Sao đánh giá
+        document.addEventListener('DOMContentLoaded', function() {
+            const productReviews = document.querySelectorAll('.product-rate');
+            productReviews.forEach(reviewContainer => {
+                const stars = reviewContainer.querySelectorAll('.star-rating .star');
+                const selectedRatingInput = reviewContainer.querySelector('.selected_rating');
+                highlightStars(stars, parseInt(selectedRatingInput.value));
+                // console.log(productReviews, reviewContainer, selectedRatingInput)
+            });
+
+            // Tô màu
+            function highlightStars(starElements, rating) {
+                starElements.forEach(star => {
+                    const starValue = parseInt(star.dataset.rating);
+                    if (starValue <= rating) {
+                        star.classList.add('active');
+                    } else {
+                        star.classList.remove('active');
+                    }
+                });
+            }
         });
 
-        // Tô màu
-        function highlightStars(starElements, rating) {
-            starElements.forEach(star => {
-                const starValue = parseInt(star.dataset.rating);
-                if (starValue <= rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
+        // Số lượng SP
+        const selectInput = document.querySelectorAll('select[name="size"]');
+
+        console.log(selectInput);
+        selectInput.forEach(radio => {
+            radio.addEventListener('change', function() {
+                const selectedSize = this.value;
+                const productInput = this.parentElement.querySelector(
+                    "input[name='product_id']")
+                const productId = productInput.value
+                const quantityMessage = this.parentElement.querySelector(
+                    "i[id='quantity[" + productId + "]']")
+
+                const quantities = @json($quantities);
+                const pendingQuantities = @json($pendingQuantities);
+
+                quantityMessage.textContent = "Số lượng còn lại: " +
+                    (quantities[productId][selectedSize] - pendingQuantities[productId][
+                        selectedSize
+                    ])
+
             });
-        }
+        });
     });
 </script>
 @section('js')
