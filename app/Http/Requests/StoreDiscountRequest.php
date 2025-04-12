@@ -22,10 +22,10 @@ class StoreDiscountRequest extends FormRequest
     {
         return [
             "category_id" => ['required'],
-            "des"      => ['required'],
-            "percent"  => ['required', 'integer', "gt:0"],
-            "start_at" => ['required', 'date'],
-            "end_at"   => ['required', 'date', 'after:start_at'],
+            "des"         => ['required'],
+            "percent"     => ['required', 'integer', "gt:0", "lt:100"],
+            "start_at"    => ['required', 'date'],
+            "end_at"      => ['required', 'date', 'after:start_at'],
         ];
     }
 
@@ -37,6 +37,7 @@ class StoreDiscountRequest extends FormRequest
             "integer"      => ":attribute không hợp lệ",
             "end_at.after" => "Ngày kết thúc phải lớn hơn ngày bắt đầu",
             "gt"           => ":attribute phải lớn hơn 0",
+            "lt"           => ":attribute phải bé hơn 100",
         ];
     }
 
@@ -44,10 +45,10 @@ class StoreDiscountRequest extends FormRequest
     {
         return [
             "category_id" => "Danh mục",
-            "des"      => "Mô tả",
-            "percent"  => "Trị giá",
-            "start_at" => "Ngày bắt đầu",
-            "end_at"   => "Ngày kết thúc",
+            "des"         => "Mô tả",
+            "percent"     => "Trị giá",
+            "start_at"    => "Ngày bắt đầu",
+            "end_at"      => "Ngày kết thúc",
         ];
     }
 }

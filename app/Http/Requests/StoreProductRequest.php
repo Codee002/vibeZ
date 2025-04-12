@@ -36,7 +36,7 @@ class StoreProductRequest extends FormRequest
         return [
             "regex"    => ':attribute không chứa ký tự đặc biệt',
             "required" => ':attribute không được rỗng',
-            "images.img" => ":attribute phải là hình ảnh",
+            "image"    => ":attribute phải là hình ảnh",
         ];
     }
 

@@ -20,10 +20,10 @@ class StoreReceiptRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd(request()->product[10][40]['sale_price']);
-        // dd(request(), request()->product[10][40]['sale_price']);
+        // dd(request()->all());
         return [
             "warehouse"                  => 'required',
+            "distributor"                => 'required',
             "product.*.*.purchase_price" => "required|numeric|min:1",
             "product.*.*.sale_price"     => "required|numeric|min:1",
             "product.*.*.quantity"       => "required|integer|min:1",
@@ -44,6 +44,7 @@ class StoreReceiptRequest extends FormRequest
     {
         return [
             "warehouse"                  => "Kho",
+            "distributor"                => "Nhà cung cấp",
             "product.*.*.purchase_price" => 'Giá nhập',
             "product.*.*.sale_price"     => 'Giá bán',
             "product.*.*.quantity"       => 'Số lượng',
