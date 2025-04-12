@@ -15,30 +15,37 @@
 
             <div class="col-12 d-flex align-items-center row">
                 <p class="title col-2">Số điện thoại: </p>
-                <p class="d-flex align-items-center col-5">{{ $user['phone'] }}</p>
+                <p class="d-flex align-items-center col-5">{{ $user['phone'] ?? 'Chưa có SĐT' }}</p>
             </div>
 
             <div class="col-12 d-flex align-items-center row">
                 <p class="title col-2">Email: </p>
-                <p class="d-flex align-items-center col-5">{{ $user['email'] }}</p>
+                <p class="d-flex align-items-center col-5">{{ $user['email'] ?? 'Chưa có Email' }}</p>
             </div>
 
             <div class="col-12 d-flex align-items-center row">
                 <p class="title col-2">Tổng đơn hàng: </p>
                 <p class="d-flex align-items-center col-7">{{ $user['count_all_order'] }}
-                    <i class="ms-1">
-                        ({{ $user['count_order_completed'] }} hoàn thành,
-                        {{ $user['count_order_shipping'] }} đang vận chuyển,
-                        {{ $user['count_order_pending'] }} chờ duyệt,
-                        {{ $user['count_order_aborting'] }} đã hủy,
-                        {{ $user['count_order_rejecting'] }} bị từ chối)
-                </i>
+                    @if ($user['count_all_order'] != 0)
+                        <i class="ms-1">
+                            ({{ $user['count_order_completed'] }} hoàn thành,
+                            {{ $user['count_order_shipping'] }} đang vận chuyển,
+                            {{ $user['count_order_pending'] }} chờ duyệt,
+                            {{ $user['count_order_aborting'] }} đã hủy,
+                            {{ $user['count_order_rejecting'] }} bị từ chối)
+                        </i>
+                    @endif
                 </p>
             </div>
 
             <div class="col-12 d-flex align-items-center row">
                 <p class="title col-2">Thanh toán: </p>
                 <p class="d-flex align-items-center col-5">{{ number_format($user['order_price'], 0, '', '.') }}</p>
+            </div>
+
+            <div class="col-12 d-flex align-items-center row">
+                <p class="title col-2">Cấp tài khoản: </p>
+                <p class="d-flex align-items-center col-5">{{ $user['rank'] }}</p>
             </div>
         </div>
 

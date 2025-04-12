@@ -173,4 +173,34 @@ class User extends Authenticatable
         return $sum;
     }
 
+    // Lấy ra cấp của tài khoản hiện tại
+    public function getRank()
+    {
+        $ranks = Rank::query()
+            ->orderBy("point", "desc")
+            ->pluck('type', 'point');
+        foreach ($ranks as $point => $type) {
+            if ($this->getOrderPriceCompleted() >= $point) {
+                return $type;
+            }
+
+        }
+        return "Chưa có cấp";
+    }
+
+    // Lấy ra khuyến mãi theo cấp của tài khoản hiện tại
+    public function getRankDiscount()
+    {
+        $userRank = $this->getRank();
+        $ranks    = Rank::query()
+            ->orderBy("discount", "desc")
+            ->pluck('type', 'discount');
+        foreach ($ranks as $discount => $type) {
+            if ($userRank == $type) {
+                return $discount;
+            }
+
+        }
+        return 0;
+    }
 }

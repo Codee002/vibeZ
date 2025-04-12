@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exports\AccountExport;
 use App\Http\Controllers\Controller;
+use App\Models\Rank;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,7 +33,10 @@ class AccountController extends Controller
                 ->paginate(8);
         }
 
+        $ranks = Rank::get()->all();
+        // dd($ranks);
         foreach ($data as $user) {
+            $user['rank']                  = $user->getRank();
             $user['count_all_order']       = $user->countAllOrder();
             $user['count_order_completed'] = $user->countOrderCompleted();
             $user['order_price']           = $user->getOrderPriceCompleted();
@@ -53,12 +57,13 @@ class AccountController extends Controller
         $user['count_order_pending']   = $user->countOrderCPending();
         $user['count_order_shipping']  = $user->countOrderShipping();
         $user['count_order_rejecting'] = $user->countOrderRejecting();
-        $user['count_order_aborting'] = $user->countOrderAborting();
+        $user['count_order_aborting']  = $user->countOrderAborting();
         $user['order_price']           = $user->getOrderPriceCompleted();
+        $user['rank']                  = $user->getRank();
 
         $orders = $user->orders()
-        ->orderBy("created_at", "desc")
-        ->paginate(8);
+            ->orderBy("created_at", "desc")
+            ->paginate(8);
         // dd($user);
         return view("admin.account.show", compact('user', 'orders'));
     }
@@ -66,16 +71,17 @@ class AccountController extends Controller
     public function exportAccounts()
     {
         $adminId = Auth::id();
-        $data = User::query()
-        ->where('id', "!=", $adminId)
-        ->get();
+        $data    = User::query()
+            ->where('id', "!=", $adminId)
+            ->get();
 
         foreach ($data as $user) {
-            $user['count_all_order']       = $user->countAllOrder();
-            $user['order_price']           = $user->getOrderPriceCompleted();
+            $user['count_all_order'] = $user->countAllOrder();
+            $user['order_price']     = $user->getOrderPriceCompleted();
+            $user['rank']            = $user->getRank();
         }
 
-        $name = "TaiKhoanNguoiDung_" . Carbon::now()->format("d_m_Y") .".xlsx";
-        return Excel::download(new AccountExport($data),  $name);
+        $name = "TaiKhoanNguoiDung_" . Carbon::now()->format("d_m_Y") . ".xlsx";
+        return Excel::download(new AccountExport($data), $name);
     }
 }

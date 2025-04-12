@@ -32,7 +32,8 @@
                 </form>
             </div>
             <div class="text-end col-9">
-                <a href="{{ route('admin.account.export') }}" class="btn btn-success text-white text-end ms-3">Xuất Excel</a>
+                <a href="{{ route('admin.account.export') }}" class="btn btn-success text-white text-end ms-3">Xuất
+                    Excel</a>
             </div>
         </div>
 
@@ -49,21 +50,23 @@
                 <th>Email</th>
                 <th>Tổng đơn hàng</th>
                 <th>Thanh toán</th>
+                <th>Cấp tài khoản</th>
                 <th>Thao tác</th>
             </thead>
 
             <tbody>
                 @foreach ($data as $user)
-                {{-- {{dd($user)}} --}}
+                    {{-- {{dd($user)}} --}}
                     <tr>
                         <td>KH{{ $user['id'] }}</td>
-                        <td> {{$user['name'] }} </td>
-                        <td> {{$user['phone'] }} </td>
-                        <td> {{$user['email'] }} </td>
-                        <td> {{$user['count_all_order'] }} </td>
-                        <td> {{$user['order_price'] }} </td>
-                        <td><a href="{{ route('admin.account.show', $user['id']) }}"
-                                class="btn btn-secondary btn-sm"><i class='bx bxs-detail'></i></a>
+                        <td> {{ $user['name'] }} </td>
+                        <td> {{ $user['phone'] ?? "Chưa có SĐT" }} </td>
+                        <td> {{ $user['email'] ?? "Chưa có Email" }}</td>
+                        <td> {{ $user['count_all_order'] }} </td>
+                        <td> {{ number_format($user['order_price'], 0, '', '.') }} </td>
+                        <td> {{ $user['rank'] }} </td>
+                        <td><a href="{{ route('admin.account.show', $user['id']) }}" class="btn btn-secondary btn-sm"><i
+                                    class='bx bxs-detail'></i></a>
                         </td>
                     </tr>
                 @endforeach

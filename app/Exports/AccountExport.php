@@ -28,6 +28,7 @@ class AccountExport implements FromCollection, WithHeadings
                 $account['email'],
                 $account['count_all_order'],
                 $account['order_price'],
+                $account['rank'],
             ];
         });
     }
@@ -41,6 +42,7 @@ class AccountExport implements FromCollection, WithHeadings
             'Email',
             'Tổng đơn hàng',
             'Thanh toán',
+            'Cấp',
         ];
     }
 }
