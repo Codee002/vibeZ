@@ -233,8 +233,12 @@
                             <td style="text-align: right;">{{ number_format($priceDelivery, 0, ',', '.') }}</td>
                         </tr>
                         <tr>
-                            <td style="text-align: right; padding-right: 10px;">Tổng giảm giá:</td>
+                            <td style="text-align: right; padding-right: 10px;">Tổng khuyến mãi:</td>
                             <td style="text-align: right;">{{ number_format($order->getTotalDiscount(), 0, ',', '.') }}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; padding-right: 10px;">Khách hàng thân thuộc:</td>
+                            <td style="text-align: right;">{{ number_format($order['rank_discount'], 0, ',', '.') }}</td>
                         </tr>
                         <tr>
                             <td style="text-align: right; padding-right: 10px; font-weight: bold;">Tổng thanh toán:</td>

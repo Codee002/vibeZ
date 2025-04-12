@@ -128,7 +128,8 @@
                     <p>Trạng thái</p>
                     <p>Tổng tiền sản phẩm</p>
                     <p>Tổng phí vận chuyển</p>
-                    <p>Tổng giảm giá</p>
+                    <p>Tổng khuyến mãi</p>
+                    <p>Khách hàng thân thuộc</p>
                     <hr>
                     <p style="font-size: 1.2rem; font-weight:600; color: var(--extra1-color)">Tổng thanh toán</p>
                 </div>
@@ -149,6 +150,7 @@
                     <p id="priceDelivery">{{ number_format($priceDelivery, 0, '', '.') }}</p>
                     {{-- <p id="pricePromotion">0</p> --}}
                     <p id="pricePromotion">{{ number_format($order->getTotalDiscount(), 0, '', '.') }}</p>
+                    <p id="pricePromotion">{{ number_format($order['priceRankDiscount'], 0, '', '.') }}</p>
                     <hr>
                     <p style="font-size: 1.2rem;" id="finalPrice">
                         {{ number_format($order['total_price'], 0, '', '.') }}
@@ -180,6 +182,12 @@
                             </button>
                         </form>
                     @elseif ($order['status'] == 'completing')
+                        <form action="{{ route('order.pdf', $order) }}" method="get" style="width: 45%"
+                            class="col-5 ms-2">
+                            <button class="btn " type="submit" style="font-weight:600; width: 100%">
+                                In hóa đơn
+                            </button>
+                        </form>
                         @if ($order->evaluates->isEmpty())
                             <form action="{{ route('evaluate.create', $order) }}" method="get" style="width: 45%"
                                 class="ms-3">
@@ -188,7 +196,7 @@
                                 </button>
                             </form>
                         @else
-                            <form action="{{ route('evaluate.show',  $order) }}" method="get" style="width: 45%"
+                            <form action="{{ route('evaluate.show', $order) }}" method="get" style="width: 45%"
                                 class="ms-3">
                                 <button class="btn " type="submit" style="font-weight:600; width: 100%">
                                     Xem đánh giá

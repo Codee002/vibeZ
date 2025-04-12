@@ -128,7 +128,8 @@
                         <p>Trạng thái</p>
                         <p>Tổng tiền sản phẩm</p>
                         <p>Tổng phí vận chuyển</p>
-                        <p>Tổng giảm giá</p>
+                        <p>Tổng khuyến mãi</p>
+                        <p>Khách hàng thân thuộc</p>
                         <hr>
                         <p style="font-size: 1.2rem; font-weight:600; color: var(--extra1-color)">Tổng thanh toán</p>
                     </div>
@@ -149,6 +150,7 @@
                         <p id="priceDelivery">{{ number_format($priceDelivery, 0, '', '.') }}</p>
                         {{-- <p id="pricePromotion">0</p> --}}
                         <p id="pricePromotion">{{ number_format($order->getTotalDiscount(), 0, '', '.') }}</p>
+                        <p id="pricePromotion">{{ number_format($order['priceRankDiscount'], 0, '', '.') }}</p>
                         <hr>
                         <p style="font-size: 1.2rem;" id="finalPrice">
                             {{ number_format($order['total_price'], 0, '', '.') }}
@@ -161,7 +163,7 @@
             <div class="row">
                 <div class="col-8"></div>
                 <div class="col-4 d-flex">
-                    <div class="order__info__option">
+                    <div class="order__info__option mb-3">
                         @if ($order['status'] == 'pending')
                             <form action="{{ route('admin.order.reject', $order) }}" method="POST" style="width: 45%"
                                 class="me-2">
@@ -178,6 +180,18 @@
                                     Duyệt đơn
                                 </button>
                             </form>
+                        @elseif($order['status'] == 'completing')
+                            <div class="row" style="width: 100%">
+                                <div class="col-6"></div>
+                                <div class="col-6 d-flex justify-content-end">
+                                    <form action="{{ route('order.pdf', $order) }}" method="get" style="width: 100%"
+                                        class="ms-2">
+                                        <button class="btn " type="submit" style="font-weight:600; width: 100%">
+                                            In hóa đơn
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         @endif
                     </div>
                 </div>

@@ -49,6 +49,8 @@
                                 <!-- Fix CSRF -->
                                 @csrf
 
+                                @if ($deliveryInfos->isNotEmpty())
+                                    
                                 @foreach ($deliveryInfos as $deliveryInfo)
                                     <div class="d-flex mb-3">
                                         <input class="form-check-input" type="radio" name="delivery" id="delivery"
@@ -66,6 +68,11 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                @else
+                                <div class="d-flex mb-3">
+                                    <p>Bạn chưa có địa chỉ nào</p>
+                                </div>
+                                @endif
 
                             </div>
                         </div>
@@ -261,7 +268,8 @@
                     <div class="col-8 order__info__sum__type">
                         <p>Tổng tiền sản phẩm</p>
                         <p>Tổng phí vận chuyển</p>
-                        <p>Tổng giảm giá</p>
+                        <p>Tổng khuyến mãi</p>
+                        <p>Khách hàng thân thuộc</p>
                         <hr>
                         <p style="font-size: 1.2rem; font-weight:600; color: var(--extra1-color)">Tổng thanh toán</p>
                     </div>
@@ -269,9 +277,10 @@
                         <p id="totalPriceProduct">{{ number_format($totalPriceProduct, 0, '', '.') }}</p>
                         <p id="priceDelivery">{{ number_format($priceDelivery, 0, '', '.') }}</p>
                         <p id="pricePromotion">{{ number_format($pricePromotion, 0, '', '.') }}</p>
+                        <p id="pricePromotion">{{ number_format($priceRankDiscount, 0, '', '.') }}</p>
                         <hr>
                         <p style="font-size: 1.2rem;" id="finalPrice">
-                            {{ number_format($totalPriceProduct + $priceDelivery - $pricePromotion, 0, '', '.') }}
+                            {{ number_format($totalPriceProduct + $priceDelivery - $pricePromotion - $priceRankDiscount, 0, '', '.') }}
                         </p>
                     </div>
                 </div>
@@ -279,7 +288,9 @@
 
             {{-- Tổng giá --}}
             <input type="hidden" name="total_price"
-                value="{{ $totalPriceProduct + $priceDelivery - $pricePromotion }}">
+                value="{{ $totalPriceProduct + $priceDelivery - $pricePromotion - $priceRankDiscount}}">
+            <input type="hidden" name="rank_discount"
+                value="{{ $priceRankDiscount }}">
 
             {{-- Lựa chọn --}}
             <div class="row">
@@ -358,6 +369,9 @@
                 let totalPriceProduct = @json($totalPriceProduct);
                 let input_finalPrice = document.querySelector('input[name="total_price"]');
 
+                // Giá KM khách hàng thân thuộc
+                let priceRankDiscount = @json($priceRankDiscount);
+
                 const cartDetails = @json ($cartDetails);
 
                 discountDes.forEach((discount, i) => {
@@ -374,9 +388,9 @@
 
                 })
                 p_pricePromotion.textContent = pricePromotion
-                p_finalPrice.textContent = totalPriceProduct - pricePromotion + 30
+                p_finalPrice.textContent = totalPriceProduct - pricePromotion - priceRankDiscount + 30
                 selectedDiscounts.innerHTML = content
-                input_finalPrice.value = totalPriceProduct - pricePromotion + 30
+                input_finalPrice.value = totalPriceProduct - pricePromotion - priceRankDiscount + 30
                 // console.log(input_finalPrice.value);
             }
         })

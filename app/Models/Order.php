@@ -11,6 +11,7 @@ class Order extends Model
         "delivery_info_id",
         "payment_method_id",
         "total_price",
+        "rank_discount",
     ];
 
     // ---------------- Relationship -------------

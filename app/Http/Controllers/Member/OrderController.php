@@ -20,10 +20,16 @@ class OrderController extends Controller
 {
     public function order(Request $request)
     {
+        // dd($request->all());
+        /**
+         * @var User $user
+         */
+        $user = Auth::user();
         // dd($request, $request['cartDetailId']);
         $totalPriceProduct = 0;
         $priceDelivery     = 30;
         $pricePromotion    = 0;
+        $priceRankDiscount = 0;
 
         // Lấy ra thông tin nhận hàng
         $deliveryInfos = DeliveryInfo::query()
@@ -45,9 +51,9 @@ class OrderController extends Controller
         $discountsTemp = Discount::getActivedDiscounts(Carbon::now());
         $discounts     = [];
 
+        $cartDetails = [];
         // Kiểm tra hình thức đặt hàng
         if ($request['type'] == "cart") {
-            $cartDetails = [];
             foreach ($request['cartDetailId'] as $i => $id) {
                 // Lấy SP từ chi tiết giỏ hàng
                 $cartDetails[] = CartDetail::query()
@@ -73,15 +79,46 @@ class OrderController extends Controller
                     }
                 }
             }
+        } else if ($request['type'] == "detail") {
+            // Tạo riêng 1 SP đó trong giỏ hàng
+            $cartId           = $user->cart['id'];
+             $cartDetails[] = CartDetail::query()->create([
+                "cart_id"    => $cartId,
+                'product_id' => $request["product_id"],
+                'size'       => $request["size"],
+                'quantity'   => $request["quantity"],
+            ]);
+            // dd( $cartDetails);
+            // Lấy giá cho sản phẩm
+             $cartDetails[0]['price'] = SalePrice::getPriceBySize( $cartDetails[0]['product_id'],  $cartDetails[0]['size']);
 
+            // Giá SP
+             $cartDetails[0]['totalPrice'] =  $cartDetails[0]['price'] *  $cartDetails[0]['quantity'];
+
+            // Lấy ra tổng giá của đơn hàng
+            $totalPriceProduct +=  $cartDetails[0]['totalPrice'];
+
+            // Lấy DS Khuyến mãi theo danh mục
+            foreach ($discountsTemp as $discount) {
+                if ($discount['category_id'] ==  $cartDetails[0]->product['category_id']
+                    && ! in_array($discount, $discounts)) {
+                    $discounts[] = $discount;
+                }
+            }
+            $cartDetails[0]->delete();
         }
+
+        // Lấy ra giá khuyến mãi theo cấp
+        $priceRankDiscount = $totalPriceProduct * $user->getRankDiscount() / 100;
+
         return view("pages.components.order_detail", [
-            "cartDetails"       => $cartDetails,
+            "cartDetails"       =>  $cartDetails,
             "cartIds"           => $request['cartDetailId'],
             "type"              => $request['type'],
             "totalPriceProduct" => $totalPriceProduct,
             "priceDelivery"     => $priceDelivery,
             "pricePromotion"    => $pricePromotion,
+            "priceRankDiscount" => $priceRankDiscount,
             "deliveryInfos"     => $deliveryInfos,
             "deliveryDefault"   => $deliveryDefault,
             "payMenthods"       => $payMenthods,
@@ -114,6 +151,7 @@ class OrderController extends Controller
                     "payment_method_id" => $request['payMethod'],
                     "status"            => 'pending',
                     "total_price"       => $request['total_price'],
+                    "rank_discount"     => $request['rank_discount'],
                 ];
 
                 $order = Order::query()->create($data);
