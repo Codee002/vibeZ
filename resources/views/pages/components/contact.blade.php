@@ -30,23 +30,37 @@
                         </div>
                     @endif
 
-                    <label for="type">Chọn nội dung</label>
-                    <select name="type" class="form-select" id="type" size="1">
-                        <option>------------ Chọn nội dung ------------</option>
-                        <option value="1">Chính sách mua hàng</option>
-                        <option value="2">Bảo mật tài khoản</option>
-                        <option value="3">Lỗi hệ thống</option>
-                        <option value="4">Liên hệ hợp tác</option>
-                        <option value="5">Vấn đề khác</option>
-                    </select>
+                    <div class="form-group">
+                        <label for="type">Chọn nội dung</label>
+                        <select name="type"
+                            class="form-select  
+                        @error('type') is-invalid @enderror" id="type"
+                            size="1">
+                            <option value="" disabled>------------ Chọn nội dung ------------</option>
+                            <option>Chính sách mua hàng</option>
+                            <option>Bảo mật tài khoản</option>
+                            <option>Lỗi hệ thống</option>
+                            <option>Liên hệ hợp tác</option>
+                            <option>Vấn đề khác</option>
+                        </select>
+                        @error('type')
+                            <span class="invalid-feedback" style="display: block">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
 
                     <div class="form-group ">
                         <label for="content">Nội dung</label>
                         <div class="input-icon">
-                            <textarea class="form-control" id="content"
-                            name="content" cols="50" rows="4" placeholder="Không quá 200 ký tự !"></textarea>
+                            <textarea class="form-control  @error('content') is-invalid @enderror" id="content" name="content" cols="50"
+                                rows="4" placeholder="Nhập nội dung cần liên hệ">{{ old('content', '') }}</textarea>
+                            @error('content')
+                                <span class="invalid-feedback" style="display: block">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
-                        <span class="error-message"></span>
                     </div>
 
                     <div class="d-flex justify-content-center">
