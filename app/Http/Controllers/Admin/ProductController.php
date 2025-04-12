@@ -241,11 +241,22 @@ class ProductController extends Controller
             $suggest['image'] = Image::getImage($suggest['product_id']);
             // dd($products);
         }
+
+        foreach ($product->sizes as $size) {
+            // Lấy giá của từng Size
+            $quantities[$product['id']][$size['size']] = WarehouseDetail::getQuantityActive($product['id'], $size['size']);
+
+            // Lấy ra tổng SL sản phẩm đang được chờ duyệt đơn
+            $pendingQuantities[$product['id']][$size['size']] = Order::getAllProductPendingQuantity($product['id'], $size['size']);
+        }
+        // dd($quantities);
         return view("pages.components.detail", [
-            "product"       => $product,
-            "allProducts"   => $allProducts,
-            "countEvaluate" => $countEvaluate,
-            "averageRate"   => $averageRate,
+            "product"           => $product,
+            "allProducts"       => $allProducts,
+            "countEvaluate"     => $countEvaluate,
+            "averageRate"       => $averageRate,
+            "quantities"        => $quantities,
+            "pendingQuantities" => $pendingQuantities,
         ]);
     }
 }
