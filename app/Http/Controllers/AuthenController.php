@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginAccountRequest;
 use App\Http\Requests\StoreAccountRequest;
 use App\Models\Cart;
-use App\Models\CartDetail;
 use App\Models\User;
 use Carbon\Carbon;
 use Gregwar\Captcha\CaptchaBuilder;
@@ -158,10 +157,10 @@ class AuthenController extends Controller
 
         // Tạo giỏ hàng
         $cart = Cart::query()->create([
-            "user_id" => $user['id']
+            "user_id" => $user['id'],
         ]);
 
-        return redirect()->route('/register')->with([
+        return redirect()->route('register')->with([
             'success' => 'Đăng ký tài khoản thành công']);
     }
 
@@ -328,9 +327,11 @@ class AuthenController extends Controller
             'password.confirmed'             => "Mật khẩu nhập lại không trùng khớp",
         ]);
 
+        // Tắt xác thực 2 bước
         $password = Hash::make($data['password']);
         $user->update([
-            'password' => $password,
+            'password'      => $password,
+            'two_step_auth' => "0", // Tắt xác thực 2 bước
         ]);
 
         return redirect()->route('login')->with([
