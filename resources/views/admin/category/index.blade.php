@@ -22,15 +22,21 @@
 
         <h2 class="text-center fw-bolder ">Danh sách danh mục</h2>
         <div class="d-flex align-items-center mb-1 row">
-            <div class="col-3">
+            <div class="col-5">
                 <form action="{{ route('admin.category.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Tìm danh mục" id="search" name="search" class="form-control"></input>
+                        <input placeholder="Danh mục" id="search" name="name" class="form-control me-1"></input>
+                        <select name="order_price" class="form-select me-1">
+                            <option value="" disabled selected>Sắp theo sản phẩm</option>
+                            <option value="asc">Tăng dần</option>
+                            <option value="desc">Giảm dần</option>
+                        </select>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
+                    
                 </form>
             </div>
-            <div class="text-end col-9">
+            <div class="text-end col-7">
                 <a href="{{ route('admin.category.create') }}" class="btn btn-success text-white text-end ms-3">Thêm danh
                     mục</a>
             </div>

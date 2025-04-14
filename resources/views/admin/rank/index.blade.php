@@ -23,15 +23,25 @@
 
         <h2 class="text-center fw-bolder ">Danh sách cấp của tài khoản</h2>
         <div class="d-flex align-items-center mb-1 row">
-            <div class="col-3">
+            <div class="col-5">
                 <form action="{{ route('admin.rank.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Tìm cấp" id="search" name="search" class="form-control"></input>
+                        <select name="rank" class="form-select me-1">
+                            <option value="" disabled selected>Cấp</option>
+                            @foreach ($data as $rank)
+                                <option value="{{ $rank['id'] }}">{{ $rank['type'] }}</option>
+                            @endforeach
+                        </select>
+                        <select name="point" class="form-select me-1">
+                            <option value="" disabled selected>Sắp theo số điểm</option>
+                            <option value="asc">Tăng dần</option>
+                            <option value="desc">Giảm dần</option>
+                        </select>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
             </div>
-            <div class="text-end col-9">
+            <div class="text-end col-7">
                 <a href="{{ route('admin.rank.create') }}" class="btn btn-success text-white text-end ms-3">Thêm cấp</a>
             </div>
         </div>
@@ -53,8 +63,8 @@
                 @foreach ($data as $rank)
                     <tr>
                         <td>{{ $rank['type'] }}</td>
-                        <td> {{ number_format($rank['point'], 0, "", ".") }} </td>
-                        <td> {{ number_format($rank['discount'], 0, "", ".") }}% </td>
+                        <td> {{ number_format($rank['point'], 0, '', '.') }} </td>
+                        <td> {{ number_format($rank['discount'], 0, '', '.') }}% </td>
                         <td><a href="{{ route('admin.rank.show', $rank) }}" class="btn btn-secondary btn-sm"><i
                                     class='bx bxs-detail'></i></a>
                             <a href="{{ route('admin.rank.edit', $rank) }}" class="btn btn-warning btn-sm"><i

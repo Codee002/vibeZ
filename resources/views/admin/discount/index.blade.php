@@ -23,15 +23,34 @@
 
         <h2 class="text-center fw-bolder ">Danh sách khuyến mãi thanh toán</h2>
         <div class="d-flex align-items-center mb-1 row">
-            <div class="col-3">
+            <div class="col-7">
                 <form action="{{ route('admin.discount.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Tìm khuyến mãi" id="search" name="search" class="form-control"></input>
+
+                        <select name="category" class="form-select me-1">
+                            <option value="" disabled selected>Danh mục</option>
+                            @foreach ($categories as $category)
+                                <option value="{{$category['id']}}">{{ $category['name'] }}</option>
+                            @endforeach
+                        </select>
+
+                        <select name="percent" class="form-select me-1">
+                            <option value="" disabled selected>Sắp theo trị giá</option>
+                            <option value="asc">Tăng dần</option>
+                            <option value="desc">Giảm dần</option>
+                        </select>
+
+                        {{-- {{dd($ranks)}} --}}
+                        <select name="status" class="form-select me-1">
+                            <option value="" disabled selected>Trạng thái</option>
+                                <option value="actived">Đã kích hoạt</option>
+                                <option value="disabled">Chưa kích hoạt</option>
+                        </select>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
             </div>
-            <div class="text-end col-9">
+            <div class="text-end col-5">
                 <a href="{{ route('admin.discount.create') }}" class="btn btn-success text-white text-end ms-3">Thêm
                     khuyến mãi</a>
             </div>
@@ -63,16 +82,14 @@
                         <td> {{ $discount['end_at'] }} </td>
                         <td>
                             @if ($discount['status'] == 'disabled')
-                                <form action="{{ route('admin.discount.activedDiscount', $discount) }}"
-                                    method="POST"
+                                <form action="{{ route('admin.discount.activedDiscount', $discount) }}" method="POST"
                                     onsubmit="return confirm('Đồng ý chuyển sang trạng thái kích hoạt?\n' 
                                     + 'Trạng thái này sẽ cho phép người dùng có thể áp dụng khuyến mãi')">
                                     @csrf
                                     <button type="submit" class="btn btn-danger">Chưa kích hoạt</button>
                                 </form>
                             @else
-                                <form action="{{ route('admin.discount.disabledDiscount', $discount) }}"
-                                    method="POST"
+                                <form action="{{ route('admin.discount.disabledDiscount', $discount) }}" method="POST"
                                     onsubmit="return confirm('Xác nhận không kích hoạt trạng thái ?')">
                                     @csrf
                                     <button type="submit" class="btn btn-success">Đã kích hoạt</button>

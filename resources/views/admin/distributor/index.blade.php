@@ -23,15 +23,16 @@
 
         <h2 class="text-center fw-bolder ">Danh sách nhà cung cấp</h2>
         <div class="d-flex align-items-center mb-1 row">
-            <div class="col-3">
+            <div class="col-5">
                 <form action="{{ route('admin.distributor.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Tìm NCC" id="search" name="search" class="form-control"></input>
+                        <input placeholder="Tên" id="search" name="name" class="form-control me-1"></input>
+                        <input placeholder="Địa chỉ" name="phone" class="form-control me-1"></input>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
             </div>
-            <div class="text-end col-9">
+            <div class="text-end col-7">
                 <a href="{{ route('admin.distributor.create') }}" class="btn btn-success text-white text-end ms-3">Thêm NCC</a>
             </div>
         </div>

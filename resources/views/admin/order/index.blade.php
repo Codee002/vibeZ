@@ -23,10 +23,31 @@
 
         <h2 class="text-center fw-bolder ">Danh sách đơn hàng</h2>
         <div class="d-flex align-items-center mb-1 row">
-            <div class="col-3">
+            <div class="col-8">
                 <form action="{{ route('admin.discount.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Tìm đơn hàng" id="search" name="search" class="form-control"></input>
+                        <input placeholder="Tên KH" id="search" name="name" class="form-control me-1"></input>
+                        <select name="price" class="form-select me-1">
+                            <option value="" disabled selected>Sắp theo đơn giá</option>
+                            <option value="asc">Tăng dần</option>
+                            <option value="desc">Giảm dần</option>
+                        </select>
+
+                        <select name="created_at" class="form-select me-1">
+                            <option value="" disabled selected>Thời gian</option>
+                            <option value="asc">Tăng dần</option>
+                            <option value="desc">Giảm dần</option>
+                        </select>
+
+                        {{-- {{dd($ranks)}} --}}
+                        <select name="status" class="form-select me-1">
+                            <option value="" disabled selected>Trạng thái</option>
+                            <option value="pending">Đang duyệt</option>
+                            <option value="shipping">Đang giao</option>
+                            <option value="completing">Hoàn thành</option>
+                            <option value="aborting">Đã hủy</option>
+                            <option value="rejecting">Từ chôi</option>
+                        </select>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>

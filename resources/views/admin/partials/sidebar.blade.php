@@ -142,11 +142,11 @@
                                   </a>
                               </li>
 
-                              <li class="nav-item">
+                              {{-- <li class="nav-item">
                                   <a href="{{ route('admin.statistical.revenue') }}" class="nav-link">
                                       <p>Doanh thu theo tháng</p>
                                   </a>
-                              </li>
+                              </li> --}}
                           </ul>
                       </li>
 

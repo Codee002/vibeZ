@@ -23,15 +23,28 @@
 
         <h2 class="text-center fw-bolder ">Danh sách tài khoản</h2>
         <div class="d-flex align-items-center mb-1 row">
-            <div class="col-3">
+            <div class="col-9">
                 <form action="{{ route('admin.account.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Tìm danh mục" id="search" name="search" class="form-control"></input>
+                        <input placeholder="Tên" id="search" name="search" class="form-control me-1"></input>
+                        <input placeholder="Số điện thoại" name="phone" class="form-control me-1"></input>
+                        {{-- {{dd($ranks)}} --}}
+                        <select name="rank" class="form-select me-1">
+                            <option value="" disabled selected>Cấp</option>
+                            @foreach ($ranks as $rank)
+                                <option value="{{ $rank['id'] }}">{{ $rank['type'] }}</option>
+                            @endforeach
+                        </select>
+                        <select name="order_price" class="form-select me-1">
+                            <option value="" disabled selected>Sắp theo đơn giá</option>
+                            <option value="asc">Tăng dần</option>
+                            <option value="desc">Giảm dần</option>
+                        </select>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
             </div>
-            <div class="text-end col-9">
+            <div class="text-end col-3">
                 <a href="{{ route('admin.account.export') }}" class="btn btn-success text-white text-end ms-3">Xuất
                     Excel</a>
             </div>
@@ -60,8 +73,8 @@
                     <tr>
                         <td>KH{{ $user['id'] }}</td>
                         <td> {{ $user['name'] }} </td>
-                        <td> {{ $user['phone'] ?? "Chưa có SĐT" }} </td>
-                        <td> {{ $user['email'] ?? "Chưa có Email" }}</td>
+                        <td> {{ $user['phone'] ?? 'Chưa có SĐT' }} </td>
+                        <td> {{ $user['email'] ?? 'Chưa có Email' }}</td>
                         <td> {{ $user['count_all_order'] }} </td>
                         <td> {{ number_format($user['order_price'], 0, '', '.') }} </td>
                         <td> {{ $user['rank'] }} </td>

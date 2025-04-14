@@ -22,15 +22,22 @@
 
         <h2 class="text-center fw-bolder ">Danh sách sản phẩm</h2>
         <div class="d-flex align-items-center mb-1 row">
-            <div class="col-3">
+            <div class="col-7">
                 <form action="{{ route('admin.product.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Tìm sản phẩm" id="search" name="search" class="form-control"></input>
+                        <input placeholder="Mã SP" id="search" name="id" class="form-control me-1"></input>
+                        <input placeholder="Tên" name="name" class="form-control me-1"></input>
+                        <select name="category" class="form-select me-1">
+                            <option value="" disabled selected>Danh mục</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                            @endforeach
+                        </select>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
             </div>
-            <div class="text-end col-9">
+            <div class="text-end col-5">
                 <a href="{{ route('admin.product.create') }}" class="btn btn-success text-white text-end ms-3">Thêm sản
                     phẩm</a>
             </div>
@@ -53,7 +60,7 @@
             <tbody>
                 @foreach ($data as $product)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td>SP{{ $product['id'] }}</td>
                         <td class="">
                             @if ($product->images->isNotEmpty())
                                 @if ($product->images[0] && \Storage::exists($product->images[0]->img_path))

@@ -23,15 +23,20 @@
 
         <h2 class="text-center fw-bolder ">Danh sách phương thức thanh toán</h2>
         <div class="d-flex align-items-center mb-1 row">
-            <div class="col-3">
+            <div class="col-5">
                 <form action="{{ route('admin.payment_method.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Tìm danh mục" id="search" name="search" class="form-control"></input>
+                        <input placeholder="Tên PT" id="search" name="name" class="form-control me-1"></input>
+                        <select name="status" class="form-select me-1">
+                            <option value="" disabled selected>Trạng thái</option>
+                            <option value="on">Đang bật</option>
+                            <option value="off">Đang tắt</option>
+                        </select>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
             </div>
-            <div class="text-end col-9">
+            <div class="text-end col-7">
                 <a href="{{ route('admin.payment_method.create') }}" class="btn btn-success text-white text-end ms-3">Thêm
                     phương thức</a>
             </div>
