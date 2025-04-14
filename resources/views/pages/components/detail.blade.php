@@ -87,171 +87,185 @@
                     <p class="detailContainer__category">{{ $product->category['name'] }}
                     </p>
 
-                    <p class="detailContainer__price">
-                        {{ number_format($product->sale_prices[0]->price, 0, '', ' Triệu ') }}
-                    </p>
+                    @if ($product['sizes'] != null)
+                        <p class="detailContainer__price">
+                            {{ number_format($product->sale_prices[0]->price, 0, '', ' Triệu ') }}
+                        </p>
+                    @else
+                        <p class="detailContainer__price">
+                            Sản phẩm đã hết hàng hoặc đã bị gỡ bỏ
+                        </p>
+                    @endif
+                    {{-- {{ dd($product) }} --}}
+                    @if ($product['sizes'] != null)
+                        <div class="d-flex align-items-center mt-2">
+                            {{-- Thêm vào giỏ --}}
+                            <div class="detailContainer__submit">
+                                <button type="submit" class="btn" data-bs-toggle="modal"
+                                    data-bs-target="#ModelAddCart{{ $product['id'] }}">
+                                    Thêm vào giỏ
+                                </button>
 
-                    <div class="d-flex align-items-center mt-2">
-                        {{-- Thêm vào giỏ --}}
-                        <div class="detailContainer__submit">
-                            <button type="submit" class="btn" data-bs-toggle="modal"
-                                data-bs-target="#ModelAddCart{{ $product['id'] }}">
-                                Thêm vào giỏ
-                            </button>
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="ModelAddCart{{ $product['id'] }}"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-size: 1rem">
-                                <div class="modal-dialog ">
-                                    <div class="modal-content settingUserInfo__navWrapper__modalBackground">
-                                        <div class="modal-header">
-                                            <strong>
-                                                <h5 class="modal-title text-center ms-auto">
-                                                    Thêm vào giỏ hàng</h5>
-                                            </strong>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <form action="{{ route('addToCart') }}" method="POST">
-                                            @csrf
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <label for="product_id" class="form-label ">
-                                                        Sản phẩm:</label>
-                                                    <div class="mb-3">
-                                                        <!-- Fix csrf -->
-                                                        @csrf
-                                                        <input type="text" id="name" class="form-control mb-1"
-                                                            disabled value="{{ $product['name'] }}">
-                                                        {{-- <input type="hidden" name="product_id" id="product_id"
+                                <!-- Modal -->
+                                <div class="modal fade" id="ModelAddCart{{ $product['id'] }}"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-size: 1rem">
+                                    <div class="modal-dialog ">
+                                        <div class="modal-content settingUserInfo__navWrapper__modalBackground">
+                                            <div class="modal-header">
+                                                <strong>
+                                                    <h5 class="modal-title text-center ms-auto">
+                                                        Thêm vào giỏ hàng</h5>
+                                                </strong>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{ route('addToCart') }}" method="POST">
+                                                @csrf
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <label for="product_id" class="form-label ">
+                                                            Sản phẩm:</label>
+                                                        <div class="mb-3">
+                                                            <!-- Fix csrf -->
+                                                            @csrf
+                                                            <input type="text" id="name" class="form-control mb-1"
+                                                                disabled value="{{ $product['name'] }}">
+                                                            {{-- <input type="hidden" name="product_id" id="product_id"
                                                     value="{{ $product['product_id'] }}"> --}}
-                                                    </div>
-                                                    <label for="phone" class="form-label"> Kích thước:</label>
-                                                    <div class="mb-3">
-                                                        <input type="hidden" name="product_id"
-                                                            value="{{ $product['id'] }}">
-                                                        <select name="size" id=""
-                                                            class="form-select selectQuantity mb-2">
-                                                            @foreach ($product->sizes as $size)
-                                                                <option value="{{ $size['size'] }}">{{ $size['size'] }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <i id="quantity[{{ $product['id'] }}]">Số lượng còn lại:
-                                                            {{ $quantities[$product['id']][$product->sizes[0]['size']] }}</i>
-                                                    </div>
-                                                    {{-- <label for="phone" class="form-label"> Số lượng còn lại:</label> --}}
-                                                    {{-- <div class="mb-3">
+                                                        </div>
+                                                        <label for="phone" class="form-label"> Kích thước:</label>
+                                                        <div class="mb-3">
+                                                            <input type="hidden" name="product_id"
+                                                                value="{{ $product['id'] }}">
+                                                            <select name="size" id=""
+                                                                class="form-select selectQuantity mb-2">
+                                                                @foreach ($product->sizes as $size)
+                                                                    <option value="{{ $size }}">
+                                                                        {{ $size }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            <i id="quantity[{{ $product['id'] }}]">Số lượng còn lại:
+                                                                {{ $quantities[$product['id']][$product->sizes[0]] }}</i>
+                                                        </div>
+                                                        {{-- <label for="phone" class="form-label"> Số lượng còn lại:</label> --}}
+                                                        {{-- <div class="mb-3">
                                                <input type="number" value="1" disabled class="form-control">
                                             </div> --}}
-                                                    <label for="phone" class="form-label"> Số lượng:</label>
-                                                    <div class="order__info__product__quantity">
-                                                        <div class="order__info__product__quantity__prepend">
-                                                            <button class="btn btn-outline-secondary"
-                                                                type="button">-</button>
-                                                        </div>
-                                                        <input type="text" class="form-control" value="1"
-                                                            name="quantity" min="1">
-                                                        <div class="order__info__product__quantity__apend">
-                                                            <button class="btn btn-outline-secondary"
-                                                                type="button">+</button>
+                                                        <label for="phone" class="form-label"> Số lượng:</label>
+                                                        <div class="order__info__product__quantity">
+                                                            <div class="order__info__product__quantity__prepend">
+                                                                <button class="btn btn-outline-secondary"
+                                                                    type="button">-</button>
+                                                            </div>
+                                                            <input type="text" class="form-control" value="1"
+                                                                name="quantity" min="1">
+                                                            <div class="order__info__product__quantity__apend">
+                                                                <button class="btn btn-outline-secondary"
+                                                                    type="button">+</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div
-                                                class="modal-footer d-flex justify-content-between settingUserInfo__navWrapper__modalBackground">
-                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                                                    Hủy
-                                                    bỏ</button>
-                                                <button type="submit" class="btn btn-primary">Thêm</button>
-                                            </div>
-                                        </form>
+                                                <div
+                                                    class="modal-footer d-flex justify-content-between settingUserInfo__navWrapper__modalBackground">
+                                                    <button type="button" class="btn btn-danger"
+                                                        data-bs-dismiss="modal">
+                                                        Hủy
+                                                        bỏ</button>
+                                                    <button type="submit" class="btn btn-primary">Thêm</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="detailContainer__submit">
-                            <button type="submit" class="btn" data-bs-toggle="modal"
-                                data-bs-target="#ModelOrder{{ $product['id'] }}">
-                                Mua ngay
-                            </button>
+                            {{-- Mua ngay --}}
+                            <div class="detailContainer__submit">
+                                <button type="submit" class="btn" data-bs-toggle="modal"
+                                    data-bs-target="#ModelOrder{{ $product['id'] }}">
+                                    Mua ngay
+                                </button>
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="ModelOrder{{ $product['id'] }}"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-size: 1rem">
-                                <div class="modal-dialog ">
-                                    <div class="modal-content settingUserInfo__navWrapper__modalBackground">
-                                        <div class="modal-header">
-                                            <strong>
-                                                <h5 class="modal-title text-center ms-auto">
-                                                    Mua ngay</h5>
-                                            </strong>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <form action="{{ route('order') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="type" value="detail">
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <label for="product_id" class="form-label ">
-                                                        Sản phẩm:</label>
-                                                    <div class="mb-3">
-                                                        <!-- Fix csrf -->
-                                                        @csrf
-                                                        <input type="text" id="name" class="form-control mb-1"
-                                                            disabled value="{{ $product['name'] }}">
-                                                        {{-- <input type="hidden" name="product_id" id="product_id"
+                                <!-- Modal -->
+                                <div class="modal fade" id="ModelOrder{{ $product['id'] }}"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-size: 1rem">
+                                    <div class="modal-dialog ">
+                                        <div class="modal-content settingUserInfo__navWrapper__modalBackground">
+                                            <div class="modal-header">
+                                                <strong>
+                                                    <h5 class="modal-title text-center ms-auto">
+                                                        Mua ngay</h5>
+                                                </strong>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{ route('order') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="type" value="detail">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <label for="product_id" class="form-label ">
+                                                            Sản phẩm:</label>
+                                                        <div class="mb-3">
+                                                            <!-- Fix csrf -->
+                                                            @csrf
+                                                            <input type="text" id="name"
+                                                                class="form-control mb-1" disabled
+                                                                value="{{ $product['name'] }}">
+                                                            {{-- <input type="hidden" name="product_id" id="product_id"
                                                                             value="{{ $product['product_id'] }}"> --}}
-                                                    </div>
-                                                    <label for="phone" class="form-label"> Kích thước:</label>
-                                                    <div class="mb-3">
-                                                        <input type="hidden" name="product_id"
-                                                            value="{{ $product['id'] }}">
-                                                        <select name="size" id=""
-                                                            class="form-select selectQuantity mb-2">
-                                                            @foreach ($product->sizes as $size)
-                                                                <option value="{{ $size['size'] }}">{{ $size['size'] }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <i id="quantity[{{ $product['id'] }}]">Số lượng còn lại:
-                                                            {{ $quantities[$product['id']][$product->sizes[0]['size']] }}</i>
-                                                    </div>
-                                                    {{-- <label for="phone" class="form-label"> Số lượng còn lại:</label> --}}
-                                                    {{-- <div class="mb-3">
+                                                        </div>
+                                                        <label for="phone" class="form-label"> Kích thước:</label>
+                                                        <div class="mb-3">
+                                                            <input type="hidden" name="product_id"
+                                                                value="{{ $product['id'] }}">
+                                                            <select name="size" id=""
+                                                                class="form-select selectQuantity mb-2">
+                                                                @foreach ($product->sizes as $size)
+                                                                    <option value="{{ $size }}">
+                                                                        {{ $size }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            <i id="quantity[{{ $product['id'] }}]">Số lượng còn lại:
+                                                                {{ $quantities[$product['id']][$product->sizes[0]] }}</i>
+                                                        </div>
+                                                        {{-- <label for="phone" class="form-label"> Số lượng còn lại:</label> --}}
+                                                        {{-- <div class="mb-3">
                                                                        <input type="number" value="1" disabled class="form-control">
                                                                     </div> --}}
-                                                    <label for="phone" class="form-label"> Số lượng:</label>
-                                                    <div class="order__info__product__quantity">
-                                                        <div class="order__info__product__quantity__prepend">
-                                                            <button class="btn btn-outline-secondary"
-                                                                type="button">-</button>
-                                                        </div>
-                                                        <input type="text" class="form-control" value="1"
-                                                            name="quantity" min="1">
-                                                        <div class="order__info__product__quantity__apend">
-                                                            <button class="btn btn-outline-secondary"
-                                                                type="button">+</button>
+                                                        <label for="phone" class="form-label"> Số lượng:</label>
+                                                        <div class="order__info__product__quantity">
+                                                            <div class="order__info__product__quantity__prepend">
+                                                                <button class="btn btn-outline-secondary"
+                                                                    type="button">-</button>
+                                                            </div>
+                                                            <input type="text" class="form-control" value="1"
+                                                                name="quantity" min="1">
+                                                            <div class="order__info__product__quantity__apend">
+                                                                <button class="btn btn-outline-secondary"
+                                                                    type="button">+</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div
-                                                class="modal-footer d-flex justify-content-between settingUserInfo__navWrapper__modalBackground">
-                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                                                    Hủy
-                                                    bỏ</button>
-                                                <button type="submit" class="btn btn-primary">Mua</button>
-                                            </div>
-                                        </form>
+                                                <div
+                                                    class="modal-footer d-flex justify-content-between settingUserInfo__navWrapper__modalBackground">
+                                                    <button type="button" class="btn btn-danger"
+                                                        data-bs-dismiss="modal">
+                                                        Hủy
+                                                        bỏ</button>
+                                                    <button type="submit" class="btn btn-primary">Mua</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 
@@ -274,7 +288,7 @@
                                 <p class="detail__title col-2">Kích thước sản phẩm: </p>
                                 <div class="col-8 d-flex">
                                     @foreach ($product->sizes as $size)
-                                        <p class="me-2">{{ $size->pivot->size }}</p>
+                                        <p class="me-2">{{ $size }}</p>
                                     @endforeach
                                 </div>
                             </div>
@@ -448,27 +462,26 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Sao đánh giá
-        document.addEventListener('DOMContentLoaded', function() {
-            const productReviews = document.querySelectorAll('.product-rate');
-            productReviews.forEach(reviewContainer => {
-                const stars = reviewContainer.querySelectorAll('.star-rating .star');
-                const selectedRatingInput = reviewContainer.querySelector('.selected_rating');
-                highlightStars(stars, parseInt(selectedRatingInput.value));
-                // console.log(productReviews, reviewContainer, selectedRatingInput)
-            });
-
-            // Tô màu
-            function highlightStars(starElements, rating) {
-                starElements.forEach(star => {
-                    const starValue = parseInt(star.dataset.rating);
-                    if (starValue <= rating) {
-                        star.classList.add('active');
-                    } else {
-                        star.classList.remove('active');
-                    }
-                });
-            }
+        const productReviews = document.querySelectorAll('.product-rate');
+        console.log(productReviews)
+        productReviews.forEach(reviewContainer => {
+            const stars = reviewContainer.querySelectorAll('.star-rating .star');
+            const selectedRatingInput = reviewContainer.querySelector('.selected_rating');
+            highlightStars(stars, parseInt(selectedRatingInput.value));
+            // console.log(productReviews, reviewContainer, selectedRatingInput)
         });
+
+        // Tô màu
+        function highlightStars(starElements, rating) {
+            starElements.forEach(star => {
+                const starValue = parseInt(star.dataset.rating);
+                if (starValue <= rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
 
         // Số lượng SP
         const selectInput = document.querySelectorAll('select[name="size"]');
