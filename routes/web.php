@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DistributorController;
 use App\Http\Controllers\Admin\OrderAdminController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\RankController;
 use App\Http\Controllers\Admin\ReceiptController;
 use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\Admin\WarehouseController;
@@ -59,6 +60,9 @@ Route::prefix("/admin")
         // Trang Payment Method
         Route::resource("distributor", DistributorController::class);
 
+        // Trang Rank
+        Route::resource("rank", RankController::class);
+
         // Trang User
         Route::get("account/export", [AccountController::class, "exportAccounts"])->name("account.export");
         Route::resource("account", AccountController::class);
@@ -94,7 +98,7 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/getTokenForgot/{user}', [AuthenController::class, "getTokenForgot"])->name("getTokenForgot");
     Route::get('/checkForgotToken/{userId}/{token}', [AuthenController::class, "checkForgotToken"])->name("checkForgotToken");
     Route::get('/reset', [AuthenController::class, "showFormReset"])->name("reset");
-    Route::post('/handleReset', [AuthenController::class, "handleReset"])->name("handleReset");
+    Route::post('/handleReset/{user}', [AuthenController::class, "handleReset"])->name("handleReset");
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/activeEmail/{token}', [AuthenController::class, "activeEmail"])->name("activeEmail");
@@ -118,7 +122,7 @@ Route::get('/product/detail/{product}', [ProductController::class, "productDetai
 Route::middleware(['auth', isMember::class])->group(function () {
     Route::post('/addToCart', [CartController::class, "addToCart"])->name("addToCart");
     Route::get('/cart', [CartController::class, "showCart"])->name("cart");
-    Route::get('/updateQuantity/{quantity}', [CartController::class, "updateQuantity"])->name("updateQuantity");
+    Route::put('/updateQuantity', [CartController::class, "updateQuantity"])->name("updateQuantity");
     Route::get('/deleteCart/{cart_detail}', [CartController::class, "deleteCart"])->name("deleteCart");
 });
 
