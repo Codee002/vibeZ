@@ -22,7 +22,8 @@
              <div class="card-title">
                  <h4>SHOP GIÀY GIÁ RẺ</h4>
                  <h5>Chất lượng hàng đầu Việt Nam</h5>
-                 <img src="/assets/images/logo/12-format.png" alt="">
+                 {{-- <img src="/assets/images/logo/12-format.png" alt=""> --}}
+                 <img src="{{ \Storage::url(\App\Models\GeneralImage::getFooter()) }}" alt="">
              </div>
              <div class="thongtinll">
                  <h4>Địa chỉ liên hệ</h4>

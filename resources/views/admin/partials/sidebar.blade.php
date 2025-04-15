@@ -20,32 +20,14 @@
                       data-accordion="false">
 
                       {{-- Giao diện --}}
-                      <li class="nav-header">Quản lý giao diện</li>
+                      <li class="nav-header">Hệ thống</li>
                       <li class="nav-item">
-                          <a href="#" class="nav-link ">
+                          <a href="{{ route('admin.general.index') }}" class="nav-link">
                               <i class='bx bxs-cog'></i>
                               <p>
-                                  Tùy chỉnh giao diện
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
+                                  Giao diện
                               </p>
                           </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="./UI/general.html" class="nav-link">
-                                      <p>Banner</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
-                                      <p>Sản phẩm nổi bật</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
-                                      <p>Thông tin liên lạc</p>
-                                  </a>
-                              </li>
-                          </ul>
                       </li>
 
                       {{-- Tài Khoản --}}
@@ -59,25 +41,25 @@
                           </a>
                       </li>
                       <li class="nav-item">
-                        <a href="{{ route('admin.rank.index') }}" class="nav-link">
-                            <i class='bx bxs-diamond'></i>
-                            <p>
-                                Cấp tài khoản
-                            </p>
-                        </a>
-                    </li>
+                          <a href="{{ route('admin.rank.index') }}" class="nav-link">
+                              <i class='bx bxs-diamond'></i>
+                              <p>
+                                  Cấp tài khoản
+                              </p>
+                          </a>
+                      </li>
 
                       {{-- Sản phẩm --}}
                       <li class="nav-header">Sản phẩm</li>
                       {{-- Nhà cung cấp --}}
                       <li class="nav-item">
-                        <a href="{{ route('admin.distributor.index') }}" class="nav-link">
-                          <i class='bx bxl-mastercard'></i>
-                            <p>
-                                Nhà cung cấp
-                            </p>
-                        </a>
-                    </li>
+                          <a href="{{ route('admin.distributor.index') }}" class="nav-link">
+                              <i class='bx bxl-mastercard'></i>
+                              <p>
+                                  Nhà cung cấp
+                              </p>
+                          </a>
+                      </li>
 
                       <li class="nav-item">
                           <a href="{{ route('admin.product.index') }}" class="nav-link">

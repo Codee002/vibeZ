@@ -9,13 +9,16 @@
 
         <!------- Logo ------->
         <div class="logo">
-            <a href="{{ route('home') }}"><img src="/assets/images/logo/11-format.png" alt="" id="logo">
-               </a>
+            {{-- <a href="{{ route('home') }}"><img src="/assets/images/logo/11-format.png" alt="" id="logo">
+               </a> --}}
+            <a href="{{ route('home') }}"><img src="{{ \Storage::url(\App\Models\GeneralImage::getHeader()) }}" alt="" id="logo">
+            </a>
+            
         </div>
 
         <!------- Search ------->
         <div class="inputSearch">
-            <form method="GET" action="{{route("product")}}" id="frmSearch" onsubmit="return frmValidate()">
+            <form method="GET" action="{{ route('product') }}" id="frmSearch" onsubmit="return frmValidate()">
                 <input name="search" type="text" placeholder="Tìm kiếm" id="TimKiem" value="">
                 <button title="Tìm kiếm" id="TimKiembtn" type="submit"><i class='bx bx-search-alt'></i></button>
             </form>
