@@ -13,7 +13,8 @@
 
                     {{-- LOGO --}}
                     <a href="{{ route('home') }}">
-                        <img src="assets/images/logo/login-format.png" class="w-100 logo" alt="logo">
+                        {{-- <img src="assets/images/logo/login-format.png" class="w-100 logo" alt="logo"> --}}
+                        <img src="{{ \Storage::url(\App\Models\GeneralImage::getLogin()) }}" class="w-100 logo" alt="logo">
                     </a>
                     <div class="form-group  mg-form">
 

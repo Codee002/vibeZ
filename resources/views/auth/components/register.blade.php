@@ -13,7 +13,8 @@
 
                     {{-- LOGO --}}
                     <a href="{{ route('home') }}">
-                        <img src="assets/images/logo/register-format.png" class="w-100 logo" alt="">
+                        {{-- <img src="assets/images/logo/register-format.png" class="w-100 logo" alt=""> --}}
+                        <img src="{{ \Storage::url(\App\Models\GeneralImage::getRegister()) }}" class="w-100 logo" alt="">
                     </a>
                     <!-- FLASH MESSAGES -->
                     @if (session('success'))
