@@ -12,17 +12,22 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->query("search");
-        $data   = collect();
-        if ($search) {
-            $data = Category::query()
-                ->where('name', 'like', "%" . $search . "%")->paginate(3);
-            return view("admin.category.index", ['data' => $data, 'search' => $search]);
+        $data = $data = Category::query();
 
-        } else {
-            $data = Category::paginate(3);
+        if ($request['name']) {
+            $data = $data->where('name', 'like', "%" . $request['name'] . "%");
         }
-        return view("admin.category.index", compact('data'));
+
+        $data = $data->paginate(8);
+
+        foreach ($data as $category) {
+            $category['count_product'] = count($category->products);
+        }
+
+        return view("admin.category.index", [
+            "data" => $data,
+            "name" => $request['name'] ?? "",
+        ]);
     }
 
     public function create()
@@ -64,6 +69,12 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        // dd($category->products);
+        if ($category->products->isNotEmpty()) {
+            return redirect()->back()->with("danger", "Không thể xóa danh mục, có " . count($category->products)
+                . " SP thuộc danh mục này!");
+        }
+
         try {
             DB::transaction(function () use ($category) {
                 $category->delete();

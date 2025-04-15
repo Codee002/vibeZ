@@ -20,7 +20,7 @@
 
             <div class="col-8 d-flex align-items-center row">
                 <p class="title col-4">Tổng sản phẩm thuộc danh mục: </p>
-                <p class="col-5">100</p>
+                <p class="col-5">{{ count($category->products) }}</p>
             </div>
             <div>
 

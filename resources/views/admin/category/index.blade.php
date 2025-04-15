@@ -22,29 +22,29 @@
 
         <h2 class="text-center fw-bolder ">Danh sách danh mục</h2>
         <div class="d-flex align-items-center mb-1 row">
-            <div class="col-5">
+            <div class="col-3">
                 <form action="{{ route('admin.category.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Danh mục" id="search" name="name" class="form-control me-1"></input>
-                        <select name="order_price" class="form-select me-1">
+                        <input placeholder="Tên danh mục" id="search" name="name" class="form-control me-1"></input>
+                        {{-- <select name="order_price" class="form-select me-1">
                             <option value="" disabled selected>Sắp theo sản phẩm</option>
                             <option value="asc">Tăng dần</option>
                             <option value="desc">Giảm dần</option>
-                        </select>
+                        </select> --}}
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                     
                 </form>
             </div>
-            <div class="text-end col-7">
+            <div class="text-end col-9">
                 <a href="{{ route('admin.category.create') }}" class="btn btn-success text-white text-end ms-3">Thêm danh
                     mục</a>
             </div>
         </div>
 
-        @isset($search)
-            <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-        @endisset
+        @if (!empty($name))
+            <h5 class='text-start mt-4 mb-4'>Tên danh mục: <b>{{ $name }}</b></h5>
+        @endif
 
 
         <table class="table table-bordered table-striped">
@@ -61,7 +61,7 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td> {{ $category['name'] }} </td>
-                        <td>0</td>
+                        <td>{{  $category['count_product'] }}</td>
                         <td> {{ \Carbon\Carbon::parse($category['created_at'])->format('d/m/Y') }} </td>
                         <td><a href="{{ route('admin.category.show', $category) }}" class="btn btn-secondary btn-sm"><i
                                     class='bx bxs-detail'></i></a>
