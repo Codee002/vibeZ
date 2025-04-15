@@ -78,4 +78,24 @@ class Discount extends Model
         }
         return $results;
     }
+
+    // Tính tổng tiền cho các đơn hàng áp dụng KM đã hoàn thành
+    public function getTotalPrice()
+    {
+        $sum = 0;
+        $orders = $this->orders()
+        ->where("status", "completing")
+        ->get();
+        foreach ($orders as $order)
+        {
+            foreach ($order->order_details as $detail)
+            {
+                if ($detail->product['category_id'] == $this['category_id'])
+                {
+                    $sum += $detail['price'] * $this['percent'] / 100;
+                }
+            }
+        }
+        return $sum;
+    }
 }
