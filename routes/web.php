@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\DistributorController;
+use App\Http\Controllers\Admin\GeneralImageController;
 use App\Http\Controllers\Admin\OrderAdminController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\ProductController;
@@ -62,6 +63,10 @@ Route::prefix("/admin")
 
         // Trang Rank
         Route::resource("rank", RankController::class);
+
+        // Trang General
+        Route::get("general", [GeneralImageController::class, "index"])->name("general.index");
+        Route::post("general/store", [GeneralImageController::class, "store"])->name("general.store");
 
         // Trang User
         Route::get("account/export", [AccountController::class, "exportAccounts"])->name("account.export");
