@@ -21,16 +21,44 @@
             </div>
         @endif
 
-        <h2 class="text-center fw-bolder ">Danh sách khuyến mãi thanh toán</h2>
+        <h2 class="text-center fw-bolder ">Danh sách khuyến mãi</h2>
         <div class="d-flex align-items-center mb-1 row">
             <div class="col-7">
                 <form action="{{ route('admin.discount.index') }}" class="" method="GET">
+                    <div class="row d-flex align-items-center mb-1">
+                        <div class="form-group col-4">
+                            <label for="start_at">Ngày bắt đầu: </label>
+                            <input type="date" placeholder="Nhập vào trị giá khuyến mãi" name="start_at" id="start_at"
+                                class="form-control
+                     @error('start_at') is-invalid @enderror"
+                                value="{{ old('start_at') }}">
+                            @error('start_at')
+                                <span class="invalid-feedback" style="display: block">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group  col-4">
+                            <label for="end_at">Ngày kết thúc: </label>
+                            <input type="date" placeholder="Nhập vào trị giá khuyến mãi" name="end_at" id="end_at"
+                                class="form-control
+                     @error('end_at') is-invalid @enderror"
+                                value="{{ old('end_at') }}">
+
+                            @error('end_at')
+                                <span class="invalid-feedback" style="display: block">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="form-group d-flex">
 
                         <select name="category" class="form-select me-1">
                             <option value="" disabled selected>Danh mục</option>
                             @foreach ($categories as $category)
-                                <option value="{{$category['id']}}">{{ $category['name'] }}</option>
+                                <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                             @endforeach
                         </select>
 
@@ -43,11 +71,14 @@
                         {{-- {{dd($ranks)}} --}}
                         <select name="status" class="form-select me-1">
                             <option value="" disabled selected>Trạng thái</option>
-                                <option value="actived">Đã kích hoạt</option>
-                                <option value="disabled">Chưa kích hoạt</option>
+                            <option value="actived">Đã kích hoạt</option>
+                            <option value="disabled">Chưa kích hoạt</option>
                         </select>
+
+
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
+
                 </form>
             </div>
             <div class="text-end col-5">
@@ -56,10 +87,35 @@
             </div>
         </div>
 
-        @isset($search)
-            <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-        @endisset
+        @if ($start_at || $end_at)
+            <p class="mt-4" style="font-size: 1.2rem">Khuyến mãi
+                @if ($start_at)
+                    từ ngày <b>{{ Carbon\Carbon::parse($start_at)->format('d/m/Y') }}</b>
+                @endif
+                @if ($end_at)
+                    đến ngày
+                    <b>{{ Carbon\Carbon::parse($end_at)->format('d/m/Y') }}</b>
+                @endif
+            </p>
+        @endif
 
+        @if (!empty($category_id))
+            <h5 class='text-start mt-4 mb-4'>Danh mục: <b>
+                    @foreach ($categories as $category)
+                        @if ($category['id'] == $category_id)
+                            {{ $category['name'] }}
+                        @endif
+                    @endforeach
+                </b></h5>
+        @endif
+
+        @if (!empty($percent))
+            <h5 class='text-start mt-4 mb-4'>Trị giá: <b>{{ $percent == 'asc' ? 'Tăng dần' : 'Giảm dần' }}</b></h5>
+        @endif
+
+        @if (!empty($status))
+            <h5 class='text-start mt-4 mb-4'>Trạng thái: <b>{{ $status == "actived" ? "Đã kích hoạt" : "Chưa kích hoạt" }}</b></h5>
+        @endif
 
         <table class="table table-bordered table-striped">
             <thead>

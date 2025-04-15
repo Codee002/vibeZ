@@ -15,19 +15,44 @@ class DiscountController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->query("search");
-        $data   = collect();
-        if ($search) {
-            $data = Discount::query()
-                ->where('name', 'like', "%" . $search . "%")
-                ->with("category")
-                ->paginate(3);
-            return view("admin.payment_method.index", ['data' => $data, 'search' => $search]);
-
-        } else {
-            $data = Discount::with("category")->paginate(3);
+        // dd($request->all());
+        if (! empty($request->all())) {
+            if (! empty($request['end_at']) && $request['start_at'] > $request['end_at']) {
+                return redirect()->back()->with("danger", "Ngày bắt đầu không được lớn hơn ngày kết thúc")->withInput();
+            }
         }
-        return view("admin.discount.index", compact('data'));
+
+        $data = $data = Discount::query()->with("category");
+
+        if ($request['category']) {
+            $data = $data->where('category_id', $request['category']);
+        }
+
+        if ($request['status']) {
+            $data = $data->where('status', $request['status']);
+        }
+
+        if ($request['start_at']) {
+            $data->where("start_at", ">=", $request['start_at']);
+        }
+
+        if ($request['end_at']) {
+            $data->where("end_at", "<=", $request['end_at']);
+        }
+        $data = $data->orderBy("percent", $request['percent'] ?? "asc");
+
+        $data = $data->paginate(8);
+
+        $categories = Category::get()->all();
+        return view("admin.discount.index", [
+            "data"        => $data,
+            "category_id" => $request['category'] ?? "",
+            "percent"     => $request['percent'] ?? "",
+            "status"      => $request['status'] ?? "",
+            "start_at"    => $request['start_at'] ?? "",
+            "end_at"      => $request['end_at'] ?? "",
+            "categories"  => $categories,
+        ]);
     }
 
     /**
@@ -78,8 +103,10 @@ class DiscountController extends Controller
      */
     public function show(Discount $discount)
     {
+        $orders = $discount->orders()->paginate(8);
+        // dd($orders);
         $discount = $discount->load(["category"]);
-        return view("admin.discount.show", compact('discount'));
+        return view("admin.discount.show", compact('discount', 'orders'));
 
     }
 
@@ -97,6 +124,12 @@ class DiscountController extends Controller
      */
     public function update(StoreDiscountRequest $request, Discount $discount)
     {
+        // dd($discount->orders);
+        if ($discount->orders->isNotEmpty()) {
+            return redirect()->back()->with("danger", "Không thể sửa khuyến mãi, có " . count($discount->orders)
+                . " đơn hàng đã sử dụng khuyến mãi này!");
+        }
+
         // dd($request->all());
         // Kiểm tra trùng ngày KM
         $discounts = Discount::query()
@@ -139,6 +172,12 @@ class DiscountController extends Controller
      */
     public function destroy(Discount $discount)
     {
+        // dd($discount->orders);
+        if ($discount->orders->isNotEmpty()) {
+            return redirect()->back()->with("danger", "Không thể xóa khuyến mãi, có " . count($discount->orders)
+                . " đơn hàng dùng khuyến mãi này!");
+        }
+
         try {
             DB::transaction(function () use ($discount) {
                 $discount->delete();
@@ -174,5 +213,4 @@ class DiscountController extends Controller
 
     }
 
-    
 }
