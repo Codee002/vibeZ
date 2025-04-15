@@ -33,6 +33,11 @@
                                 <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                             @endforeach
                         </select>
+                        <select name="order_by" class="form-select me-1">
+                            <option value="" disabled selected>Sắp theo</option>
+                            <option value="asc">Cũ nhất</option>
+                            <option value="desc">Mới nhất</option>
+                        </select>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
@@ -43,14 +48,30 @@
             </div>
         </div>
 
-        @isset($search)
-            <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-        @endisset
+        @if (!empty($id))
+            <h5 class='text-start mt-4 mb-4'>Mã SP: <b>{{ $id }}</b></h5>
+        @endif
+        @if (!empty($name))
+            <h5 class='text-start mt-4 mb-4'>Tên SP: <b>{{ $name }}</b></h5>
+        @endif
+        @if (!empty($category_id))
+            <h5 class='text-start mt-4 mb-4'>Danh mục: <b>
+                    @foreach ($categories as $category)
+                        @if ($category['id'] == $category_id)
+                            {{ $category['name'] }}
+                        @endif
+                    @endforeach
+                </b></h5>
+        @endif
+
+        @if (!empty($order_by))
+            <h5 class='text-start mt-4 mb-4'>Sắp xếp: <b>{{ $order_by == 'asc' ? 'Cũ nhất' : 'Mới nhất' }}</b></h5>
+        @endif
 
 
         <table class="table table-bordered table-striped">
             <thead>
-                <th>STT</th>
+                <th>Mã SP</th>
                 <th>Hình ảnh</th>
                 <th>Tên sản phẩm</th>
                 <th>Danh mục</th>

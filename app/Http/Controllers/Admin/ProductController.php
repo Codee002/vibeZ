@@ -23,22 +23,34 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->query("search");
-        $data   = collect();
-        if ($search) {
-            $data = Product::query()
-                ->where('name', 'like', "%" . $search . "%")
-                ->with(['category', 'images', 'sizes'])
-                ->orderBy("updated_at", "DESC")
-                ->paginate(3);
-            return view("admin.product.index", ['data' => $data, 'search' => $search]);
+        // dd($request->all());
+        $data = $data = Product::query();
 
-        } else {
-            $data = Product::with(['category', 'images', 'sizes'])
-                ->orderBy("updated_at", "DESC")
-                ->paginate(8);
+        if ($request['id']) {
+            $data = $data->where('id', 'like', "%" . $request['id'] . "%");
         }
-        return view("admin.product.index", compact('data'));
+
+        if ($request['name']) {
+            $data = $data->where('name', 'like', "%" . $request['name'] . "%");
+        }
+
+        if ($request['category']) {
+            $data = $data->where('category_id', 'like', "%" . $request['category'] . "%");
+        }
+
+        $data = $data->orderBy("id", $request['order_by'] ?? "desc");
+
+        $data = $data->paginate(8);
+
+        $categories = Category::get()->all();
+        return view("admin.product.index", [
+            "data"        => $data,
+            "name"        => $request['name'] ?? "",
+            "id"          => $request['id'] ?? "",
+            "category_id" => $request['category'] ?? "",
+            "order_by"    => $request['order_by'] ?? "",
+            "categories"  => $categories,
+        ]);
     }
 
     /**
@@ -173,6 +185,12 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        // dd($product->receipt_details);
+        if ($product->receipt_details->isNotEmpty()) {
+            return redirect()->back()->with("danger", "Không thể xóa SP, SP đã được nhập " . count($product->receipt_details)
+                . " lần!");
+        }
+
         try {
             DB::transaction(function () use ($product) {
                 // $product->sizes()->sync([]);
@@ -199,14 +217,16 @@ class ProductController extends Controller
     //----------------- Phía chức năng của người dùng ----------------
     public function showListProduct(Request $request)
     {
-        // dd($request->all(), $request['null']);
+
         $quantities        = [];
         $pendingQuantities = [];
-        $products          = Product::getAllActiveProduct(16, $request['search'], $request['category']);
-        foreach ($products as $product) {
+        $products          = Product::getAllActiveProduct(16, $request['name'], $request['category']);
+        foreach ($products as $i => $product) {
             $product['image'] = Image::getImage($product['product_id']);
             $product['price'] = SalePrice::query()->where("product_id", $product['product_id'])->first();
             $product['sizes'] = Size::getSizeActiveInWarehouse($product['product_id']);
+            // dd($request->all(), $product['sizes']);
+            // Tìm theo size
             foreach ($product['sizes'] as $size) {
                 // Lấy tổng SL sản phẩm của tổng các kho đang được kích hoạt
                 $quantities[$product['product_id']][$size] = WarehouseDetail::getQuantityActive($product['product_id'], $size);
@@ -217,6 +237,7 @@ class ProductController extends Controller
         }
         $categories     = Category::query()->get();
         $categorySearch = Category::find($request['category']);
+        $sizes          = Size::get()->all();
         // dd($products->all());
 
         return view("pages.components.product", [
@@ -224,8 +245,10 @@ class ProductController extends Controller
             "categories"        => $categories,
             "quantities"        => $quantities,
             "pendingQuantities" => $pendingQuantities,
-            "search"            => $request['search'] ?? null,
-            "categorySearch"    => $categorySearch]);
+            "name"              => $request['name'] ?? null,
+            "categorySearch"    => $categorySearch,
+            "sizes"             => $sizes,
+        ]);
     }
 
     public function productDetail(Product $product)
@@ -242,12 +265,15 @@ class ProductController extends Controller
             // dd($products);
         }
 
-        foreach ($product->sizes as $size) {
+        $product['sizes']  = Size::getSizeActiveInWarehouse($product['id']);
+        $quantities        = [];
+        $pendingQuantities = [];
+        foreach ($product['sizes'] as $size) {
             // Lấy giá của từng Size
-            $quantities[$product['id']][$size['size']] = WarehouseDetail::getQuantityActive($product['id'], $size['size']);
+            $quantities[$product['id']][$size] = WarehouseDetail::getQuantityActive($product['id'], $size);
 
             // Lấy ra tổng SL sản phẩm đang được chờ duyệt đơn
-            $pendingQuantities[$product['id']][$size['size']] = Order::getAllProductPendingQuantity($product['id'], $size['size']);
+            $pendingQuantities[$product['id']][$size] = Order::getAllProductPendingQuantity($product['id'], $size);
         }
         // dd($quantities);
         return view("pages.components.detail", [

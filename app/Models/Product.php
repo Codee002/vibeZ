@@ -72,7 +72,7 @@ class Product extends Model
      *          Tính chung tất cả các kho
      * Trả về Id, Tên Sản Phẩm, Tên danh mục
      */
-    public static function getAllProduct($perPage = null, $search = null, $category = null, $price = null)
+    public static function getAllProduct($perPage = null, $name = null, $category = null, $price = null, $id = null)
     {
         $query = WarehouseDetail::select(
             "warehouse_details.product_id",
@@ -88,12 +88,16 @@ class Product extends Model
             ->join("categories", "products.category_id", "=", "categories.id")
         // ->where("warehouse_details.status", "actived")
             ->groupBy("warehouse_details.product_id",
-                 "products.name", "categories.name", "categories.id", "product_unit") // Nhóm theo id, size và status
+                "products.name", "categories.name", "categories.id", "product_unit") // Nhóm theo id, size và status
             ->having("totalQuantity", ">", 0);
 
+        // Tìm id
+        if ($id) {
+            $query->where("products.id", "LIKE", "%" . $id . "%");
+        }
         // Tìm theo tên
-        if ($search) {
-            $query->where("products.name", "LIKE", "%" . $search . "%");
+        if ($name) {
+            $query->where("products.name", "LIKE", "%" . $name . "%");
         }
         // Tìm theo danh mục
         if ($category) {
@@ -118,7 +122,7 @@ class Product extends Model
      *          Tính chung tất cả các kho
      * Trả về Id, Tên Sản Phẩm, Tên danh mục
      */
-    public static function getAllActiveProduct($perPage = null, $search = null, $category = null, $price = null)
+    public static function getAllActiveProduct($perPage = null, $name = null, $category = null, $price = null)
     {
         $query = WarehouseDetail::select(
             "warehouse_details.product_id",
@@ -137,8 +141,8 @@ class Product extends Model
             ->having("totalQuantity", ">", 0);
 
         // Tìm theo tên
-        if ($search) {
-            $query->where("products.name", "LIKE", "%" . $search . "%");
+        if ($name) {
+            $query->where("products.name", "LIKE", "%" . $name . "%");
         }
         // Tìm theo danh mục
         if ($category) {
