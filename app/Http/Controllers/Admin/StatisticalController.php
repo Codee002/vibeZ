@@ -23,7 +23,7 @@ class StatisticalController extends Controller
     public function index(Request $request)
     {
         // dd($request->all(), $request['null']);
-        $products = Product::getAllProduct(8, $request['search'], $request['category']);
+        $products = Product::getAllProduct(8, $request['name'], $request['category'], $request['price'], $request['id']);
 
         foreach ($products as $product) {
             $product['image'] = Image::getImage($product['product_id']);
@@ -76,9 +76,16 @@ class StatisticalController extends Controller
         }
         // dd($products->all(), $purchasePrice, Receipt::getQuantityProduct($product['product_id']));
 
+        if ($request['quantity_receipt'] == "asc") {
+            $sorted = $products->sortBy('purchase_price');
+        } else {
+            $sorted = $products->sortByDesc('purchase_price');
+        }
+
         return view("admin.statistical.index", [
             "products" => $products,
-            "search"   => $request['search'] ?? null,
+            "name"     => $request['name'] ?? null,
+            "id"       => $request['id'] ?? null,
         ]);
     }
 
@@ -168,8 +175,8 @@ class StatisticalController extends Controller
             $product['sale_price']     = $salePrice;
         }
         // dd($products, Carbon::now()->format("d/m/Y"));
-        $name = "ThongKeSanPham_" . Carbon::now()->format("d_m_Y") .".xlsx";
-        return Excel::download(new StatisticalExport($products),  $name);
+        $name = "ThongKeSanPham_" . Carbon::now()->format("d_m_Y") . ".xlsx";
+        return Excel::download(new StatisticalExport($products), $name);
     }
 
     /**

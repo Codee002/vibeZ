@@ -22,57 +22,62 @@
 
         <h2 class="text-center fw-bolder ">Thống kê</h2>
         <div class="d-flex align-items-center mb-1 row">
-            <div class="col-10">
-                <form action="{{ route('admin.product.index') }}" class="" method="GET">
+            <div class="col-5">
+                <form action="{{ route('admin.statistical.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Mã SP" id="search" name="product_id" class="form-control me-1"></input>
-                        <select name="" class="form-select me-1">
+                        <input placeholder="Mã SP" id="search" name="id" class="form-control me-1"></input>
+                        <input placeholder="Tên SP" id="search" name="name" class="form-control me-1"></input>
+                        {{-- <select name="quantity_receipt" class="form-select me-1">
                             <option value="" disabled selected>SL nhập</option>
                             <option value="asc">Tăng dần</option>
                             <option value="desc">Giảm dần</option>
                         </select>
 
-                        <select name="point" class="form-select me-1">
+                        <select name="quantity_sale" class="form-select me-1">
                             <option value="" disabled selected>SL bán</option>
                             <option value="asc">Tăng dần</option>
                             <option value="desc">Giảm dần</option>
                         </select>
 
-                        <select name="point" class="form-select me-1">
+                        <select name="quantity_warehouse" class="form-select me-1">
                             <option value="" disabled selected>SL tồn</option>
                             <option value="asc">Tăng dần</option>
                             <option value="desc">Giảm dần</option>
                         </select>
 
-                        <select name="point" class="form-select me-1">
+                        <select name="total_receipt" class="form-select me-1">
                             <option value="" disabled selected>Tổng giá nhập</option>
                             <option value="asc">Tăng dần</option>
                             <option value="desc">Giảm dần</option>
                         </select>
 
-                        <select name="point" class="form-select me-1">
+                        <select name="total_sale" class="form-select me-1">
                             <option value="" disabled selected>Tổng giá bán</option>
                             <option value="asc">Tăng dần</option>
                             <option value="desc">Giảm dần</option>
                         </select>
 
-                        <select name="point" class="form-select me-1">
+                        <select name="total_price" class="form-select me-1">
                             <option value="" disabled selected>Doanh thu</option>
                             <option value="asc">Tăng dần</option>
                             <option value="desc">Giảm dần</option>
-                        </select>
+                        </select> --}}
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
             </div>
-            <div class="text-end col-2">
+            <div class="text-end col-7">
                 <a href="{{ route('admin.statistical.export') }}" class="btn btn-success text-white text-end ms-3">Xuất File</a>
             </div>
         </div>
 
-        @isset($search)
-            <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-        @endisset
+        @if (!empty($id))
+            <h5 class='text-start mt-4 mb-4'>Mã SP: <b>{{ $id }}</b></h5>
+        @endif
+
+        @if (!empty($name))
+            <h5 class='text-start mt-4 mb-4'>Tên SP: <b>{{ $name }}</b></h5>
+        @endif
 
 
         <table class="table table-bordered table-striped">
