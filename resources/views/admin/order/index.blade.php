@@ -24,20 +24,10 @@
         <h2 class="text-center fw-bolder ">Danh sách đơn hàng</h2>
         <div class="d-flex align-items-center mb-1 row">
             <div class="col-8">
-                <form action="{{ route('admin.discount.index') }}" class="" method="GET">
+                <form action="{{ route('admin.order.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
+                        <input placeholder="Mã HD" id="search" name="id" class="form-control me-1"></input>
                         <input placeholder="Tên KH" id="search" name="name" class="form-control me-1"></input>
-                        <select name="price" class="form-select me-1">
-                            <option value="" disabled selected>Sắp theo đơn giá</option>
-                            <option value="asc">Tăng dần</option>
-                            <option value="desc">Giảm dần</option>
-                        </select>
-
-                        <select name="created_at" class="form-select me-1">
-                            <option value="" disabled selected>Thời gian</option>
-                            <option value="asc">Tăng dần</option>
-                            <option value="desc">Giảm dần</option>
-                        </select>
 
                         {{-- {{dd($ranks)}} --}}
                         <select name="status" class="form-select me-1">
@@ -48,15 +38,45 @@
                             <option value="aborting">Đã hủy</option>
                             <option value="rejecting">Từ chôi</option>
                         </select>
+
+                        <select name="created_at" class="form-select me-1">
+                            <option value="" disabled selected>Thời gian</option>
+                            <option value="asc">Cũ nhất</option>
+                            <option value="desc">Mới nhất</option>
+                        </select>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        @isset($search)
-            <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-        @endisset
+        @if (!empty($id))
+            <h5 class='text-start mt-4 mb-4'>Mã DH: <b>{{ $id }}</b></h5>
+        @endif
+
+        @if (!empty($name))
+        <h5 class='text-start mt-4 mb-4'>Tên KH: <b>{{ $name }}</b></h5>
+    @endif
+
+        @if (!empty($status))
+            <h5 class='text-start mt-4 mb-4'>Trạng thái: <b>
+                    @if ($status == 'pending')
+                        Đang duyệt
+                    @elseif($status == 'shipping')
+                        Đang giao
+                    @elseif($status == 'completing')
+                        Hoàn thành
+                    @elseif($status == 'aborting')
+                        Đã hủy
+                    @elseif($status == 'rejecting')
+                        Từ chôi
+                    @endif
+                </b></h5>
+        @endif
+
+        @if (!empty($order_by))
+            <h5 class='text-start mt-4 mb-4'>Thời gian: <b>{{ $order_by == 'asc' ? 'Cũ nhất' : 'Mới nhất' }}</b></h5>
+        @endif
 
 
         <table class="table table-bordered table-striped">
@@ -75,7 +95,7 @@
                     <tr>
                         <td>{{ 'HD' . $order['id'] }}</td>
                         <td> {{ $order->user['name'] }} </td>
-                        <td> {{ $order->getTotalQuantity() }} </td>
+                        <td> {{ number_format($order->getTotalQuantity(), 0, '', '.') }} </td>
                         <td> {{ $order['total_price'] }} </td>
                         <td> {{ \Carbon\Carbon::parse($order['created_at'])->format('d/m/Y H:i:s') }} </td>
                         <td>

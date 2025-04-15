@@ -8,6 +8,7 @@ use App\Models\Discount;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\PaymentMethod;
+use App\Models\Rank;
 use App\Models\SalePrice;
 use App\Models\WarehouseDetail;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -81,8 +82,8 @@ class OrderController extends Controller
             }
         } else if ($request['type'] == "detail") {
             // Tạo riêng 1 SP đó trong giỏ hàng
-            $cartId           = $user->cart['id'];
-             $cartDetails[] = CartDetail::query()->create([
+            $cartId        = $user->cart['id'];
+            $cartDetails[] = CartDetail::query()->create([
                 "cart_id"    => $cartId,
                 'product_id' => $request["product_id"],
                 'size'       => $request["size"],
@@ -90,17 +91,17 @@ class OrderController extends Controller
             ]);
             // dd( $cartDetails);
             // Lấy giá cho sản phẩm
-             $cartDetails[0]['price'] = SalePrice::getPriceBySize( $cartDetails[0]['product_id'],  $cartDetails[0]['size']);
+            $cartDetails[0]['price'] = SalePrice::getPriceBySize($cartDetails[0]['product_id'], $cartDetails[0]['size']);
 
             // Giá SP
-             $cartDetails[0]['totalPrice'] =  $cartDetails[0]['price'] *  $cartDetails[0]['quantity'];
+            $cartDetails[0]['totalPrice'] = $cartDetails[0]['price'] * $cartDetails[0]['quantity'];
 
             // Lấy ra tổng giá của đơn hàng
-            $totalPriceProduct +=  $cartDetails[0]['totalPrice'];
+            $totalPriceProduct += $cartDetails[0]['totalPrice'];
 
             // Lấy DS Khuyến mãi theo danh mục
             foreach ($discountsTemp as $discount) {
-                if ($discount['category_id'] ==  $cartDetails[0]->product['category_id']
+                if ($discount['category_id'] == $cartDetails[0]->product['category_id']
                     && ! in_array($discount, $discounts)) {
                     $discounts[] = $discount;
                 }
@@ -112,7 +113,7 @@ class OrderController extends Controller
         $priceRankDiscount = $totalPriceProduct * $user->getRankDiscount() / 100;
 
         return view("pages.components.order_detail", [
-            "cartDetails"       =>  $cartDetails,
+            "cartDetails"       => $cartDetails,
             "cartIds"           => $request['cartDetailId'],
             "type"              => $request['type'],
             "totalPriceProduct" => $totalPriceProduct,
@@ -187,23 +188,37 @@ class OrderController extends Controller
 
     public function history(Request $request)
     {
-        $search = $request->query("search");
+        /**
+         * @var User $user
+         */
         $user   = Auth::user();
+        $search = $request->query("search");
         $data   = collect();
+
+        // Lấy ra rank của user
+        $user['rank']        = $user->getRank();
+        $user['order_price'] = $user->getOrderPriceCompleted();
+        $ranks               = Rank::get()->all();
+        foreach ($ranks as $rank) {
+            if ($user['rank'] == $rank['type']) {
+                $user['discount'] = $rank['discount'];
+            }
+        }
+
         if ($search) {
             $data = Order::query()
                 ->where('name', 'like', "%" . $search . "%")
                 ->orderBy('created_at', "desc")
                 ->with('user', 'payment_method', 'delivery_info', 'discounts', 'order_details', 'evaluates')
-                ->paginate(5);
+                ->paginate(8);
             return view("admin.order.index", ['data' => $data, 'search' => $search]);
         } else {
             $data = Order::with('user', 'payment_method', 'delivery_info', 'discounts', 'order_details', 'evaluates')
                 ->orderBy('created_at', "desc")
                 ->where("user_id", $user['id'])
-                ->paginate(5);
+                ->paginate(8);
         }
-        return view("pages.components.order_history", compact("data"));
+        return view("pages.components.order_history", compact("data", 'user'));
     }
 
     public function detail(Order $order)

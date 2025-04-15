@@ -14,21 +14,34 @@ class OrderAdminController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->query("search");
-        $data   = collect();
-        if ($search) {
-            $data = Order::query()
-                ->where('name', 'like', "%" . $search . "%")
-                ->orderBy('created_at', "desc")
-                ->with('user', 'payment_method', 'delivery_info', 'discounts', 'order_details')
-                ->paginate(5);
-            return view("admin.order.index", ['data' => $data, 'search' => $search]);
-        } else {
-            $data = Order::with('user', 'payment_method', 'delivery_info', 'discounts', 'order_details')
-                ->orderBy('created_at', "desc")
-                ->paginate(5);
+        // dd($request->all());
+        $data = $data = Order::query()->with('user', 'payment_method', 'delivery_info', 'discounts', 'order_details');
+
+        if ($request['id']) {
+            $data = $data->where('id', 'like', "%" . $request['id'] . "%");
         }
-        return view("admin.order.index", compact("data"));
+
+        if ($request['status']) {
+            $data = $data->where('status',  $request['status'] );
+        }
+
+        if ($request['name']) {
+            $data = $data->whereHas('user', function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request['name'] . '%');
+            });
+        }
+
+        $data = $data->orderBy("created_at", $request['created_at'] ?? "desc");
+
+        $data = $data->paginate(8);
+       
+        return view("admin.order.index", [
+            "data"        => $data,
+            "status"        => $request['status'] ?? "",
+            "name"        => $request['name'] ?? "",
+            "id"          => $request['id'] ?? "",
+            "order_by" => $request['created_at'] ?? "",
+        ]);
     }
 
     public function show(Order $order)

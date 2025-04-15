@@ -35,6 +35,12 @@
             </div>
         @endif
 
+        {{-- {{dd($user)}} --}}
+        <p class="mb-1">Số tiền đã thanh toán: <b>{{ number_format($user['order_price'], 0, "", ".") }}</b></p>
+        @if ($user['rank'] != "Chưa có cấp")
+            <p class="mb-3">Tài khoản <b>{{ $user['rank'] }}</b>: Khi mua hàng được giảm <b>{{ $user['discount'] }}%</b> trên tổng đơn hàng</p>
+        @endif
+
         @if ($data->isEmpty())
             <h4 class="text-center mt-4 fw-light">Bạn chưa có đơn hàng nào</h4>
         @else
@@ -53,7 +59,7 @@
                         <tr>
                             <td>{{ 'HD' . $order['id'] }}</td>
                             <td> {{ $order->getTotalQuantity() }} </td>
-                            <td> {{ $order['total_price'] }} </td>
+                            <td> {{ number_format($order['total_price'], 0, "", ".") }} </td>
                             <td> {{ \Carbon\Carbon::parse($order['created_at'])->format('d/m/Y H:i:s') }} </td>
                             <td>
                                 @if ($order['status'] == 'pending')
