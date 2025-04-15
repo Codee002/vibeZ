@@ -15,8 +15,8 @@
             <form action="" style="width: 100%">
                 <div class="row">
                     <div class="form-group mb-3 col-3">
-                        <input type="text" name="search" class="form-control" placeholder="Tìm kiếm"
-                            value={{ $search }}>
+                        <input type="text" name="name" class="form-control" placeholder="Tìm kiếm"
+                            value={{ $name }}>
                     </div>
                     <div class="col-3">
                         <button type="submit" style="width:50%" class="btn btn-primary text-center">
@@ -38,14 +38,11 @@
                     </div>
 
                     {{-- <div class="form-group mb-3 col-3">
-                        <select name="price" id="price" class="form-select">
-                            <option value="" selected>Giá</option>
-                            <option value="<1000">Bé hơn 1000</option>
-                            <option value="1000-2000">1000-2000</option>
-                            <option value="2000-3000">2000-3000</option>
-                            <option value="3000-4000">3000-4000</option>
-                            <option value="4000-5000">4000-5000</option>
-                            <option value=">5000">Lớn hơn 5000</option>
+                        <select name="size" id="size" class="form-select">
+                            <option value="" selected>Size</option>
+                            @foreach ($sizes as $size)
+                                <option value="{{$size['size']}}">{{$size['size']}}</option>
+                            @endforeach
                         </select>
                     </div> --}}
                     {{-- <div class="form-group mb-3 col-3">
@@ -58,9 +55,9 @@
                 </div> --}}
                     {{-- <div class="form-group mb-3 col-3">
                         <select name="sort" id="sort" class="form-select">
-                            <option value="" disabled selected>Sắp xếp</option>
-                            <option value="0">Giá giảm dần</option>
-                            <option value="1">Giá tăng dần</option>
+                            <option value="" disabled selected>Giá</option>
+                            <option value="desc">Giảm dần</option>
+                            <option value="asc">Tăng dần</option>
 
                         </select>
                     </div> --}}
@@ -68,9 +65,9 @@
             </form>
         </div>
         <hr>
-        @if (isset($search) || isset($categorySearch))
-            @isset($search)
-                <h5 class="">Từ Khóa Tìm Kiếm: <b>{{ $search }}</h5>
+        @if (isset($name) || isset($categorySearch))
+            @isset($name)
+                <h5 class="">Từ Khóa Tìm Kiếm: <b>{{ $name }}</h5>
             @endisset
             @isset($categorySearch)
                 <h5 class="mb-4">Danh Mục: <b>{{ $categorySearch['name'] }}</h5>
@@ -171,7 +168,7 @@
                                                         @endforeach
                                                     </select>
                                                     <i id="quantity[{{ $product['product_id'] }}]">Số lượng còn lại:
-                                                        {{ $quantities[$product['product_id']][$product['sizes'][0]] }}</i>
+                                                        {{ $quantities[$product['product_id']][$product['sizes'][0]] - $pendingQuantities[$product['product_id']][$product['sizes'][0]] }}</i>
                                                 </div>
                                                 {{-- <label for="phone" class="form-label"> Số lượng còn lại:</label> --}}
                                                 {{-- <div class="mb-3">
@@ -202,7 +199,7 @@
                         </div>
                     @endforeach
                 @else
-                    <h4 class="text-center">Không tìm thấy sản phẩm với từ khóa <b>{{ $search }}</b></h4>
+                    <h4 class="text-center">Không tìm thấy sản phẩm với từ khóa <b>{{ $name }}</b></h4>
                 @endif
                 <div class="mt-5">
                     {{ $products->withQueryString()->links() }}
@@ -226,8 +223,8 @@
                 const quantities = @json($quantities);
                 const pendingQuantities = @json($pendingQuantities);
 
-                quantityMessage.textContent = "Số lượng còn lại: " + 
-                (quantities[productId][selectedSize] - pendingQuantities[productId][selectedSize])
+                quantityMessage.textContent = "Số lượng còn lại: " +
+                    (quantities[productId][selectedSize] - pendingQuantities[productId][selectedSize])
 
             });
         });
