@@ -15,17 +15,28 @@ class PaymentMethodController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->query("search");
-        $data   = collect();
-        if ($search) {
-            $data = PaymentMethod::query()
-                ->where('name', 'like', "%" . $search . "%")->paginate(3);
-            return view("admin.payment_method.index", ['data' => $data, 'search' => $search]);
+        $data = $data = PaymentMethod::query();
 
-        } else {
-            $data = PaymentMethod::paginate(3);
+        if ($request['name']) {
+            $data = $data->where('name', 'like', "%" . $request['name'] . "%");
         }
-        return view("admin.payment_method.index", compact('data'));
+
+        if ($request['status']) {
+            $data = $data->where('status', $request['status']);
+        }
+
+        $data = $data->paginate(8);
+
+        foreach ($data as $payment) {
+            $payment['count_order'] = count($payment->orders);
+        }
+
+        return view("admin.payment_method.index", [
+            "data"   => $data,
+            "name"   => $request['name'] ?? "",
+            "status" => $request['status'] ?? "",
+
+        ]);
     }
 
     /**
@@ -35,7 +46,7 @@ class PaymentMethodController extends Controller
     {
         $payMethods = PaymentMethod::pluck("status", "id")->all();
         return view("admin.payment_method.create", [
-            'payMethods' => $payMethods
+            'payMethods' => $payMethods,
         ]);
     }
 
@@ -62,7 +73,8 @@ class PaymentMethodController extends Controller
      */
     public function show(PaymentMethod $payment_method)
     {
-        return view("admin.payment_method.show", compact('payment_method'));
+        $orders = $payment_method->orders()->paginate(8);
+        return view("admin.payment_method.show", compact('payment_method', 'orders'));
     }
 
     /**
@@ -93,6 +105,12 @@ class PaymentMethodController extends Controller
      */
     public function destroy(PaymentMethod $paymentMethod)
     {
+        // dd($paymentMethod->orders);
+        if ($paymentMethod->orders->isNotEmpty()) {
+            return redirect()->back()->with("danger", "Không thể xóa phương thức, có " . count($paymentMethod->orders)
+                . " đơn hàng dùng phương thức này!");
+        }
+
         try {
             DB::transaction(function () use ($paymentMethod) {
                 $paymentMethod->delete();

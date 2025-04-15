@@ -42,9 +42,14 @@
             </div>
         </div>
 
-        @isset($search)
-            <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-        @endisset
+        @if (!empty($name))
+            <h5 class='text-start mt-4 mb-4'>Tên PT: <b>{{ $name }}</b></h5>
+        @endif
+
+        @if (!empty($status))
+            <h5 class='text-start mt-4 mb-4'>Trạng thái:
+                <b>{{ $status == 'on' ? 'Đang bật' : 'Đang tắt' }}</b></h5>
+        @endif
 
 
         <table class="table table-bordered table-striped">
@@ -67,8 +72,8 @@
                             @else
                                 <button class="btn btn-secondary">Đang tắt</button>
                             @endif
-                        </td>   
-                        <td>0</td>
+                        </td>
+                        <td>{{   $payment_method['count_order']  }}</td>
                         <td><a href="{{ route('admin.payment_method.show', $payment_method) }}"
                                 class="btn btn-secondary btn-sm"><i class='bx bxs-detail'></i></a>
                             <a href="{{ route('admin.payment_method.edit', $payment_method) }}"
