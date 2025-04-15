@@ -15,19 +15,26 @@ class RankController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->query("search");
-        $data   = collect();
-        if ($search) {
-            $data = Rank::query()
-            ->where('name', 'like', "%" . $search . "%")
-            ->orderBy('point')
-            ->paginate(8);
-            return view("admin.rank.index", ['data' => $data, 'search' => $search]);
+        $data = Rank::query();
 
-        } else {
-            $data = Rank::orderBy('point')->paginate(8);
+        if ($request['rank']) {
+            $data = $data->where('id', $request['rank']);
         }
-        return view("admin.rank.index", compact('data'));
+
+        if ($request['point']) {
+            $data = $data->orderBy("point", $request['point']);
+        }
+
+        $data = $data->paginate(8);
+
+        $ranks = Rank::query()->get()->all();
+        // dd($request['rank']);
+        return view("admin.rank.index", [
+            "data"  => $data,
+            "ranks" => $ranks,
+            "id"    => $request['rank'] ?? "",
+            "point" => $request['point'] ?? "",
+        ]);
     }
 
     /**
@@ -97,6 +104,11 @@ class RankController extends Controller
      */
     public function destroy(Rank $rank)
     {
+        if (count($rank->getUser()) != 0)
+        {
+            return redirect()->back()->with("danger", "Không thể xóa cấp, có " . count($rank->getUser()) 
+            . " tài khoản thuộc cấp này!" );
+        }
         try {
             DB::transaction(function () use ($rank) {
                 $rank->delete();

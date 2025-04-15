@@ -28,7 +28,7 @@
                     <div class="form-group d-flex">
                         <select name="rank" class="form-select me-1">
                             <option value="" disabled selected>Cấp</option>
-                            @foreach ($data as $rank)
+                            @foreach ($ranks as $rank)
                                 <option value="{{ $rank['id'] }}">{{ $rank['type'] }}</option>
                             @endforeach
                         </select>
@@ -46,9 +46,19 @@
             </div>
         </div>
 
-        @isset($search)
-            <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-        @endisset
+        @if (!empty($id))
+            <h5 class='text-start mt-4 mb-4'>Cấp: <b>
+                    @foreach ($ranks as $rank)
+                        @if ($rank['id'] == $id)
+                            {{ $rank['type'] }}
+                        @endif
+                    @endforeach
+                </b></h5>
+        @endif
+
+        @if (!empty($point))
+            <h5 class='text-start mt-4 mb-4'>Số điểm: <b>{{ $point == 'asc' ? 'Tăng dần' : 'Giảm dần' }}</b></h5>
+        @endif
 
 
         <table class="table table-bordered table-striped">
