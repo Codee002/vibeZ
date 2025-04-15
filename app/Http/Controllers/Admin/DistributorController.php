@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -16,17 +15,24 @@ class DistributorController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->query("search");
-        $data   = collect();
-        if ($search) {
-            $data = Distributor::query()
-                ->where('name', 'like', "%" . $search . "%")->paginate(8);
-            return view("admin.distributor.index", ['data' => $data, 'search' => $search]);
+        // dd($request->all());
+        $data   = $data   = Distributor::query();
 
-        } else {
-            $data = Distributor::paginate(8);
+        if ($request['name']) {
+            $data = $data->where('name', 'like', "%" . $request['name'] . "%");
         }
-        return view("admin.distributor.index", compact('data'));
+
+        if ($request['address']) {
+            $data = $data->where('address', 'like', "%" . $request['address'] . "%");
+        }
+
+        $data = $data->paginate(8);
+       
+        return view("admin.distributor.index", [
+            "data"  => $data,
+            "name"    => $request['name'] ?? "",
+            "address" => $request['address'] ?? "",
+        ]);
     }
 
     /**
@@ -58,8 +64,8 @@ class DistributorController extends Controller
     public function show(Distributor $distributor)
     {
         $receipts = $distributor->receipts()
-        ->orderBy("created_at", "desc")
-        ->paginate(8);
+            ->orderBy("created_at", "desc")
+            ->paginate(8);
         return view("admin.distributor.show", compact('distributor', 'receipts'));
     }
 
@@ -89,13 +95,19 @@ class DistributorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Distributor $paymentMethod)
+    public function destroy(Distributor $distributor)
     {
+        // dd($distributor->receipts->isNotEmpty());
+        if ($distributor->receipts->isNotEmpty())
+        {
+            return redirect()->back()->with("danger", "Không thể xóa NCC, có " . count($distributor->receipts) 
+            . " phiếu nhập thuộc NCC này!" );
+        }
         try {
-            DB::transaction(function () use ($paymentMethod) {
-                $paymentMethod->delete();
+            DB::transaction(function () use ($distributor) {
+                $distributor->delete();
             });
-            return redirect()->route("admin.distributor.index")->with("success", "Xóa phương thức thành công");
+            return redirect()->route("admin.distributor.index")->with("success", "Xóa NCC thành công");
         } catch (\Throwable $th) {
             return redirect()->back()->with("danger", $th->getMessage());
         }

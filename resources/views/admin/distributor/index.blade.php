@@ -27,19 +27,24 @@
                 <form action="{{ route('admin.distributor.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
                         <input placeholder="Tên" id="search" name="name" class="form-control me-1"></input>
-                        <input placeholder="Địa chỉ" name="phone" class="form-control me-1"></input>
+                        <input placeholder="Địa chỉ" name="address" class="form-control me-1"></input>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
             </div>
             <div class="text-end col-7">
-                <a href="{{ route('admin.distributor.create') }}" class="btn btn-success text-white text-end ms-3">Thêm NCC</a>
+                <a href="{{ route('admin.distributor.create') }}" class="btn btn-success text-white text-end ms-3">Thêm
+                    NCC</a>
             </div>
         </div>
 
-        @isset($search)
-            <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-        @endisset
+        @if (!empty($name))
+            <h5 class='text-start mt-4'>Tên tìm kiếm: <b>{{ $name }}</b></h5>
+        @endif
+
+        @if (!empty($address))
+            <h5 class='text-start mt-1 mb-4'>Địa chỉ tìm kiếm: <b>{{ $address }}</b></h5>
+        @endif
 
 
         <table class="table table-bordered table-striped">
@@ -54,15 +59,15 @@
             <tbody>
                 @foreach ($data as $distributor)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td>NCC{{ $distributor['id'] }}</td>
                         <td> {{ $distributor['name'] }} </td>
                         <td> {{ $distributor['address'] }} </td>
                         <td> {{ $distributor['email'] }} </td>
- 
+
                         <td><a href="{{ route('admin.distributor.show', $distributor) }}"
                                 class="btn btn-secondary btn-sm"><i class='bx bxs-detail'></i></a>
-                            <a href="{{ route('admin.distributor.edit', $distributor) }}"
-                                class="btn btn-warning btn-sm"><i class='bx bxs-edit'></i></a>
+                            <a href="{{ route('admin.distributor.edit', $distributor) }}" class="btn btn-warning btn-sm"><i
+                                    class='bx bxs-edit'></i></a>
                             <form action="{{ route('admin.distributor.destroy', $distributor) }}" method="POST"
                                 class="d-inline">
                                 @csrf
