@@ -16,17 +16,21 @@ class WarehouseController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->query("search");
-        $data   = collect();
-        if ($search) {
-            $data = Warehouse::query()
-                ->where('address', 'like', "%" . $search . "%")->paginate(3);
-            return view("admin.warehouse.index", ['data' => $data, 'search' => $search]);
+        $data = $data = Warehouse::query();
 
-        } else {
-            $data = Warehouse::paginate(3);
+        if ($request['address']) {
+            $data = $data->where('address', 'like', "%" . $request['address'] . "%");
         }
-        return view("admin.warehouse.index", compact('data'));
+
+        $data = $data->orderBy("capacity", $request['capacity'] ?? "asc");
+
+        $data = $data->paginate(8);
+
+        return view("admin.warehouse.index", [
+            "data"     => $data,
+            "address"  => $request['address'] ?? "",
+            "capacity" => $request['capacity'] ?? "",
+        ]);
     }
 
     /**
@@ -55,14 +59,31 @@ class WarehouseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Warehouse $warehouse)
+    public function show(Request $request, Warehouse $warehouse)
     {
-        $warehouse_details = $warehouse->warehouse_details()->paginate(8);
+        $warehouse_details = $warehouse->warehouse_details();
         $warehouse->load('warehouse_details');
+
         foreach ($warehouse_details as $warehouse_detail) {
             $warehouse_detail->load('product', 'size');
         }
-        return view("admin.warehouse.show", compact('warehouse', 'warehouse_details'));
+
+        if ($request['name']) {
+            $warehouse_details = $warehouse_details->whereHas('product', function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request['name'] . '%');
+            });
+        }
+
+        if ($request['status']) {
+            $warehouse_details = $warehouse_details->where('status', $request['status']);
+        }
+        $warehouse_details = $warehouse_details->paginate(8);
+        return view("admin.warehouse.show", [
+            'warehouse'         => $warehouse,
+            'warehouse_details' => $warehouse_details,
+            'name'              => $request['name'] ?? "",
+            'status'            => $request['status'] ?? "",
+        ]);
     }
 
     /**
@@ -93,6 +114,12 @@ class WarehouseController extends Controller
      */
     public function destroy(Warehouse $warehouse)
     {
+        // dd($warehouse->receipts);
+        if ($warehouse->receipts->isNotEmpty()) {
+            return redirect()->back()->with("danger", "Không thể xóa kho, có " . count($warehouse->receipts)
+                . " phiếu nhập thuộc kho này!");
+        }
+
         try {
             DB::transaction(function () use ($warehouse) {
                 $warehouse->delete();

@@ -34,22 +34,19 @@
 
             <div class="col-8 d-flex align-items-center row">
                 <p class="title col-3">Tổng sản phẩm thuộc kho: </p>
-                <p class="col-4">{{ $warehouse->getQuantity() }}</p>
-            </div>
-
-            <div class="col-8 d-flex align-items-center row">
-                <p class="title col-3">Sản phẩm kích hoạt: </p>
-                <p class="col-4">{{ $warehouse->getQuantityActived() }}</p>
-            </div>
-
-            <div class="col-8 d-flex align-items-center row">
-                <p class="title col-3">Sản phẩm chưa kích họat: </p>
-                <p class="col-4">{{ $warehouse->getQuantityDisabled() }}</p>
+                <p class="col-5">{{ $warehouse->getQuantity() }}
+                    @if ($warehouse->getQuantity() != 0)
+                    <i class="ms-1">
+                        ({{ $warehouse->getQuantityActived() }} kích hoạt,
+                        {{  $warehouse->getQuantityDisabled() }} chưa kích họat)
+                    </i>
+                @endif
+                </p>
             </div>
 
             <div class="col-8 d-flex align-items-center row">
                 <p class="title col-3">Tổng sản phẩm chưa xử lý: </p>
-                <p class="col-4">{{ $warehouse->getQuantityPending()}}</p>
+                <p class="col-4">{{ $warehouse->getQuantityPending() }}</p>
             </div>
 
             <div class="col-8 d-flex align-items-center row">
@@ -59,6 +56,33 @@
 
 
         </div>
+        <div class="d-flex align-items-center mb-1 row">
+            <div class="col-5">
+                <form action="{{ route('admin.warehouse.show', $warehouse) }}" class="" method="GET">
+                    <div class="form-group d-flex">
+                        <input placeholder="Tên SP" id="search" name="name" class="form-control me-1"></input>
+
+                        <select name="status" class="form-select me-1">
+                            <option value="" disabled selected>Trạng thái</option>
+                            <option value="actived">Đã kích hoạt</option>
+                            <option value="disabled">Chưa kích hoạt</option>
+                        </select>
+
+                        <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @if (!empty($name))
+            <h5 class='text-start mt-4 mb-4'>Mã DH: <b>{{ $name }}</b></h5>
+        @endif
+
+        @if (!empty($status))
+            <h5 class='text-start mt-4 mb-4'>Trạng thái: <b>
+                    {{ $status == "actived" ? "Đã kích hoạt" : "Chưa kích hoạt" }}
+                </b></h5>
+        @endif
 
         <table class="table table-bordered table-striped">
             <thead>
@@ -118,12 +142,12 @@
                                 class="btn btn-secondary btn-sm"><i class='bx bxs-detail'></i></a>
                             <a href="{{ route('admin.product.edit', $warehouse_detail->product) }}"
                                 class="btn btn-warning btn-sm"><i class='bx bxs-edit'></i></a>
-                            <form action="{{ route('admin.warehouse.destroyWarehouseDetail', $warehouse_detail) }}" method="POST"
-                                class="d-inline">
+                            <form action="{{ route('admin.warehouse.destroyWarehouseDetail', $warehouse_detail) }}"
+                                method="POST" class="d-inline">
                                 @csrf
                                 @method ("DELETE")
                                 <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm {{ $warehouse_detail->product['name'] . ' ' .   $warehouse_detail['size'] }}?' + 
+                                    onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm {{ $warehouse_detail->product['name'] . ' ' . $warehouse_detail['size'] }}?' + 
                                     '\nViệc xóa sản phẩm sẽ làm bạn không thể quản lý sản phẩm này được nữa')">
                                     <i class='bx bxs-trash-alt'></i></button>
                             </form>
@@ -133,7 +157,7 @@
             </tbody>
         </table>
         <div class="">
-            {{$warehouse_details->withQueryString()->links()}}
+            {{ $warehouse_details->withQueryString()->links() }}
         </div>
     </div>
 

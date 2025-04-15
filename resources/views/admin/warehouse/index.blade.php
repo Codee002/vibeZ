@@ -25,17 +25,17 @@
             <div class="col-5">
                 <form action="{{ route('admin.warehouse.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Vị tri" id="search" name="name" class="form-control"></input>
-                        <select name="" class="form-select me-1">
+                        <input placeholder="Vị tri" id="search" name="address" class="form-control me-1"></input>
+                        <select name="capacity" class="form-select me-1">
                             <option value="" disabled selected>Dung tích</option>
                             <option value="asc">Tăng dần</option>
                             <option value="desc">Giảm dần</option>
                         </select>
-                        <select name="" class="form-select me-1">
+                        {{-- <select name="" class="form-select me-1">
                             <option value="" disabled selected>Số sản phẩm</option>
                             <option value="asc">Tăng dần</option>
                             <option value="desc">Giảm dần</option>
-                        </select>
+                        </select> --}}
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
@@ -46,14 +46,18 @@
             </div>
         </div>
 
-        @isset($search)
-            <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-        @endisset
+        @if (!empty($address))
+            <h5 class='text-start mt-4 mb-4'>Vị tri: <b>{{ $address }}</b></h5>
+        @endif
+
+        @if (!empty($capacity))
+            <h5 class='text-start mt-4 mb-4'>Sắp xếp: <b>{{ $capacity == 'asc' ? 'Tăng dần' : 'Giảm dần' }}</b></h5>
+        @endif
 
 
         <table class="table table-bordered table-striped">
             <thead>
-                <th>STT</th>
+                <th>Mã kho</th>
                 <th>Vị trí</th>
                 <th>Dung tích</th>
                 <th>Số sản phẩm</th>
@@ -63,7 +67,7 @@
             <tbody>
                 @foreach ($data as $warehouse)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td>K{{ $warehouse['id'] }}</td>
                         <td> {{ $warehouse['address'] }} </td>
                         <td> {{ $warehouse['capacity'] }} </td>
                         <td> {{ $warehouse->getQuantity() }} </td>
