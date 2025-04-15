@@ -17,21 +17,19 @@ class AccountController extends Controller
      */
     public function index(Request $request)
     {
+        // dd($request->all());
         $adminId = Auth::id();
-        $search  = $request->query("search");
-        $data    = collect();
-        if ($search) {
-            $data = User::query()
-                ->where('id', "!=", $adminId)
-                ->where('name', 'like', "%" . $search . "%")
-                ->paginate(8);
-            return view("admin.account.index", ['data' => $data, 'search' => $search]);
+        $data    = User::query()
+            ->where('id', "!=", $adminId);
 
-        } else {
-            $data = User::query()
-                ->where('id', "!=", $adminId)
-                ->paginate(8);
+        if ($request['name']) {
+            $data = $data->where('name', 'like', "%" . $request['name'] . "%");
         }
+
+        if ($request['phone']) {
+            $data = $data->where('phone', 'like', "%" . $request['phone'] . "%");
+        }
+        $data = $data->paginate(8);
 
         $ranks = Rank::get()->all();
         // dd($ranks);
@@ -43,7 +41,13 @@ class AccountController extends Controller
             // dd($data->all(), $user);
         }
 
-        return view("admin.account.index", compact('data'));
+        return view("admin.account.index", [
+            "data"  => $data,
+            "ranks" => $ranks,
+            "name"  => $request['name'] ?? "",
+            "phone" => $request['phone'] ?? "",
+            "rank"  => $request['rank'] ?? "",
+        ]);
     }
 
     /**

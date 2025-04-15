@@ -51,22 +51,6 @@
 
         {{-- Đơn hàng --}}
         @if ($orders->isNotEmpty())
-            <div class="d-flex align-items-center mb-1 row">
-                <div class="col-3">
-                    <form action="{{ route('admin.discount.index') }}" class="" method="GET">
-                        <div class="form-group d-flex">
-                            <input placeholder="Tìm đơn hàng" id="search" name="search" class="form-control"></input>
-                            <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            @isset($search)
-                <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-            @endisset
-
-
             <table class="table table-bordered table-striped">
                 <thead>
                     <th>Mã HD</th>

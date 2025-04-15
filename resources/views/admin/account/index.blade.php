@@ -23,36 +23,35 @@
 
         <h2 class="text-center fw-bolder ">Danh sách tài khoản</h2>
         <div class="d-flex align-items-center mb-1 row">
-            <div class="col-9">
+            <div class="col-6">
                 <form action="{{ route('admin.account.index') }}" class="" method="GET">
                     <div class="form-group d-flex">
-                        <input placeholder="Tên" id="search" name="search" class="form-control me-1"></input>
+                        <input placeholder="Tên" id="name" name="name" class="form-control me-1"></input>
                         <input placeholder="Số điện thoại" name="phone" class="form-control me-1"></input>
                         {{-- {{dd($ranks)}} --}}
-                        <select name="rank" class="form-select me-1">
+                        {{-- <select name="rank" class="form-select me-1">
                             <option value="" disabled selected>Cấp</option>
                             @foreach ($ranks as $rank)
                                 <option value="{{ $rank['id'] }}">{{ $rank['type'] }}</option>
                             @endforeach
-                        </select>
-                        <select name="order_price" class="form-select me-1">
-                            <option value="" disabled selected>Sắp theo đơn giá</option>
-                            <option value="asc">Tăng dần</option>
-                            <option value="desc">Giảm dần</option>
-                        </select>
+                        </select> --}}
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
                 </form>
             </div>
-            <div class="text-end col-3">
+            <div class="text-end col-6">
                 <a href="{{ route('admin.account.export') }}" class="btn btn-success text-white text-end ms-3">Xuất
                     Excel</a>
             </div>
         </div>
 
-        @isset($search)
-            <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-        @endisset
+        @if(!empty($name))
+            <h5 class='text-start mt-4 mb-4'>Tên tìm kiếm: <b>{{ $name }}</b></h5>
+        @endif
+
+        @if(!empty($phone))
+            <h5 class='text-start mt-4 mb-4'>SĐT tìm kiếm: <b>{{ $phone }}</b></h5>
+        @endif
 
 
         <table class="table table-bordered table-striped">
