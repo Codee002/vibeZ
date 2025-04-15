@@ -35,16 +35,16 @@
                             @endforeach
                         </select>
 
-                        <select name="point" class="form-select me-1">
-                            <option value="" disabled selected>Tổng sản phẩm</option>
-                            <option value="asc">Tăng dần</option>
-                            <option value="desc">Giảm dần</option>
-                        </select>
-
                         <select name="status" class="form-select me-1">
                             <option value="" disabled selected>Trạng thái</option>
-                            <option value="pending">Đã nhập</option>
-                            <option value="completing">Đang xử lý</option>
+                            <option value="pending">Đang xử lý</option>
+                            <option value="completed">Đã nhập</option>
+                        </select>
+
+                        <select name="order_by" class="form-select me-1">
+                            <option value="" disabled selected>Sắp xếp</option>
+                            <option value="asc">Tăng dần</option>
+                            <option value="desc">Giảm dần</option>
                         </select>
                         <button type="submit" class="btn btn-primary text-white text-decoration-none m-1">Tìm</button>
                     </div>
@@ -56,9 +56,27 @@
             </div>
         </div>
 
-        @isset($search)
-            <h5 class='text-start mt-4 mb-4'>Kết quả tìm kiếm: <b>{{ $search }}</b></h5>
-        @endisset
+        @if (!empty($id))
+            <h5 class='text-start mt-4 mb-4'>Mã PN: <b>{{ $id }}</b></h5>
+        @endif
+
+        @if (!empty($warehouse_id))
+            <h5 class='text-start mt-4 mb-4'>Kho: <b>
+                    @foreach ($warehouses as $warehouse)
+                        @if ($warehouse['id'] == $warehouse_id)
+                            {{ $warehouse['address'] }}
+                        @endif
+                    @endforeach
+                </b></h5>
+        @endif
+
+        @if (!empty($status))
+            <h5 class='text-start mt-4 mb-4'>Trạng thái: <b>{{ $status == "pending" ? "Đang xử lý" : "Đã nhập" }}</b></h5>
+        @endif
+
+        @if (!empty($order_by))
+            <h5 class='text-start mt-4 mb-4'>Sắp xếp: <b>{{ $order_by == 'asc' ? 'Cũ nhất' : 'Mới nhất' }}</b></h5>
+        @endif
 
         <table class="table table-bordered table-striped">
             <thead>
@@ -103,15 +121,6 @@
                         </td>
                         <td><a href="{{ route('admin.receipt.show', $receipt) }}" class="btn btn-secondary btn-sm"><i
                                     class='bx bxs-detail'></i></a>
-                            {{-- <a href="{{ route('admin.receipt.edit', $receipt) }}" class="btn btn-warning btn-sm"><i
-                                    class='bx bxs-edit'></i></a> --}}
-                            <form action="{{ route('admin.receipt.destroy', $receipt) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method ("DELETE")
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Bạn chắc chắn muốn xóa phiếu nhập {{ $receipt['name'] }}?')">
-                                    <i class='bx bxs-trash-alt'></i></button>
-                            </form>
                         </td>
                     </tr>
                 @endforeach

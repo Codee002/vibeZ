@@ -20,21 +20,33 @@ class ReceiptController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->query("search");
-        $data   = collect();
-        if ($search) {
-            $data = Receipt::with(['warehouse', 'receipt_details'])
-                ->where('status', 'like', "%" . $search . "%")
-                ->orderBy("created_at", "desc")
-                ->paginate(8);
-            return view("admin.product.index", ['data' => $data, 'search' => $search]);
+        $data = $data = Receipt::query()->with(['warehouse', 'receipt_details']);
 
-        } else {
-            $data = Receipt::with(['warehouse', 'receipt_details'])
-            ->orderBy("created_at", "desc")
-            ->paginate(8);
+        if ($request['id']) {
+            $data = $data->where('id', 'like', "%" . $request['id'] . "%");
         }
-        return view("admin.receipt.index", compact('data'));
+
+        if ($request['warehouse']) {
+            $data = $data->where('warehouse_id', $request['warehouse']);
+        }
+
+        if ($request['status']) {
+            $data = $data->where('status', $request['status']);
+        }
+
+        $data = $data->orderBy("id", $request['order_by'] ?? "desc");
+
+        $data = $data->paginate(8);
+
+        $warehouses = Warehouse::get()->all();
+        return view("admin.receipt.index", [
+            "data"         => $data,
+            "id"           => $request['id'] ?? "",
+            "warehouse_id" => $request['warehouse'] ?? "",
+            "status"       => $request['status'] ?? "",
+            "order_by"     => $request['order_by'] ?? "",
+            "warehouses"   => $warehouses,
+        ]);
     }
 
     public function choiceProduct()
@@ -49,16 +61,13 @@ class ReceiptController extends Controller
     {
         // Kiểm tra xem người dùng đã chọn chưa
         // dd($request->all());
-        if (!$request['addProducts'])
-        {
+        if (! $request['addProducts']) {
             return redirect()->back()->with("danger", "Vui lòng chọn sản phẩm");
         }
         // Kiểm tra xem đã chọn size đầy đủ chưa
-        foreach ($request['addProducts'] as $productId)
-        {
+        foreach ($request['addProducts'] as $productId) {
             // dd($request->all(), !array_key_exists($productId, $request['products']));
-            if (!array_key_exists($productId, $request['products']))
-            {
+            if (! array_key_exists($productId, $request['products'])) {
                 $productTemp = Product::find($productId);
                 return redirect()->back()->with("danger", "Vui lòng chọn size cho sản phẩm " . $productTemp['name']);
             }
@@ -88,7 +97,7 @@ class ReceiptController extends Controller
             ];
         }
 
-        $warehouses = Warehouse::query()->pluck("address", "id")->all();
+        $warehouses   = Warehouse::query()->pluck("address", "id")->all();
         $distributors = Distributor::query()->pluck("name", "id")->all();
         return view("admin.receipt.create", compact('data', 'warehouses', 'distributors'));
     }
@@ -118,7 +127,7 @@ class ReceiptController extends Controller
         try {
             DB::transaction(function () use ($request) {
                 $receipt = Receipt::query()->create([
-                    "warehouse_id" => $request->warehouse,
+                    "warehouse_id"   => $request->warehouse,
                     "distributor_id" => $request->distributor,
                 ]);
                 foreach ($request->product as $id => $productIds) {
@@ -206,9 +215,10 @@ class ReceiptController extends Controller
      */
     public function destroy(Receipt $receipt)
     {
+        return redirect()->back()->with("danger", "Không thể xóa phiếu nhập")->withInput();
         try {
             DB::transaction(function () use ($receipt) {
-                $receipt->delete();
+                // $receipt->delete();
             });
             return redirect()->route("admin.receipt.index")->with("success", "Xóa phiếu nhập thành công");
         } catch (\Throwable $th) {
