@@ -11,8 +11,11 @@
 
 @section('content')
     <main>
-        <img class="banner" src="/assets/images/banner/main_banner.jpg">
+        {{-- <img class="banner" src="/assets/images/banner/main_banner.jpg">
+        </img> --}}
+        <img class="banner" src="{{ \Storage::url(\App\Models\GeneralImage::getBannner()) }}">
         </img>
+        {{-- {{\App\Models\GeneralImage::getBannner()}} --}}
         <div class="Content-container">
             <div class="">
                 <p class="visitContainer__title">Khám Phá VibeZ</p>
@@ -71,7 +74,7 @@
                             {{-- {{ dd($product) }} --}}
                             @if ($product['category_name'] == 'Giày Converse')
                                 <div class="contentContainer col-3">
-                                    <a href="{{route("product.detail" , $product['product_id'])}}">
+                                    <a href="{{ route('product.detail', $product['product_id']) }}">
                                         @if ($product['image'])
                                             @if ($product['image'] && \Storage::exists($product['image']))
                                                 <img src="{{ \Storage::url($product['image']) }}" alt=""
@@ -96,7 +99,7 @@
                             @endif
                         @endforeach
                     </div>
-                    <a href="{{ route("product", ['category' => 25]) }}" class="productPreviewContainer__more">
+                    <a href="{{ route('product', ['category' => 25]) }}" class="productPreviewContainer__more">
                         <p>Xem Thêm</p>
                     </a>
                 </div>
@@ -111,7 +114,7 @@
                             {{-- {{ dd($product) }} --}}
                             @if ($product['category_name'] == 'Giày Nike')
                                 <div class="contentContainer col-3">
-                                    <a href="{{route("product.detail" , $product['product_id'])}}">
+                                    <a href="{{ route('product.detail', $product['product_id']) }}">
                                         @if ($product['image'])
                                             @if ($product['image'] && \Storage::exists($product['image']))
                                                 <img src="{{ \Storage::url($product['image']) }}" alt=""
@@ -136,7 +139,7 @@
                             @endif
                         @endforeach
                     </div>
-                    <a href="{{ route("product", ['category' => 25]) }}" class="productPreviewContainer__more">
+                    <a href="{{ route('product', ['category' => 25]) }}" class="productPreviewContainer__more">
                         <p>Xem Thêm</p>
                     </a>
                 </div>
@@ -151,7 +154,7 @@
                             {{-- {{ dd($product) }} --}}
                             @if ($product['category_name'] == 'Giày Adidas')
                                 <div class="contentContainer col-3">
-                                    <a href="{{route("product.detail" , $product['product_id'])}}">
+                                    <a href="{{ route('product.detail', $product['product_id']) }}">
                                         @if ($product['image'])
                                             @if ($product['image'] && \Storage::exists($product['image']))
                                                 <img src="{{ \Storage::url($product['image']) }}" alt=""
@@ -176,27 +179,11 @@
                             @endif
                         @endforeach
                     </div>
-                    <a href="{{ route("product", ['category' => 26]) }}" class="productPreviewContainer__more">
+                    <a href="{{ route('product', ['category' => 26]) }}" class="productPreviewContainer__more">
                         <p>Xem Thêm</p>
                     </a>
                 </div>
             </div>
-
-            <div class="productPreviewContainer">
-                <p class="productPreviewContainer__title">Đánh giá</p>
-                <div class="productPreviewContainer__item">
-                    <a href="/_sp/sp2_10.html">
-                        <div class="productPreviewContainer__item__product">
-                            <img src="https://trivela.vn/wp-content/uploads/2023/10/GIAY-PUREBOOST-23-IF2367.jpg.webp"
-                                alt="">
-                            <p class="des">Giày Adidas PureBoost 23 – IF2367</p>
-                            <p class="size">Size: 40 - 42</p>
-                            <p class="price">4 triệu 200 nghìn</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
         </div>
     </main>
 @endsection

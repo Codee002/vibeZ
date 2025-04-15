@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::getAllProduct();
+        $products = Product::getAllActiveProduct();
         foreach ($products as $product) {
             $product['price'] = SalePrice::getPrice($product['product_id']);
             $product['image'] = Image::getImage($product['product_id']);
