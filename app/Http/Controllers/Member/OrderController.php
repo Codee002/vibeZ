@@ -143,6 +143,22 @@ class OrderController extends Controller
             }
         }
 
+        // Thanh toán VNPay
+        if ($request['payMethod'] == 3) {
+            $request['vnpay'] = 1;
+
+            // Tạo mã đơn hàng
+            $lastOrder           = Order::orderBy("id", "desc")->first();
+            $request['order_id'] = $lastOrder['id'] + 1;
+            return $this->vnpay($request);
+        }
+
+        // Thanh toán trực tiếp
+        return $this->createOrder($request);
+    }
+
+    public function createOrder($request)
+    {
         $user = Auth::user();
         try {
             DB::transaction(function () use ($request, $user) {
@@ -155,7 +171,12 @@ class OrderController extends Controller
                     "rank_discount"     => $request['rank_discount'],
                 ];
 
+                if ($request['order_id']) {
+                    $data['id'] = $request['order_id'];
+                }
+
                 $order = Order::query()->create($data);
+                session()->flash("newOrder", $order);
 
                 for ($i = 0; $i < count($request['products']); $i++) {
                     OrderDetail::query()
@@ -179,11 +200,98 @@ class OrderController extends Controller
                     }
                 }
             });
-            return redirect()->route("cart")->with("success", "Đặt hàng thành công");
+            return redirect()->route("order.history.detail", session("newOrder"))->with("success", "Đặt hàng thành công");
         } catch (\Throwable $th) {
-            return redirect()->route("cart")->with("danger", $th->getMessage())->withInput();
+            return redirect()->route("order.history")->with("danger", $th->getMessage())->withInput();
             // return redirect()->back()->with("danger", $th->getMessage())->withInput();
         }
+    }
+
+    // Thanh toán VNPAY
+    public function vnpay(Request $request)
+    {
+        // dd("vnpay", $request->all());
+        $vnp_Url        = env('VNPAY_URL');
+        $vnp_Returnurl  = env('VNPAY_RETURN_URL');
+        $vnp_TmnCode    = env('VNPAY_TMNCODE');    //Mã website tại VNPAY
+        $vnp_HashSecret = env('VNPAY_HASHSECRET'); //Chuỗi bí mật
+
+        $vnp_TxnRef    = "HD" . $request['order_id']; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_OrderType = "billpayment";
+        $vnp_Amount    = $request['total_price'] * 1000 * 100;
+        $vnp_OrderInfo = "Thanh toan cho don hang so tien " . $vnp_Amount . "Đ";
+        $vnp_Locale    = "vn";
+        // $vnp_BankCode  = "NCB";
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        //Add Params of 2.0.1 Version
+
+        $inputData = [
+            "vnp_Version"    => "2.1.0",
+            "vnp_TmnCode"    => $vnp_TmnCode,
+            "vnp_Amount"     => $vnp_Amount,
+            "vnp_Command"    => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode"   => "VND",
+            "vnp_IpAddr"     => $vnp_IpAddr,
+            "vnp_Locale"     => $vnp_Locale,
+            "vnp_OrderInfo"  => $vnp_OrderInfo,
+            "vnp_OrderType"  => $vnp_OrderType,
+            "vnp_ReturnUrl"  => $vnp_Returnurl,
+            "vnp_TxnRef"     => $vnp_TxnRef,
+            // "vnp_ExpireDate" => $vnp_ExpireDate,
+        ];
+
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+        }
+
+        //var_dump($inputData);
+        ksort($inputData);
+        $query    = "";
+        $i        = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret); //
+            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+        }
+        $returnData = [
+            'code'    => '00',
+            'message' => 'success',
+            'data'    => $vnp_Url,
+        ];
+        if (isset($request['vnpay'])) {
+            // header('Location: ' . $vnp_Url);
+            session()->flash('order', $request->all());
+            return redirect()->to($vnp_Url);
+            die();
+        } else {
+            echo json_encode($returnData);
+        }
+    }
+
+    public function handle_vnpay(Request $request)
+    {
+        $orderTemp = session("order");
+        // dd($request->all(), $orderTemp, $request['vnp_ResponseCode']);
+        if ($request['vnp_ResponseCode'] != "00") {
+            return redirect()->route("order.history")->with("danger", "Thanh toán thất bại!");
+        }
+
+        return $this->createOrder($orderTemp);
     }
 
     public function history(Request $request)
@@ -223,6 +331,14 @@ class OrderController extends Controller
 
     public function detail(Order $order)
     {
+        /**
+         * @var User $user
+         */
+        $user = Auth::user();
+        if ($order['user_id'] != $user['id']) {
+            abort(403);
+        }
+
         $priceDelivery = 30;
         $order         = $order->load(['user', 'payment_method', 'delivery_info', 'discounts', 'order_details', 'evaluates']);
         return view("pages.components.order_history_detail", compact("order", 'priceDelivery'));
@@ -230,6 +346,10 @@ class OrderController extends Controller
 
     public function abort(Order $order)
     {
+        if ($order['payment_method_id'] == 3) {
+            return redirect()->back()->with("danger", "Không thể hủy đơn hàng đã thanh toán!");
+        }
+
         try {
             DB::transaction(function () use ($order) {
                 $order->update([

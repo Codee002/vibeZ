@@ -150,7 +150,7 @@
                         <p id="priceDelivery">{{ number_format($priceDelivery, 0, '', '.') }}</p>
                         {{-- <p id="pricePromotion">0</p> --}}
                         <p id="pricePromotion">{{ number_format($order->getTotalDiscount(), 0, '', '.') }}</p>
-                        <p id="pricePromotion">{{ number_format($order['priceRankDiscount'], 0, '', '.') }}</p>
+                        <p id="pricePromotion">{{ number_format($order['rank_discount'], 0, '', '.') }}</p>
                         <hr>
                         <p style="font-size: 1.2rem;" id="finalPrice">
                             {{ number_format($order['total_price'], 0, '', '.') }}

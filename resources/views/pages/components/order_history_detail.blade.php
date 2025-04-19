@@ -150,7 +150,7 @@
                     <p id="priceDelivery">{{ number_format($priceDelivery, 0, '', '.') }}</p>
                     {{-- <p id="pricePromotion">0</p> --}}
                     <p id="pricePromotion">{{ number_format($order->getTotalDiscount(), 0, '', '.') }}</p>
-                    <p id="pricePromotion">{{ number_format($order['priceRankDiscount'], 0, '', '.') }}</p>
+                    <p id="pricePromotion">{{ number_format($order['rank_discount'], 0, '', '.') }}</p>
                     <hr>
                     <p style="font-size: 1.2rem;" id="finalPrice">
                         {{ number_format($order['total_price'], 0, '', '.') }}
@@ -177,7 +177,7 @@
                             class="ms-3">
                             @csrf
                             <button class="btn " type="submit" style="font-weight:600; width: 100%"
-                                onclick="return confirm('Khi nhận hàng, bạn sẽ thanh toán cho đơn hàng')">
+                                onclick="return confirm('Xác nhận nhận hàng thành công?')">
                                 Đã nhận hàng
                             </button>
                         </form>
