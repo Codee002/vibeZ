@@ -140,6 +140,7 @@ Route::middleware(['auth', isMember::class])->group(function () {
     Route::post("order/abort/{order}", [OrderController::class, "abort"])->name("order.abort");
     Route::post("order/receive/{order}", [OrderController::class, "receive"])->name("order.receive");
     Route::get("order/detail", [OrderController::class, "detail"])->name("order.detail");
+    Route::get("order/handle_vnpay", [OrderController::class, "handle_vnpay"])->name("order.handle_vnpay");
 });
 Route::get("order/pdf/{order}", [OrderController::class, "printInvoice"])->name("order.pdf");
 
