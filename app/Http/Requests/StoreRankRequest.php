@@ -23,7 +23,7 @@ class StoreRankRequest extends FormRequest
         return [
             "type"     => ['required', 'regex:/^[\p{L}\p{M}\s]+$/u', 'unique:ranks'],
             "point"    => ['required', 'numeric', "gt:0", 'unique:ranks'],
-            "discount" => ['required', 'integer', "gt:0", "lt:100"],
+            "discount" => ['required', 'integer', "gt:0", "lt:100", 'unique:ranks' ],
         ];
     }
 
