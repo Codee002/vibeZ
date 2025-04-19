@@ -175,6 +175,7 @@ class OrderController extends Controller
                     $data['id'] = $request['order_id'];
                 }
 
+                // dd($data, $request);
                 $order = Order::query()->create($data);
                 session()->flash("newOrder", $order);
 
@@ -194,7 +195,7 @@ class OrderController extends Controller
                 }
 
                 // Nếu đặt qua giỏ hàng thì xóa khỏi giỏ
-                if ($request['type'] == "cart") {
+                if (isset($request['type']) && $request['type'] == "cart") {
                     foreach ($request['cartDetailId'] as $cartId) {
                         CartDetail::find($cartId)->delete();
                     }
@@ -286,6 +287,7 @@ class OrderController extends Controller
     public function handle_vnpay(Request $request)
     {
         $orderTemp = session("order");
+        // dd($orderTemp);
         // dd($request->all(), $orderTemp, $request['vnp_ResponseCode']);
         if ($request['vnp_ResponseCode'] != "00") {
             return redirect()->route("order.history")->with("danger", "Thanh toán thất bại!");
@@ -379,6 +381,14 @@ class OrderController extends Controller
     // Xuất file
     public function printInvoice(Order $order)
     {
+        /**
+         * @var User $user
+         */
+        $user = Auth::user();
+        if ($order['user_id'] != $user['id']) {
+            abort(403);
+        }
+
         $priceDelivery = 30;
         $order         = $order->load(['user', 'payment_method', 'delivery_info', 'discounts', 'order_details', 'evaluates']);
 
@@ -388,6 +398,6 @@ class OrderController extends Controller
 
         return $pdf->stream('invoice.pdf');
 
-        return view("admin.order.print", compact("order", 'priceDelivery'));
+        // return view("admin.order.print", compact("order", 'priceDelivery'));
     }
 }

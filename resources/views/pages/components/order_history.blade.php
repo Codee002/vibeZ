@@ -50,6 +50,7 @@
                     <th>Tổng SL</th>
                     <th>Tổng đơn giá</th>
                     <th>Thời gian đặt</th>
+                    <th>Thanh toán</th>
                     <th>Trạng thái</th>
                     <th>Thao tác</th>
                 </thead>
@@ -61,6 +62,7 @@
                             <td> {{ $order->getTotalQuantity() }} </td>
                             <td> {{ number_format($order['total_price'], 0, "", ".") }} </td>
                             <td> {{ \Carbon\Carbon::parse($order['created_at'])->format('d/m/Y H:i:s') }} </td>
+                            <td> {{ $order->payment_method['name'] }} </td>
                             <td>
                                 @if ($order['status'] == 'pending')
                                     <button type="button" class="btn btn-warning">Chờ duyệt</button>
