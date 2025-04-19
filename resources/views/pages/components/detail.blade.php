@@ -146,7 +146,7 @@
                                                                 @endforeach
                                                             </select>
                                                             <i id="quantity[{{ $product['id'] }}]">Số lượng còn lại:
-                                                                {{ $quantities[$product['id']][$product->sizes[0]] }}</i>
+                                                                {{ $quantities[$product['id']][$product->sizes[0]] - $pendingQuantities[$product['id']][$product->sizes[0]] }}</i>
                                                         </div>
                                                         {{-- <label for="phone" class="form-label"> Số lượng còn lại:</label> --}}
                                                         {{-- <div class="mb-3">
@@ -230,7 +230,7 @@
                                                                 @endforeach
                                                             </select>
                                                             <i id="quantity[{{ $product['id'] }}]">Số lượng còn lại:
-                                                                {{ $quantities[$product['id']][$product->sizes[0]] }}</i>
+                                                                {{ $quantities[$product['id']][$product->sizes[0]] - $pendingQuantities[$product['id']][$product->sizes[0]] }}</i>
                                                         </div>
                                                         {{-- <label for="phone" class="form-label"> Số lượng còn lại:</label> --}}
                                                         {{-- <div class="mb-3">
