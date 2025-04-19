@@ -99,6 +99,11 @@ class WarehouseController extends Controller
      */
     public function update(UpdateWarehouseRequest $request, Warehouse $warehouse)
     {
+        // Kiểm tra SL kho
+        if ($warehouse->getQuantity() + $warehouse->getQuantityPending()  > $request['capacity']) {
+            return redirect()->back()->with("danger", "Số lượng chỉnh sửa phải chứa được tất cả sản phẩm!")->withInput();
+        }
+
         try {
             DB::transaction(function () use ($request, $warehouse) {
                 $warehouse->update($request->all());
