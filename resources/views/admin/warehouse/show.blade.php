@@ -51,7 +51,7 @@
 
             <div class="col-8 d-flex align-items-center row">
                 <p class="title col-3">Còn trống: </p>
-                <p class="col-4">{{ $warehouse['capacity'] - $warehouse->getQuantity() }}</p>
+                <p class="col-4">{{ $warehouse['capacity'] - $warehouse->getQuantity() - $warehouse->getQuantityPending() }}</p>
             </div>
 
 
@@ -142,15 +142,6 @@
                                 class="btn btn-secondary btn-sm"><i class='bx bxs-detail'></i></a>
                             <a href="{{ route('admin.product.edit', $warehouse_detail->product) }}"
                                 class="btn btn-warning btn-sm"><i class='bx bxs-edit'></i></a>
-                            <form action="{{ route('admin.warehouse.destroyWarehouseDetail', $warehouse_detail) }}"
-                                method="POST" class="d-inline">
-                                @csrf
-                                @method ("DELETE")
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm {{ $warehouse_detail->product['name'] . ' ' . $warehouse_detail['size'] }}?' + 
-                                    '\nViệc xóa sản phẩm sẽ làm bạn không thể quản lý sản phẩm này được nữa')">
-                                    <i class='bx bxs-trash-alt'></i></button>
-                            </form>
                         </td>
                     </tr>
                 @endforeach

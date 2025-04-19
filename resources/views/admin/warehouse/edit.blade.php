@@ -16,11 +16,23 @@
             onsubmit="return confirm('Bạn chắc chắn muốn sửa kho này?')">
             @csrf
             @method('PUT')
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('danger'))
+                <div class="alert alert-danger">
+                    {{ session('danger') }}
+                </div>
+            @endif
             <div class="form-group mb-3">
                 <label for="address">Kho</label>
                 <input type="text" placeholder="Nhập vào địa chỉ" name="address" id="address"
                     class="form-control
-                 @error('address') is-invalid @enderror" value="{{ $warehouse['address'] }}">
+                 @error('address') is-invalid @enderror"
+                    value="{{ $warehouse['address'] }}">
                 @error('address')
                     <span class="invalid-feedback" style="display: block">
                         <strong>{{ $message }}</strong>
@@ -32,7 +44,8 @@
                 <label for="capacity">Dung tích kho</label>
                 <input type="number" placeholder="Nhập vào dung tích kho" name="capacity" id="capacity"
                     class="form-control
-                 @error('capacity') is-invalid @enderror" value="{{ $warehouse['capacity'] }}">
+                 @error('capacity') is-invalid @enderror"
+                    value="{{ $warehouse['capacity'] }}">
                 @error('capacity')
                     <span class="invalid-feedback" style="display: block">
                         <strong>{{ $message }}</strong>

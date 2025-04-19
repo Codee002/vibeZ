@@ -96,7 +96,7 @@
                         <td>{{ 'HD' . $order['id'] }}</td>
                         <td> {{ $order->user['name'] }} </td>
                         <td> {{ number_format($order->getTotalQuantity(), 0, '', '.') }} </td>
-                        <td> {{ $order['total_price'] }} </td>
+                        <td> {{ number_format($order['total_price'], 0, '', '.') }} </td>
                         <td> {{ \Carbon\Carbon::parse($order['created_at'])->format('d/m/Y H:i:s') }} </td>
                         <td>
                             @if ($order['status'] == 'pending')

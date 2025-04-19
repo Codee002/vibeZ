@@ -98,13 +98,13 @@
                         {{-- Giá nhập --}}
                         <div class="col d-flex  flex-column align-items-center justify-content-center">
                             <input disabled type="text" class="form-control" style="width: 70%;"
-                                value="{{ $receipt_detail['purchase_price'] }}">
+                                value="{{ number_format($receipt_detail['purchase_price'], 0, '', '.') }}">
                         </div>
 
                         {{-- Giá bán --}}
                         <div class="col d-flex flex-column align-items-center justify-content-center">
                             <input disabled type="text" class="form-control" style="width: 70%;"
-                                value="{{ $receipt_detail->product->getSalePrice($receipt_detail->size) }}">
+                                value="{{ number_format($receipt_detail->product->getSalePrice($receipt_detail->size), 0, '', '.') }}">
                         </div>
 
                         {{-- Số lượng --}}
