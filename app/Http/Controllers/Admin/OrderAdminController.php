@@ -159,6 +159,11 @@ class OrderAdminController extends Controller
 
     public function reject(Order $order)
     {
+        // dd($order['payment_method_id'] == 3);
+        if ($order['payment_method_id'] == 3)
+        {
+            return redirect()->back()->with("danger", "Không thể hủy đơn hàng đã thanh toán!");
+        }
         try {
             DB::transaction(function () use ($order) {
                 $order->update([
