@@ -362,6 +362,13 @@ class AuthenController extends Controller
                 ])->withInput();
             }
 
+            $user = Auth::user();
+            if ($user['email_active'] == 1) {
+                return redirect()->back()->with([
+                    'danger' => 'Email đã được kích hoạt!',
+                ])->withInput();
+            }
+
             // Tạo token ngẫu nhiên
             $token = Str::random(60);
             $link  = $request->schemeAndHttpHost() . "/activeEmail/" . $token;

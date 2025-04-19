@@ -9,7 +9,7 @@
         <div class="">
             <div class="form-wrapper">
                 <form action=" {{ route('sendEmail') }}" method="POST">
-                    <a href="/setting"><i class="fa-solid fa-arrow-left back"></i></a>
+                    <a href="{{ url()->previous() }}"><i class="fa-solid fa-arrow-left back"></i></a>
                     @csrf
                     <!-- FLASH MESSAGES -->
                     @if (session('success'))
