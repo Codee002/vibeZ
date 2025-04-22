@@ -140,9 +140,8 @@
                     <div class="col-4 d-flex">
                         <div class="order__info__option">
                             @if ($order['status'] == 'pending')
-                                <button href="{{ redirect()->back() }}" class="btn " type="submit"
-                                    style="font-weight:600;">
-                                    Quay lại
+                                <button class="btn " type="button" style="font-weight:600;">
+                                    <a href="{{ url()->previous() }}">Quay lại</a>
                                 </button>
                                 <button class="btn " type="submit" style="font-weight:600; "
                                     style="font-weight:600; color: var(--extra1-color)">

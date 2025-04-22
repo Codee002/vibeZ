@@ -19,7 +19,7 @@
         <!------- Search ------->
         <div class="inputSearch">
             <form method="GET" action="{{ route('product') }}" id="frmSearch" onsubmit="return frmValidate()">
-                <input name="search" type="text" placeholder="Tìm kiếm" id="TimKiem" value="">
+                <input name="name" type="text" placeholder="Tìm kiếm" id="TimKiem" value="">
                 <button title="Tìm kiếm" id="TimKiembtn" type="submit"><i class='bx bx-search-alt'></i></button>
             </form>
 
