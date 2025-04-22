@@ -132,6 +132,14 @@ class ProductController extends Controller
                 return redirect()->route("admin.product.edit", $product)->with("danger", "Sản phẩm phải có ít nhất 1 hình ảnh");
             }
         }
+
+        // Kiểm tra size trước khi chỉnh sửa
+        foreach (Size::getSizeInWarehouse($product['id']) as $size) {
+            if (! in_array($size, $request['sizes'])) {
+                return redirect()->back()->with("danger", "Kích thước $size không thể xóa do đã nhập về kho!")->withInput();
+            }
+        }
+
         try {
             DB::transaction(function () use ($request, $product) {
                 $dataProduct = [

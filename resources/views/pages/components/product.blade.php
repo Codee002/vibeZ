@@ -73,7 +73,7 @@
                 <h5 class="mb-4">Danh Mục: <b>{{ $categorySearch['name'] }}</h5>
             @endisset
         @else
-            <h4 class="mb-4">Sản Phẩm Cập Nhật Mới Nhất T3/2025</h4>
+            <h4 class="mb-4">Sản Phẩm Cập Nhật Mới Nhất {{ Carbon\Carbon::now()->format('m/Y') }}</h4>
         @endif
 
         <!-- FLASH MESSAGE -->

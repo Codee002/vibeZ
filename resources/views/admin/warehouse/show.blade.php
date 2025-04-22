@@ -75,7 +75,7 @@
         </div>
 
         @if (!empty($name))
-            <h5 class='text-start mt-4 mb-4'>Mã DH: <b>{{ $name }}</b></h5>
+            <h5 class='text-start mt-4 mb-4'>Tên SP: <b>{{ $name }}</b></h5>
         @endif
 
         @if (!empty($status))
