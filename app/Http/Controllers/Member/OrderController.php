@@ -386,7 +386,10 @@ class OrderController extends Controller
          */
         $user = Auth::user();
         if ($order['user_id'] != $user['id']) {
-            abort(403);
+            if ($user->isMember()) {
+                abort(403);
+            }
+
         }
 
         $priceDelivery = 30;
